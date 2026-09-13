@@ -1,0 +1,15 @@
+{
+  "protocol": "xi.exchange.v1",
+  "message_id": "10000000-0000-4000-8000-000000000004",
+  "request_id": "30000000-0000-4000-8000-000000000001",
+  "session_id": "20000000-0000-4000-8000-000000000001",
+  "sender": {"system": "forgecore", "instance": "reference-b"},
+  "recipient": {"system": "super-phi-vessel", "instance": "reference-a"},
+  "type": "capsule.response",
+  "created_at": "2026-09-13T23:55:03Z",
+  "payload": {
+    "capsule_id": "xi-demo-capsule-001",
+    "status": "accepted",
+    "authority_granted": false
+  }
+}

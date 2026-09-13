@@ -1,0 +1,23 @@
+name: Xi Bridge Conformance
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run reference handshake
+        run: python reference/python/bridge_demo.py
+      - name: Run conformance tests
+        run: python -m unittest discover -s tests -v

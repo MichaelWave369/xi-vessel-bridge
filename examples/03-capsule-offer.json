@@ -1,0 +1,32 @@
+{
+  "protocol": "xi.exchange.v1",
+  "message_id": "10000000-0000-4000-8000-000000000003",
+  "request_id": "30000000-0000-4000-8000-000000000001",
+  "session_id": "20000000-0000-4000-8000-000000000001",
+  "sender": {"system": "super-phi-vessel", "instance": "reference-a"},
+  "recipient": {"system": "forgecore", "instance": "reference-b"},
+  "type": "capsule.offer",
+  "created_at": "2026-09-13T23:55:02Z",
+  "payload": {
+    "capsule": {
+      "capsule_id": "xi-demo-capsule-001",
+      "format": "text/plain",
+      "version": "1",
+      "content": {
+        "encoding": "utf-8",
+        "media_type": "text/plain",
+        "sha256": "231f6819dd40525827715ee0b893c1273b745a83a1f45a620c5aa6db40ddf4bb",
+        "size_bytes": 48,
+        "data": "Xi Vessel Bridge v0.1 interoperability capsule.\n"
+      },
+      "provenance": {
+        "author": "Xi Vessel Bridge reference fixture",
+        "source": "examples/sample-capsule.txt",
+        "version": "1",
+        "created_at": "2026-09-13T23:55:02Z",
+        "intended_use": "read-only interoperability conformance test",
+        "license": "MIT"
+      }
+    }
+  }
+}

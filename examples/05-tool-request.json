@@ -1,0 +1,17 @@
+{
+  "protocol": "xi.exchange.v1",
+  "message_id": "10000000-0000-4000-8000-000000000005",
+  "request_id": "40000000-0000-4000-8000-000000000001",
+  "session_id": "20000000-0000-4000-8000-000000000001",
+  "sender": {"system": "super-phi-vessel", "instance": "reference-a"},
+  "recipient": {"system": "forgecore", "instance": "reference-b"},
+  "type": "tool.request",
+  "created_at": "2026-09-13T23:55:04Z",
+  "payload": {
+    "operation": "artifact.sha256",
+    "permission_requested": "read_only",
+    "capsule_id": "xi-demo-capsule-001",
+    "input": {},
+    "dry_run": false
+  }
+}

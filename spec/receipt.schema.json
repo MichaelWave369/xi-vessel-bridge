@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xi-vessel-bridge.dev/spec/receipt.schema.json",
+  "title": "Xi Execution Receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["request_id", "operation", "status", "receiver", "recorded_at", "execution_count"],
+  "properties": {
+    "request_id": {"type": "string", "format": "uuid"},
+    "operation": {"type": "string", "minLength": 1},
+    "status": {"enum": ["completed", "denied", "unavailable", "not_applicable", "expired", "error"]},
+    "receiver": {"type": "string", "minLength": 1},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "execution_count": {"type": "integer", "minimum": 0, "maximum": 1},
+    "artifact_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "note": {"type": "string"}
+  }
+}

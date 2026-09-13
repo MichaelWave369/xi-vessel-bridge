@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xi-vessel-bridge.dev/spec/capsule.schema.json",
+  "title": "Xi Capsule",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["capsule_id", "format", "version", "content", "provenance"],
+  "properties": {
+    "capsule_id": {"type": "string", "minLength": 1},
+    "format": {"type": "string", "minLength": 1},
+    "version": {"type": "string", "minLength": 1},
+    "content": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encoding", "media_type", "sha256", "size_bytes"],
+      "properties": {
+        "encoding": {"enum": ["utf-8", "base64", "external_ref"]},
+        "media_type": {"type": "string", "minLength": 1},
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "data": {"type": "string"},
+        "reference": {"type": "string"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["author", "source", "version", "created_at", "intended_use"],
+      "properties": {
+        "author": {"type": "string", "minLength": 1},
+        "source": {"type": "string", "minLength": 1},
+        "version": {"type": "string", "minLength": 1},
+        "created_at": {"type": "string", "format": "date-time"},
+        "intended_use": {"type": "string", "minLength": 1},
+        "license": {"type": "string"},
+        "parent_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xi-vessel-bridge.dev/spec/tool-request.schema.json",
+  "title": "Xi Tool Request Payload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operation", "permission_requested", "input"],
+  "properties": {
+    "operation": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+    "permission_requested": {"enum": ["read_only", "explicit_grant"]},
+    "capsule_id": {"type": "string", "minLength": 1},
+    "input": {"type": "object"},
+    "dry_run": {"type": "boolean", "default": false}
+  }
+}

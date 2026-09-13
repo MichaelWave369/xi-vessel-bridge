@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xi-vessel-bridge.dev/spec/tool-result.schema.json",
+  "title": "Xi Tool Result Payload",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["operation", "status", "output", "receipt"],
+  "properties": {
+    "operation": {"type": "string", "minLength": 1},
+    "status": {"enum": ["completed", "denied", "unavailable", "not_applicable", "expired", "error"]},
+    "output": {"type": "object"},
+    "error": {"type": "object"},
+    "receipt": {"$ref": "receipt.schema.json"}
+  }
+}

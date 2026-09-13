@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xi-vessel-bridge.dev/spec/xi.exchange.v1.schema.json",
+  "title": "Xi Exchange v1 Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["protocol", "message_id", "session_id", "sender", "recipient", "type", "created_at", "payload"],
+  "properties": {
+    "protocol": {"const": "xi.exchange.v1"},
+    "message_id": {"type": "string", "format": "uuid"},
+    "request_id": {"type": "string", "format": "uuid"},
+    "session_id": {"type": "string", "format": "uuid"},
+    "sender": {"$ref": "#/$defs/identity"},
+    "recipient": {"$ref": "#/$defs/identity"},
+    "type": {
+      "enum": ["hello", "capabilities", "capsule.offer", "capsule.response", "tool.request", "tool.result", "error", "bridge.pause"]
+    },
+    "created_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "payload": {"type": "object"},
+    "auth": {"type": "object"},
+    "signature": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system"],
+      "properties": {
+        "system": {"type": "string", "minLength": 1},
+        "instance": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

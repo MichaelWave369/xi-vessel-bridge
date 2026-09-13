@@ -1,0 +1,22 @@
+{
+  "protocol": "xi.exchange.v1",
+  "message_id": "10000000-0000-4000-8000-000000000002",
+  "session_id": "20000000-0000-4000-8000-000000000001",
+  "sender": {"system": "forgecore", "instance": "reference-b"},
+  "recipient": {"system": "super-phi-vessel", "instance": "reference-a"},
+  "type": "capabilities",
+  "created_at": "2026-09-13T23:55:01Z",
+  "payload": {
+    "capabilities": [
+      {
+        "capability_id": "artifact.sha256",
+        "kind": "tool",
+        "version": "1",
+        "description": "Return SHA-256 for supplied capsule bytes without modifying them.",
+        "permission_mode": "read_only",
+        "operations": ["artifact.sha256"],
+        "constraints": {"max_bytes": 1048576}
+      }
+    ]
+  }
+}
