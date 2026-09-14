@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from copy import deepcopy
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from typing import Any
 
 
@@ -14,6 +16,11 @@ ALLOWED_READ_ONLY = {"artifact.sha256"}
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def utc_now_rfc3339() -> str:
+    """Return a JSON-Schema date-time compatible UTC timestamp."""
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
 @dataclass
@@ -26,23 +33,35 @@ class ReferenceReceiver:
     execution_counter: int = 0
 
     @staticmethod
-    def _fingerprint(request: dict[str, Any]) -> str:
-        # The demo only needs a stable fingerprint for its narrow request shape.
-        payload = request["payload"]
-        stable = "|".join(
-            [
-                request["request_id"],
-                payload["operation"],
-                payload["permission_requested"],
-                payload.get("capsule_id", ""),
-            ]
-        )
-        return sha256_bytes(stable.encode("utf-8"))
+    def _fingerprint(request: dict[str, Any], capsule_bytes: bytes) -> str:
+        """Bind replay identity to peer/session semantics, full payload, and exact capsule bytes.
+
+        message_id is intentionally excluded so a transport retry may use a fresh envelope
+        message identifier while preserving the same operation request_id.
+        """
+        security_view = {
+            "sender": request.get("sender"),
+            "session_id": request.get("session_id"),
+            "payload": request.get("payload", {}),
+        }
+        request_bytes = json.dumps(
+            security_view,
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        ).encode("utf-8")
+
+        digest = hashlib.sha256()
+        digest.update(len(request_bytes).to_bytes(8, "big"))
+        digest.update(request_bytes)
+        digest.update(len(capsule_bytes).to_bytes(8, "big"))
+        digest.update(capsule_bytes)
+        return digest.hexdigest()
 
     def execute(self, request: dict[str, Any], capsule_bytes: bytes) -> dict[str, Any]:
         request_id = request["request_id"]
         payload = request["payload"]
-        fingerprint = self._fingerprint(request)
+        fingerprint = self._fingerprint(request, capsule_bytes)
 
         if request_id in self.cache:
             if self.fingerprints[request_id] != fingerprint:
@@ -70,7 +89,7 @@ class ReferenceReceiver:
                 "operation": payload["operation"],
                 "status": "completed",
                 "receiver": self.system_id,
-                "recorded_at": "reference-runtime",
+                "recorded_at": utc_now_rfc3339(),
                 "execution_count": 1,
                 "artifact_sha256": digest,
             },
@@ -93,7 +112,7 @@ class ReferenceReceiver:
                 "operation": operation,
                 "status": "denied",
                 "receiver": self.system_id,
-                "recorded_at": "reference-runtime",
+                "recorded_at": utc_now_rfc3339(),
                 "execution_count": 0,
                 "note": note,
             },
@@ -104,6 +123,8 @@ def main() -> None:
     capsule = b"Xi Vessel Bridge v0.1 interoperability capsule.\n"
     request = {
         "request_id": "40000000-0000-4000-8000-000000000001",
+        "session_id": "20000000-0000-4000-8000-000000000001",
+        "sender": {"system": "super-phi-vessel", "instance": "reference-a"},
         "payload": {
             "operation": "artifact.sha256",
             "permission_requested": "read_only",
