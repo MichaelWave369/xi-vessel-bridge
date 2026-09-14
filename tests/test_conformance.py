@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import sys
 import unittest
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -58,6 +59,15 @@ class XiBridgeConformance(unittest.TestCase):
         self.assertEqual(receiver.execution_counter, 1)
         self.assertEqual(first["receipt"]["execution_count"], 1)
 
+    def test_runtime_receipt_uses_rfc3339_datetime(self):
+        request = load("05-tool-request.json")
+        capsule = (ROOT / "examples" / "sample-capsule.txt").read_bytes()
+        receiver = ReferenceReceiver()
+        result = receiver.execute(request, capsule)
+        recorded_at = result["receipt"]["recorded_at"]
+        parsed = datetime.fromisoformat(recorded_at.replace("Z", "+00:00"))
+        self.assertIsNotNone(parsed.tzinfo)
+
     def test_unexposed_operation_is_denied(self):
         request = load("05-tool-request.json")
         request["request_id"] = "40000000-0000-4000-8000-000000000099"
@@ -68,7 +78,7 @@ class XiBridgeConformance(unittest.TestCase):
         self.assertEqual(result["receipt"]["execution_count"], 0)
         self.assertEqual(receiver.execution_counter, 0)
 
-    def test_conflicting_replay_is_denied_without_reexecution(self):
+    def test_conflicting_replay_changed_capsule_id_is_denied(self):
         request = load("05-tool-request.json")
         capsule = (ROOT / "examples" / "sample-capsule.txt").read_bytes()
         receiver = ReferenceReceiver()
@@ -76,6 +86,28 @@ class XiBridgeConformance(unittest.TestCase):
         changed = json.loads(json.dumps(request))
         changed["payload"]["capsule_id"] = "different-capsule"
         result = receiver.execute(changed, capsule)
+        self.assertEqual(result["status"], "denied")
+        self.assertEqual(result["receipt"]["note"], "request_id_conflict")
+        self.assertEqual(receiver.execution_counter, 1)
+
+    def test_conflicting_replay_changed_full_input_is_denied(self):
+        request = load("05-tool-request.json")
+        capsule = (ROOT / "examples" / "sample-capsule.txt").read_bytes()
+        receiver = ReferenceReceiver()
+        receiver.execute(request, capsule)
+        changed = json.loads(json.dumps(request))
+        changed["payload"]["input"] = {"mode": "different"}
+        result = receiver.execute(changed, capsule)
+        self.assertEqual(result["status"], "denied")
+        self.assertEqual(result["receipt"]["note"], "request_id_conflict")
+        self.assertEqual(receiver.execution_counter, 1)
+
+    def test_conflicting_replay_changed_capsule_bytes_is_denied(self):
+        request = load("05-tool-request.json")
+        capsule = (ROOT / "examples" / "sample-capsule.txt").read_bytes()
+        receiver = ReferenceReceiver()
+        receiver.execute(request, capsule)
+        result = receiver.execute(request, capsule + b"tampered")
         self.assertEqual(result["status"], "denied")
         self.assertEqual(result["receipt"]["note"], "request_id_conflict")
         self.assertEqual(receiver.execution_counter, 1)
