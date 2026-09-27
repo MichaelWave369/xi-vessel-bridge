@@ -49,6 +49,6 @@ npx netlify dev
 
 ## Deployment
 
-Deploy `relay/` as its own Netlify project, set both secret environment variables, and use the deployed HTTPS origin in `openapi.yaml`.
+The dedicated Netlify project is `phi-browsallax-relay` at `https://phi-browsallax-relay.netlify.app`. Deploy `relay/` to that project and keep both secret environment variables configured.
 
 The relay does not grant Browsallax authority and cannot activate the user's five-minute interactive grant.
