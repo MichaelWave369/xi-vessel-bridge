@@ -6,7 +6,7 @@ info:
     Transport-only relay to the user's local Browsallax/Vessie agent.
     The relay grants no browser authority.
 servers:
-  - url: https://REPLACE-WITH-NETLIFY-SITE
+  - url: https://phi-browsallax-relay.netlify.app
 security:
   - bearerAuth: []
 paths:
