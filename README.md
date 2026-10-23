@@ -92,6 +92,23 @@ Protocol identifier: `xi.exchange.v1`
 
 The JSON Schemas in `spec/` are the source of truth for packet shape. Documentation explains intent; it does not override the schemas.
 
+
+## R1 staging: Phi at the Table
+
+The first Xi Table adapter is now available as a **local mock only**. It authenticates
+synthetic mention events with HMAC-SHA256, enforces a strict event allowlist, rejects
+changed-message replay, and stores receipts with durable SQLite deduplication.
+
+It does **not** yet connect to Hunter's live Table or Super Φ.Vessel. The real Xi
+event/posting contract and human-approved permissions must be established first.
+
+- [R1 staging contract and local walkthrough](docs/XI_TABLE_R1.md)
+- [Local mock receiver](reference/python/xi_table_r1.py)
+- [Signed-event simulator](reference/python/send_mock_table_event.py)
+- [Staging tests](tests/test_xi_table_r1.py)
+
+Run all protocol and R1 tests with `python -m unittest discover -s tests -v`.
+
 ## License
 
 MIT. See `LICENSE`.
