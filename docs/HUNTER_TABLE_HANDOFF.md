@@ -92,3 +92,7 @@ password, live API key, private conversation, or unredacted transcript here.
 ## R3-A local proof supplement
 
 The [R3-A sealed reciprocal fixture](XI_PEER_R3.md) now tests the transport-independent cryptographic proof shape with disposable, pinned test peers. It DOES NOT change the MOCK_ONLY status of the existing Table receiver, connect to real Xi, or establish an agreed native Xi endpoint. The R3-B acceptance checklist records the necessary joint proof before real integration can be claimed.
+
+## R5: explicit operator consent proof
+
+[R5 grant and revocation fixture](XI_PEER_R5.md) now demonstrates the additional condition that a cryptographically known Xi/Phi test peer must ALSO have a matching short-lived permission for the specific synthetic room and operation. The policy is local and human-owned, not a TESSERA credential; the two-process fixture still does not connect to a live Xi endpoint. After Hunter provides the agreed event-and-reply contract, joint live acceptance must independently verify authorization and revocation.
