@@ -211,11 +211,13 @@ class ReplayStore:
 class FixtureReceiver:
     def __init__(self, *, own_id: str, own_keys: LocalKeys, pinned_peers: dict[str, PeerIdentity],
                  stage: str, store: ReplayStore, pause_file: str | None = None,
-                 clock: Callable[[], int] | None = None):
+                 clock: Callable[[], int] | None = None,
+                 authorize: Callable[[str, str, str, str, int], None] | None = None):
         if not own_id or not stage or not pinned_peers or own_id in pinned_peers:
             raise ValueError("invalid_receiver_configuration")
         self.own_id, self.keys, self.peers, self.stage = own_id, own_keys, pinned_peers, stage
         self.store, self.pause_file, self.clock = store, pause_file, clock or (lambda: int(time.time()))
+        self.authorize = authorize
 
     def open(self, frame: object) -> dict:
         # Pause first, including before idempotency checks and error detail.
@@ -267,6 +269,10 @@ class FixtureReceiver:
             validate_payload(payload)
         except (UnicodeDecodeError, json.JSONDecodeError, ValueError, TypeError) as exc:
             raise CrossingError("invalid_decrypted_payload") from exc
+        # R5 optional gate: identity is authenticated but carries NO ambient authority.
+        # Check the dynamic operator grant before reserving an ID or returning a receipt.
+        if self.authorize is not None:
+            self.authorize(sender, self.own_id, self.stage, payload["kind"], now)
         self.store.reserve(sender, frame["request_id"], hashlib.sha256(raw_frame).hexdigest())
         # Caller must handle any further approved work; no tool call is made here.
         return {"request_id": frame["request_id"], "sender": sender, "payload": payload,
