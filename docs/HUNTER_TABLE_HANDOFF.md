@@ -108,3 +108,7 @@ The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's 
 ## R8 public synthetic payload verification
 
 [Our R8 fully disclosed TEST witness](XI_PEER_R8.md) lets a third party decrypt both synthetic signed capsule and receipt frames using deliberately published, per-message test AES-GCM keys. It addresses R7's narrower detached-payload verification; it does **not** export signing/peer identity private keys or handle real Xi messages. Native Xi wire-contract and real reciprocal crossing remain outstanding.
+
+## R9: verifier-owned challenge and independently pinned signing keys
+
+[R9 offline challenge fixture](XI_PEER_R9.md) signs the verifier's independent random challenge and R7 witness hash with BOTH of the synthetic frame signers. Verification now requires a separate expected-signing-key pin file and a durable challenge replay ledger; the witness itself cannot provide its own trust anchor. The CI artifact's demo pin file is **self-issued**, not evidence of Hunter's actual runtime identity. A real Xi crossing remains blocked on independently authenticated native Xi peer keys and the approved staging contract.
