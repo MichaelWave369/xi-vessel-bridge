@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import hmac
+import ipaddress
 import json
 import os
 import sqlite3
@@ -31,6 +32,18 @@ class BridgeError(Exception):
         super().__init__(code)
         self.code = code
         self.http_status = http_status
+
+
+def validate_loopback_host(host: str) -> str:
+    """Staging listener must never bind to a publicly reachable interface."""
+    if host == "localhost":
+        return host
+    try:
+        if ipaddress.ip_address(host).is_loopback:
+            return host
+    except ValueError:
+        pass
+    raise ValueError("R2 mock receiver permits loopback bind addresses only")
 
 
 def utc_timestamp() -> str:
@@ -131,13 +144,27 @@ class DurableEventStore:
 
 class XiTableStagingBridge:
     def __init__(self, secret: bytes, state_db: str,
-                 allowed_room: str | None = None, clock=time.time):
+                 allowed_room: str | None = None, clock=time.time,
+                 pause_file: str | None = None):
         if not isinstance(secret, bytes) or len(secret) < 32:
             raise ValueError("XI_TABLE_WEBHOOK_SECRET must contain at least 32 bytes")
         self.secret = secret
         self.allowed_room = allowed_room
         self.clock = clock
+        self.pause_file = Path(pause_file) if pause_file else None
         self.store = DurableEventStore(state_db)
+
+    def is_paused(self) -> bool:
+        """Presence of pause file disables events; unreadable filesystem fails closed."""
+        if self.pause_file is None:
+            return False
+        try:
+            self.pause_file.stat()
+        except FileNotFoundError:
+            return False
+        except OSError:
+            return True
+        return True
 
     def signed(self, raw: bytes, timestamp: str) -> str:
         """Developer/test sender helper, not a claim about Hunter's API format."""
@@ -148,6 +175,8 @@ class XiTableStagingBridge:
     def handle(self, raw: bytes, timestamp: str | None,
                signature: str | None) -> tuple[int, dict]:
         try:
+            if self.is_paused():
+                raise BridgeError("bridge_paused", 503)
             if not raw or len(raw) > MAX_BYTES:
                 raise BridgeError("invalid_body_size", 413)
             if not isinstance(timestamp, str) or not timestamp.isascii() or not timestamp.isdigit():
@@ -218,7 +247,9 @@ def make_handler(bridge: XiTableStagingBridge):
         def do_GET(self):
             if self.path != "/healthz":
                 return self.reply(404, {"status": "denied", "reason": "not_found"})
-            self.reply(200, {"status": "staging_only", "live_connection": False})
+            paused = bridge.is_paused()
+            self.reply(200, {"status": "paused" if paused else "staging_only",
+                             "live_connection": False, "paused": paused})
 
         def do_POST(self):
             if self.path != "/v1/xi/events":
@@ -247,9 +278,17 @@ def main():
     parser.add_argument("--port", type=int, default=8769)
     parser.add_argument("--state-db", default=".xi-table-state/events.sqlite3")
     parser.add_argument("--room", default=os.getenv("XI_TABLE_ALLOWED_ROOM"))
+    parser.add_argument("--pause-file", default=".xi-table-state/PAUSED")
     args = parser.parse_args()
+    try:
+        validate_loopback_host(args.host)
+    except ValueError as exc:
+        parser.error(str(exc))
+    if not args.room or not args.room.strip():
+        parser.error("--room or XI_TABLE_ALLOWED_ROOM is required in R2")
     secret = os.getenv("XI_TABLE_WEBHOOK_SECRET", "").encode("utf-8")
-    bridge = XiTableStagingBridge(secret, args.state_db, args.room)
+    bridge = XiTableStagingBridge(secret, args.state_db, args.room,
+                                  pause_file=args.pause_file)
     # Never publish this service publicly without a separate TLS/reverse-proxy,
     # authentication, rate-limiting and real Xi event-contract review.
     httpd = ThreadingHTTPServer((args.host, args.port), make_handler(bridge))
