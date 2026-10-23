@@ -115,6 +115,29 @@ event/posting contract and human-approved permissions must be established first.
 
 Run all protocol and R1 tests with `python -m unittest discover -s tests -v`.
 
+
+## R3-A: sealed reciprocal peer fixture (NOT live Xi integration)
+
+R3-A adds an offline two-direction encrypted capsule plus signed receipt
+experiment. It uses mutually pinned Ed25519 identities, ephemeral X25519,
+HKDF, AES-GCM, and SQLite replay refusal. It preserves .xi text, *supplied*
+AST JSON, and provenance without claiming Xi-native AST verification.
+No Xi endpoint, actual tessera grant, model, or Room history is accessed.
+
+Run locally after installing the separate PyCA cryptography dependency:
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/demo_peer_r3.py
+    python -m unittest discover -s tests -v
+
+- [R3-A design, boundaries, safety limits, and Hunter live acceptance gates](docs/XI_PEER_R3.md)
+- [Synthetic offline reciprocal demonstration](reference/python/demo_peer_r3.py)
+- [Negative-control test suite](tests/test_xi_peer_r3.py)
+
+**Status: OFFLINE_RECIPROCAL_FIXTURE_VERIFIED; LIVE_XI_CONNECTED = false.**
+The native Xi wire contract, approved staging transport, and real two-runtime
+exchange remain to be verified before enabling any production integration.
+
 ## License
 
 MIT. See `LICENSE`.
