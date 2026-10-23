@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """R7 public witness kit: export and VERIFY synthetic peer crossing evidence.
 
-No real Xi network connection, tessera, bearer grant, native Xi AST parsing or
-private key is used or exported. Public verification proves signed test bytes
-relative to keys INSIDE THE BUNDLE, NOT that Hunter issued those keys.
+No real Xi network connection, tessera, bearer grant or native Xi AST parser.
+R7 generates disposable private signing/decryption keys in RAM but never
+exports them. R8 optionally discloses only the synthetic frame content keys.
+Public signatures are checked against bundle-supplied, NOT pinned Xi, keys.
 """
 from __future__ import annotations
 
