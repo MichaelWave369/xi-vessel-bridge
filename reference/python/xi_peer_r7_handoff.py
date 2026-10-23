@@ -18,11 +18,12 @@ from pathlib import Path
 
 from cryptography.exceptions import InvalidSignature
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PublicKey
 
 from xi_peer_r3 import (
-    FRAME_FIELDS, VERSION, CrossingError, FixtureReceiver,
+    FRAME_FIELDS, PUBLIC_FIELDS, VERSION, CrossingError, FixtureReceiver,
     LocalKeys, ReplayStore, _unb64, canonical, make_offer, make_receipt,
-    public_bytes, seal, validate_payload,
+    public_bytes, seal, validate_payload, _derive_key,
 )
 from xi_peer_r4_http import strict_json
 
@@ -63,8 +64,13 @@ def _fixture_peers() -> tuple[LocalKeys, LocalKeys, dict]:
     return phi, xi, public
 
 
-def build_kit() -> dict:
-    """Generate random disposable keys in RAM, export PUBLIC MATERIAL ONLY."""
+def build_kit(*, disclose_synthetic_content_keys: bool = False):
+    """Generate disposable identities; optionally return two frame-only AEAD keys.
+
+    R7 default remains public-keys-only. R8 opt-in discloses **only** symmetric
+    per-message fixture content keys for independent plaintext verification.
+    Never use the disclosure mode with confidential or real Xi messages.
+    """
     phi_keys, xi_keys, public = _fixture_peers()
     offer = make_offer(
         "⟨ Ξ ⋈ Φ ⟩",
@@ -127,7 +133,21 @@ def build_kit() -> dict:
         },
     }
     verify_kit(kit)
-    return kit
+    if not disclose_synthetic_content_keys:
+        return kit
+
+    def disclose_content_key(frame: dict, receiver: LocalKeys) -> str:
+        # Compute only the one-message AEAD key. Recipient private X25519 and
+        # long-term Ed25519 signing keys are never exported or serialized.
+        eph = X25519PublicKey.from_public_bytes(_unb64(frame["ephemeral_public_key"], 32))
+        header = {k: frame[k] for k in PUBLIC_FIELDS}
+        key = _derive_key(receiver.decrypt_private.exchange(eph), header)
+        return base64.b64encode(key).decode("ascii")
+
+    return kit, {
+        "offer_aesgcm_key_b64": disclose_content_key(offer_frame, xi_keys),
+        "receipt_aesgcm_key_b64": disclose_content_key(receipt_frame, phi_keys),
+    }
 
 
 def verify_frame_signature(frame: object, peers: dict) -> None:
