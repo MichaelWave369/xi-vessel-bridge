@@ -1,0 +1,2 @@
+# R3 offline cryptographic fixture only; never a live Xi runtime dependency.
+cryptography>=43,<50
