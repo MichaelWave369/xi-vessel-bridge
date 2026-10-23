@@ -224,6 +224,21 @@ See [R10 partner intake and safety gates](docs/XI_PARTNER_R10.md). CI also
 publishes an unfilled request and deliberately fictional synthetic example.
 **LIVE_XI_CONNECTED=false**, even if every document field is filled.
 
+## R11: two-party contract review receipts (OFFLINE, no execution)
+
+R11 binds **two separately configured reviewer signing keys** to a short-lived
+review request for one exact, hash-pinned R10 partner contract. The verifier
+refuses changed scope, tampered contract, missing signer, substituted key and
+replayed review IDs. It never grants Xi posting, model use or remote execution.
+CI only exercises **self-issued disposable fixture identities**, not real
+human approvals or Xi credentials.
+
+    python reference/python/xi_partner_r11.py fixture --dir r11-output/demo
+
+See [R11 dual-review trust model and manual handoff](docs/XI_PARTNER_R11.md).
+**A signature is not identity proof; a review receipt is not authorization.
+LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
