@@ -116,3 +116,7 @@ The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's 
 ## R10: secret-free staging contract intake
 
 [R10 partner contract intake](XI_PARTNER_R10.md) provides Hunter with a blank JSON candidate and a **no-network** shape/scope/evidence validator. It rejects admin and implied Table posting access, reports the exact missing documents, and never claims a completed candidate grants permission. Source documents, key pins, consent records, and actual Xi transport need independent human verification by both teams before a real adapter is enabled.
+
+## R11: exact-contract dual-review records (not grants)
+
+[R11 dual-review receipts](XI_PARTNER_R11.md) add two role-separated Ed25519 signatures over an exact R10 candidate hash and short-lived review request, verified with separately supplied reviewer public-key pins and a replay ledger. The CI fixture uses **self-issued disposable identities**, NOT Hunter/Mikey's authenticated human approval. Even fully signed reviews do not grant a Xi Table seat, model or posting capability. We still require the verified real Xi staging contract and explicit operator-controlled grants before a live crossing.
