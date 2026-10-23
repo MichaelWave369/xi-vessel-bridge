@@ -156,6 +156,15 @@ A signed/encrypted capsule is not an authorization. R5 adds an **opt-in** operat
 
 See [R5 proof and limitations](docs/XI_PEER_R5.md). There is no Xi endpoint, live Table seat, real tessera key, or model invocation. **LIVE_XI_CONNECTED remains false.**
 
+## R6: grant pinning and monotonic revocation (local fixture)
+
+R6 adds a durable local SQLite grant ledger: first approved use pins a grant ID and its exact scope/expiry; revocation creates a tombstone that survives server restart and old JSON file restoration. It also adds an operator CLI for explicitly revoking the local synthetic grant. This is a **local filesystem/SQLite protection against accidental rollback, not a production authority or tamperproof record**.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/demo_peer_r6.py
+
+[Read the R6 threat model and reproducible test](docs/XI_PEER_R6.md). The bridge still uses artificial identities only; **LIVE_XI_CONNECTED=false**.
+
 ## License
 
 MIT. See `LICENSE`.
