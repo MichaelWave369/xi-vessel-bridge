@@ -203,20 +203,20 @@ def make_handler(receiver: FixtureReceiver, profile: Profile):
             except (CrossingError, UnicodeError, ValueError, TypeError) as exc:
                 reason = str(exc) if isinstance(exc, CrossingError) else "invalid_json"
                 status = 409 if reason in {"replay_rejected", "request_id_conflict"} else (
-                    503 if reason.startswith("pause_") or reason == "bridge_paused" else 403)
+                    503 if reason.startswith("pause_") or reason in {"bridge_paused", "grant_missing", "grant_invalid"} else 403)
                 return self.reply(status, {"status": "denied", "reason": reason})
 
     return Handler
 
 
 def make_server(profile: Profile, stage: str, store: ReplayStore, pause_file: str,
-                port: int = 0) -> tuple[HTTPServer, FixtureReceiver]:
+                port: int = 0, authorize=None) -> tuple[HTTPServer, FixtureReceiver]:
     if not isinstance(stage, str) or not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,80}", stage):
         raise CrossingError("invalid_fixture_stage")
     receiver = FixtureReceiver(
         own_id=profile.local_id, own_keys=profile.keys,
         pinned_peers={profile.peer_id: profile.peer}, stage=stage,
-        store=store, pause_file=pause_file)
+        store=store, pause_file=pause_file, authorize=authorize)
     # Only explicit numeric IPv4 loopback, even if caller supplies a URL.
     server = HTTPServer(("127.0.0.1", port), make_handler(receiver, profile))
     return server, receiver
@@ -255,6 +255,7 @@ def main():
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--url", default=None, help="Client only, 127.0.0.1 and fixed path")
     parser.add_argument("--state-dir", default=".xi-peer-state/r4-fixture")
+    parser.add_argument("--grant-file", default=None, help="Server-only R5 operator policy, re-read per request")
     args = parser.parse_args()
     profile = read_fixture_profile(args.profile)
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,80}", args.stage):
@@ -265,7 +266,12 @@ def main():
         directory = Path(args.state_dir)
         directory.mkdir(parents=True, exist_ok=True)
         store = ReplayStore(str(directory / "requests.sqlite3"))
-        server, _ = make_server(profile, args.stage, store, str(directory / "PAUSED"), args.port)
+        gate = None
+        if args.grant_file:
+            from xi_peer_r5_policy import OperatorGrantGate
+            gate = OperatorGrantGate(args.grant_file)
+        server, _ = make_server(profile, args.stage, store, str(directory / "PAUSED"), args.port,
+                                authorize=gate)
         print(json.dumps({"status": "R4_FIXTURE_LISTENING", "port": server.server_port,
                           "live_xi_connected": False}), flush=True)
         try:
@@ -276,6 +282,8 @@ def main():
             server.server_close()
             store.close()
     else:
+        if args.grant_file:
+            parser.error("--grant-file applies only to the server")
         if not args.url:
             parser.error("client needs an explicit --url")
         try:
