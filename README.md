@@ -99,6 +99,12 @@ The first Xi Table adapter is now available as a **local mock only**. It authent
 synthetic mention events with HMAC-SHA256, enforces a strict event allowlist, rejects
 changed-message replay, and stores receipts with durable SQLite deduplication.
 
+**R2 operator hardening:** the CLI now rejects non-loopback bind addresses,
+requires an explicit staging room, and supports an immediate local pause switch
+(`.xi-table-state/PAUSED`). No production integration is claimed.
+The [Hunter ↔ Phi handoff](docs/HUNTER_TABLE_HANDOFF.md) lists the real Table
+contract and staging permissions needed for a joint end-to-end trial.
+
 It does **not** yet connect to Hunter's live Table or Super Φ.Vessel. The real Xi
 event/posting contract and human-approved permissions must be established first.
 
