@@ -17,7 +17,7 @@ from http.server import ThreadingHTTPServer
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "reference" / "python"))
 
-from xi_table_r1 import XiTableStagingBridge, make_handler, MAX_BYTES  # noqa: E402
+from xi_table_r1 import XiTableStagingBridge, make_handler, MAX_BYTES, validate_loopback_host  # noqa: E402
 
 
 SECRET = b"test-secret-32-bytes-minimum-please-keep-it-local"
@@ -160,6 +160,74 @@ class XiTableR1Tests(unittest.TestCase):
     def test_short_secret_refused(self):
         with self.assertRaises(ValueError):
             XiTableStagingBridge(b"short", ":memory:")
+
+    def test_operator_pause_blocks_events_without_side_effects(self):
+        event = synthetic_event()
+        pause_path = Path(self.temp.name) / "PAUSED"
+        self.bridge.pause_file = pause_path
+        self.assertFalse(self.bridge.is_paused())
+        pause_path.write_text("maintenance", encoding="utf-8")
+        self.assertTrue(self.bridge.is_paused())
+        status, result = self.send(event)
+        self.assertEqual((status, result["reason"]), (503, "bridge_paused"))
+        self.assertEqual(self.bridge.store.count(), 0)
+        pause_path.unlink()
+        status, result = self.send(event)
+        self.assertEqual(status, 200)
+        self.assertEqual(result["status"], "mock_completed")
+        self.assertEqual(self.bridge.store.count(), 1)
+
+    def test_paused_bridge_does_not_serve_cached_replies(self):
+        event = synthetic_event()
+        status, _ = self.send(event)
+        self.assertEqual(status, 200)
+        pause_path = Path(self.temp.name) / "PAUSED"
+        self.bridge.pause_file = pause_path
+        pause_path.touch()
+        status, result = self.send(event)
+        self.assertEqual((status, result["reason"]), (503, "bridge_paused"))
+        pause_path.unlink()
+        status, result = self.send(event)
+        self.assertEqual(status, 200)
+        self.assertEqual(result["status"], "duplicate")
+
+    def test_staging_host_must_be_loopback(self):
+        for safe in ("localhost", "127.0.0.1", "127.12.1.3", "::1"):
+            with self.subTest(host=safe):
+                self.assertEqual(validate_loopback_host(safe), safe)
+        for unsafe in ("0.0.0.0", "::", "example.com", "192.168.1.20",
+                       "8.8.8.8", ""):
+            with self.subTest(host=unsafe):
+                with self.assertRaises(ValueError):
+                    validate_loopback_host(unsafe)
+
+    def test_healthz_exposes_paused_state_not_credentials(self):
+        pause_path = Path(self.temp.name) / "PAUSED"
+        self.bridge.pause_file = pause_path
+        server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(self.bridge))
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        try:
+            conn = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=3)
+            pause_path.touch()
+            conn.request("GET", "/healthz")
+            result = conn.getresponse()
+            payload = json.loads(result.read())
+            self.assertEqual(result.status, 200)
+            self.assertTrue(payload["paused"])
+            self.assertEqual(payload["status"], "paused")
+            self.assertNotIn(SECRET.decode("utf-8"), json.dumps(payload))
+            pause_path.unlink()
+            conn.request("GET", "/healthz")
+            result = conn.getresponse()
+            payload = json.loads(result.read())
+            self.assertFalse(payload["paused"])
+            self.assertFalse(payload["live_connection"])
+            conn.close()
+        finally:
+            server.shutdown()
+            server.server_close()
+            thread.join(timeout=3)
 
     def test_http_receiver_exposes_only_expected_routes(self):
         server = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(self.bridge))
