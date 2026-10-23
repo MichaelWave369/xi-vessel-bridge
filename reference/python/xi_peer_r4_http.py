@@ -255,7 +255,8 @@ def main():
     parser.add_argument("--port", type=int, default=0)
     parser.add_argument("--url", default=None, help="Client only, 127.0.0.1 and fixed path")
     parser.add_argument("--state-dir", default=".xi-peer-state/r4-fixture")
-    parser.add_argument("--grant-file", default=None, help="Server-only R5 operator policy, re-read per request")
+    parser.add_argument("--grant-file", default=None, help="Server-only operator grant policy")
+    parser.add_argument("--grant-ledger", default=None, help="Server-only R6 durable revocation DB")
     args = parser.parse_args()
     profile = read_fixture_profile(args.profile)
     if not re.fullmatch(r"[a-z0-9][a-z0-9-]{2,80}", args.stage):
@@ -266,8 +267,13 @@ def main():
         directory = Path(args.state_dir)
         directory.mkdir(parents=True, exist_ok=True)
         store = ReplayStore(str(directory / "requests.sqlite3"))
+        if args.grant_ledger and not args.grant_file:
+            parser.error("--grant-ledger requires --grant-file")
         gate = None
-        if args.grant_file:
+        if args.grant_ledger:
+            from xi_peer_r6_ledger import MonotonicGrantGate
+            gate = MonotonicGrantGate(args.grant_file, args.grant_ledger)
+        elif args.grant_file:
             from xi_peer_r5_policy import OperatorGrantGate
             gate = OperatorGrantGate(args.grant_file)
         server, _ = make_server(profile, args.stage, store, str(directory / "PAUSED"), args.port,
@@ -281,9 +287,11 @@ def main():
         finally:
             server.server_close()
             store.close()
+            if gate is not None and hasattr(gate, "close"):
+                gate.close()
     else:
-        if args.grant_file:
-            parser.error("--grant-file applies only to the server")
+        if args.grant_file or args.grant_ledger:
+            parser.error("--grant-file and --grant-ledger apply only to the server")
         if not args.url:
             parser.error("client needs an explicit --url")
         try:
