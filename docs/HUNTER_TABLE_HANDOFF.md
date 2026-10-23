@@ -88,3 +88,7 @@ read-only integration tests and separate staging keys. Never paste a root
 password, live API key, private conversation, or unredacted transcript here.
 
 **Capability does not equal authority. Ledger above ego.**
+
+## R3-A local proof supplement
+
+The [R3-A sealed reciprocal fixture](XI_PEER_R3.md) now tests the transport-independent cryptographic proof shape with disposable, pinned test peers. It DOES NOT change the MOCK_ONLY status of the existing Table receiver, connect to real Xi, or establish an agreed native Xi endpoint. The R3-B acceptance checklist records the necessary joint proof before real integration can be claimed.
