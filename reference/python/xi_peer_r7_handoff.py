@@ -65,7 +65,8 @@ def _fixture_peers() -> tuple[LocalKeys, LocalKeys, dict]:
     return phi, xi, public
 
 
-def build_kit(*, disclose_synthetic_content_keys: bool = False):
+def build_kit(*, disclose_synthetic_content_keys: bool = False,
+              challenge_commitment: str | None = None):
     """Generate disposable identities; optionally return two frame-only AEAD keys.
 
     R7 default remains public-keys-only. R8 opt-in discloses **only** symmetric
@@ -145,10 +146,29 @@ def build_kit(*, disclose_synthetic_content_keys: bool = False):
         key = _derive_key(receiver.decrypt_private.exchange(eph), header)
         return base64.b64encode(key).decode("ascii")
 
-    return kit, {
+    disclosed = {
         "offer_aesgcm_key_b64": disclose_content_key(offer_frame, xi_keys),
         "receipt_aesgcm_key_b64": disclose_content_key(receipt_frame, phi_keys),
     }
+    if challenge_commitment is None:
+        return kit, disclosed
+    if (not isinstance(challenge_commitment, str) or len(challenge_commitment) != 64
+            or any(c not in "0123456789abcdef" for c in challenge_commitment)):
+        raise CrossingError("invalid_r9_challenge_commitment")
+    attestations = {}
+    for name, local in (("phi-fixture", phi_keys), ("xi-fixture", xi_keys)):
+        statement = {
+            "format": "xi.phi.r9.challenge_attestation.fixture.v1",
+            "challenge_sha256": challenge_commitment,
+            "r7_witness_sha256": digest(kit),
+            "signer": name,
+        }
+        attestations[name] = {
+            "statement": statement,
+            "signature_b64": base64.b64encode(
+                local.sign_private.sign(canonical(statement))).decode("ascii"),
+        }
+    return kit, disclosed, attestations
 
 
 def verify_frame_signature(frame: object, peers: dict) -> None:
