@@ -12,3 +12,6 @@ __pycache__/
 
 # Generated public witness copies; only CI artifacts should export these.
 r7-output/
+
+# Generated, secret-free public partner intake examples
+r10-output/
