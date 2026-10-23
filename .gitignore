@@ -2,3 +2,10 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# Avoid accidental credential commits during joint peer integration
+.xi-peer-state/
+.env
+.env.*
+*.pem
+*.key
