@@ -209,6 +209,21 @@ See [R9 trust-boundary and offline challenge details](docs/XI_PEER_R9.md).
 **Actual Xi public keys must be authenticated out of band before any live use.
 LIVE_XI_CONNECTED=false.**
 
+## R10: Partner staging contract intake (NO NETWORK)
+
+R10 introduces a secret-free, **candidate-only** machine-readable staging
+contract that Hunter can complete from official Xi documentation. The local
+validator identifies missing specs, rejects unsafe transports and privileges,
+and hashes the contract for joint review. It **never** checks a live endpoint
+or promotes a self-attested file to real permission.
+
+    python reference/python/xi_partner_r10.py template --out xi-partner-candidate.json
+    python reference/python/xi_partner_r10.py inspect --file xi-partner-candidate.json
+
+See [R10 partner intake and safety gates](docs/XI_PARTNER_R10.md). CI also
+publishes an unfilled request and deliberately fictional synthetic example.
+**LIVE_XI_CONNECTED=false**, even if every document field is filled.
+
 ## License
 
 MIT. See `LICENSE`.

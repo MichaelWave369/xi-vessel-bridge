@@ -112,3 +112,7 @@ The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's 
 ## R9: verifier-owned challenge and independently pinned signing keys
 
 [R9 offline challenge fixture](XI_PEER_R9.md) signs the verifier's independent random challenge and R7 witness hash with BOTH of the synthetic frame signers. Verification now requires a separate expected-signing-key pin file and a durable challenge replay ledger; the witness itself cannot provide its own trust anchor. The CI artifact's demo pin file is **self-issued**, not evidence of Hunter's actual runtime identity. A real Xi crossing remains blocked on independently authenticated native Xi peer keys and the approved staging contract.
+
+## R10: secret-free staging contract intake
+
+[R10 partner contract intake](XI_PARTNER_R10.md) provides Hunter with a blank JSON candidate and a **no-network** shape/scope/evidence validator. It rejects admin and implied Table posting access, reports the exact missing documents, and never claims a completed candidate grants permission. Source documents, key pins, consent records, and actual Xi transport need independent human verification by both teams before a real adapter is enabled.

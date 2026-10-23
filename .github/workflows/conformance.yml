@@ -61,6 +61,25 @@ jobs:
           path: r7-output/r9/*.json
           if-no-files-found: error
           retention-days: 7
+      - name: R10 unresolved partner contract stays blocked
+        run: |
+          python reference/python/xi_partner_r10.py template --out r10-output/hunter-unfilled-candidate.json
+          python reference/python/xi_partner_r10.py inspect --file r10-output/hunter-unfilled-candidate.json
+          if python reference/python/xi_partner_r10.py inspect --file r10-output/hunter-unfilled-candidate.json --require-complete; then
+            echo 'FAIL: incomplete partner contract was incorrectly accepted'
+            exit 1
+          fi
+      - name: R10 synthetic contract passes shape-only review
+        run: |
+          python reference/python/xi_partner_r10.py synthetic --out r10-output/synthetic-candidate.json
+          python reference/python/xi_partner_r10.py inspect --file r10-output/synthetic-candidate.json --require-complete
+      - name: Publish R10 UNFILLED request and synthetic fixture
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r10-partner-contract-intake
+          path: r10-output/*.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
