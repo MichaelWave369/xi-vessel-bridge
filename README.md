@@ -138,6 +138,15 @@ Run locally after installing the separate PyCA cryptography dependency:
 The native Xi wire contract, approved staging transport, and real two-runtime
 exchange remain to be verified before enabling any production integration.
 
+## R4: two-process loopback transport fixture
+
+A new **OFFLINE-ONLY** integration test now launches Xi and Phi as **separate local OS processes**, each with its own disposable test keys. It sends an encrypted, signed offer to a strictly loopback-only fixture HTTP service and validates a signed encrypted receipt on the return path. Negative controls test unsafe destinations, unauthorized peers, wrong room, tampering, replay, operator pause and private profile permissions.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/demo_peer_r4.py
+
+See [R4 transport fixture and limits](docs/XI_PEER_R4.md). No production Xi endpoint, private credential, Super Phi Vessel model, or Table posting connection is involved. **LIVE_XI_CONNECTED remains false.**
+
 ## License
 
 MIT. See `LICENSE`.
