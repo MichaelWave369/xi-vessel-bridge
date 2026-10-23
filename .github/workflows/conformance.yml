@@ -27,6 +27,17 @@ jobs:
         run: python reference/python/demo_peer_r5.py
       - name: Run R6 durable revocation and rollback demo
         run: python reference/python/demo_peer_r6.py
+      - name: Export public-only R7 witness
+        run: python reference/python/xi_peer_r7_handoff.py export --out .xi-peer-state/r7-public-handoff.json
+      - name: Independently verify exported R7 witness
+        run: python reference/python/xi_peer_r7_handoff.py verify --file .xi-peer-state/r7-public-handoff.json
+      - name: Upload public-only R7 witness artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r7-public-witness
+          path: .xi-peer-state/r7-public-handoff.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
