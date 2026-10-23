@@ -165,6 +165,16 @@ R6 adds a durable local SQLite grant ledger: first approved use pins a grant ID 
 
 [Read the R6 threat model and reproducible test](docs/XI_PEER_R6.md). The bridge still uses artificial identities only; **LIVE_XI_CONNECTED=false**.
 
+## R7: portable public witness for Hunter (self-signed test)
+
+R7 exports **public-only** synthetic Xi/Phi signed ciphertext frames, matching synthetic payload digests, an offer-bound receipt, test public keys and tamper vectors. Anyone can verify the packet with Python without private keys, actual Xi grants, or a running model. CI publishes a downloadable **xi-r7-public-witness** JSON artifact.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/xi_peer_r7_handoff.py export --out r7-public-handoff.json
+    python reference/python/xi_peer_r7_handoff.py verify --file r7-public-handoff.json
+
+See [R7 witness usage and limitations](docs/XI_PEER_R7.md) and [machine-readable Hunter contract questions](docs/XI_R7_CONTRACT_REQUEST.json). These are **self-signed test identities**, not authenticated Xi peers. There is no native Xi parser or deployed remote integration. **LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
