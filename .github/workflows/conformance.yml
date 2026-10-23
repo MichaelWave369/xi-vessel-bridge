@@ -38,6 +38,17 @@ jobs:
           path: r7-output/public-handoff.json
           if-no-files-found: error
           retention-days: 7
+      - name: Export and independently decrypt R8 public-only synthetic witness
+        run: |
+          python reference/python/xi_peer_r8_disclosed.py export --out r7-output/r8-public-disclosed-fixture.json
+          python reference/python/xi_peer_r8_disclosed.py verify --file r7-output/r8-public-disclosed-fixture.json
+      - name: Upload R8 disclosed synthetic test witness
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r8-public-disclosed-witness
+          path: r7-output/r8-public-disclosed-fixture.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
