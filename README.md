@@ -191,6 +191,24 @@ No long-term identity private key or real Xi credential is exported.
 See [R8 test-only disclosure and verification limits](docs/XI_PEER_R8.md).
 **Never disclose content keys for real or private traffic. LIVE_XI_CONNECTED=false.**
 
+## R9: external identity pinning and verifier challenges
+
+R9 closes the remaining identity-verification **fixture** gap. A responder's
+signature checked against a public key carried inside its own packet is not
+proof of the peer's identity. R9 requires an externally supplied pin file and
+fresh verifier nonce, binds **both original frame signers** to the exact
+witness digest and challenge, and durably rejects repeated challenge IDs.
+All test identities are synthetic and self-issued, with no Xi runtime involved.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/xi_peer_r9_challenge.py challenge --out r9-challenge.json
+    python reference/python/xi_peer_r9_challenge.py respond --challenge r9-challenge.json --out r9-response.json --pins-out r9-demo-pins.json
+    python reference/python/xi_peer_r9_challenge.py verify --challenge r9-challenge.json --response r9-response.json --pins r9-demo-pins.json --ledger .xi-peer-state/r9-verified.sqlite3
+
+See [R9 trust-boundary and offline challenge details](docs/XI_PEER_R9.md).
+**Actual Xi public keys must be authenticated out of band before any live use.
+LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.

@@ -49,6 +49,18 @@ jobs:
           path: r7-output/r8-public-disclosed-fixture.json
           if-no-files-found: error
           retention-days: 7
+      - name: Issue and verify R9 external-pin challenge fixture
+        run: |
+          python reference/python/xi_peer_r9_challenge.py challenge --out r7-output/r9/challenge.json
+          python reference/python/xi_peer_r9_challenge.py respond --challenge r7-output/r9/challenge.json --out r7-output/r9/response.json --pins-out r7-output/r9/self-issued-demo-pins.json
+          python reference/python/xi_peer_r9_challenge.py verify --challenge r7-output/r9/challenge.json --response r7-output/r9/response.json --pins r7-output/r9/self-issued-demo-pins.json --ledger .xi-peer-state/r9-ci-verified.sqlite3
+      - name: Upload R9 synthetic challenged witness artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r9-self-issued-challenge-fixture
+          path: r7-output/r9/*.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
