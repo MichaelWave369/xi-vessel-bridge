@@ -147,6 +147,15 @@ A new **OFFLINE-ONLY** integration test now launches Xi and Phi as **separate lo
 
 See [R4 transport fixture and limits](docs/XI_PEER_R4.md). No production Xi endpoint, private credential, Super Phi Vessel model, or Table posting connection is involved. **LIVE_XI_CONNECTED remains false.**
 
+## R5: operator-granted peer admission (offline fixture)
+
+A signed/encrypted capsule is not an authorization. R5 adds an **opt-in** operator-controlled local grant gate to the R4 fixture, restricted to one sender, recipient, stage, operation and short time interval. The gate is checked after authenticity and decryption but before event replay reservation; revocation is reloaded per request without a server restart. All tests use synthetic identities and private local files.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/demo_peer_r5.py
+
+See [R5 proof and limitations](docs/XI_PEER_R5.md). There is no Xi endpoint, live Table seat, real tessera key, or model invocation. **LIVE_XI_CONNECTED remains false.**
+
 ## License
 
 MIT. See `LICENSE`.
