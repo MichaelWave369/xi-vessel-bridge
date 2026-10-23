@@ -1,0 +1,82 @@
+{
+  "schema": "xi.phi.contract.request.fixture.r7",
+  "status": "UNRESOLVED_REQUIRES_HUMAN_APPROVED_STAGING_CONTRACT",
+  "purpose": "Map exactly one Xi staging operation to xi-vessel-bridge without guessing endpoints, leaking credentials, or surrendering peer control.",
+  "previously_reported_not_independently_confirmed": {
+    "grant_scopes": [
+      "braid_read",
+      "capsule_read",
+      "local_chat"
+    ],
+    "source": "Hunter's Oct 23 Room conversation as relayed by Mikey",
+    "warning": "An inference key is not evidence of Table posting access"
+  },
+  "contract_questions": [
+    {
+      "id": "wire",
+      "question": "Which Xi-native message/capsule type and JSON or binary schema governs the first test?",
+      "needed": [
+        "real schema/version",
+        "canonical signed bytes",
+        "maximum size",
+        "redacted sample"
+      ]
+    },
+    {
+      "id": "xi_codec",
+      "question": "Which native .xi + TESSERA version, AST serialization, exact-byte preservation and semantic-hash rules must be verified?",
+      "needed": [
+        "parser/encoder version",
+        "validation test vectors",
+        "unknown-field behavior"
+      ]
+    },
+    {
+      "id": "transport",
+      "question": "Will staging use authenticated outbound polling or Xi-authenticated event delivery?",
+      "needed": [
+        "official base URL and relative route",
+        "methods and request/response shapes",
+        "TLS expectations",
+        "timeouts and rate limits"
+      ]
+    },
+    {
+      "id": "permissions",
+      "question": "Who approves the specific staging room, Phi seat identity, and least-privileged operation?",
+      "needed": [
+        "human authorization",
+        "grant scope",
+        "key rotation and revocation process",
+        "no real secrets in public repos"
+      ]
+    },
+    {
+      "id": "receipts",
+      "question": "How do both sides bind the same transaction and independently verify each other's receipts?",
+      "needed": [
+        "request and reply IDs",
+        "deduplication semantics",
+        "signed receipt schema",
+        "retention/deletion boundaries"
+      ]
+    },
+    {
+      "id": "negative_controls",
+      "question": "How must the Xi receiver respond to tamper, wrong peer, expired grant, replay and pause?",
+      "needed": [
+        "error codes",
+        "independent witnessed tests",
+        "zero side effects for denied events"
+      ]
+    }
+  ],
+  "out_of_scope": [
+    "model tool execution",
+    "root/admin access",
+    "private room history mirroring",
+    "unapproved Room posting",
+    "distributed compute"
+  ],
+  "read_only_artifact": "R7 public witness kit is synthetic self-signed offline evidence, not a native Xi credential or endpoint"
+}

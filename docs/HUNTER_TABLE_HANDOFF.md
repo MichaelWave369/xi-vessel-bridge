@@ -100,3 +100,7 @@ The [R3-A sealed reciprocal fixture](XI_PEER_R3.md) now tests the transport-inde
 ## R6 grant rollback proof (offline)
 
 The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's identity, scope and expiry, and preserves revocation tombstones across process restarts and rollback of the editable JSON policy. This does **not** grant access to the live Xi Room or implement Hunter's native revocation mechanism. Remote staging still needs an explicitly documented transport and a real joint authenticated test.
+
+## R7: public-only integration witness and contract request
+
+[Our R7 public witness generator and verifier](XI_PEER_R7.md) produce signed synthetic encrypted frames and receipt bindings that Hunter can inspect independently. CI publishes the public JSON artifact; it contains no Xi tessera grant or private keys. [Machine-readable Xi contract request](XI_R7_CONTRACT_REQUEST.json) lists the exact official staging interface details required. The self-signed fixture is NOT native Xi and does not prove live authorization or posting.

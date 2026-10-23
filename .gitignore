@@ -9,3 +9,6 @@ __pycache__/
 .env.*
 *.pem
 *.key
+
+# Generated public witness copies; only CI artifacts should export these.
+r7-output/
