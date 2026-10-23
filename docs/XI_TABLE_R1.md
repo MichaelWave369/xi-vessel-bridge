@@ -50,6 +50,31 @@ Only a single localhost HTTP route (`POST /v1/xi/events`) handles events.
 `GET /healthz` reports mock status. The listener defaults to `127.0.0.1`
 and writes its SQLite database to `.xi-table-state/events.sqlite3`.
 
+### R2 operator pause and nonpublic binding
+
+The CLI now **refuses all non-loopback hosts** including `0.0.0.0`. It also
+requires an explicit `--room` or `XI_TABLE_ALLOWED_ROOM`; no all-room default.
+The operator may stop all event processing, including cached duplicate
+responses, by creating `.xi-table-state/PAUSED` alongside the default SQLite
+file. Remove that file to resume. This is checked for every event. If the
+pause-file path cannot be checked due to an operating-system error, the
+receiver fails closed. `GET /healthz` reports the pause state.
+
+For example, from the repository root in a separate terminal:
+
+```bash
+mkdir -p .xi-table-state
+touch .xi-table-state/PAUSED   # pause immediately
+rm .xi-table-state/PAUSED      # resume intentionally
+```
+
+On Windows, use File Explorer or PowerShell to create/remove that file.
+These controls only protect the **local staging process**; they are not a
+production security profile or proof of a live Table connection.
+
+See [Hunter ↔ Phi integration handoff](HUNTER_TABLE_HANDOFF.md) before
+considering any external connection.
+
 ## Run locally
 
 In a private local shell, set the same generated secret for sender and listener:
