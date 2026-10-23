@@ -15,3 +15,6 @@ r7-output/
 
 # Generated, secret-free public partner intake examples
 r10-output/
+
+# Generated R11 public synthetic review receipts
+r11-output/
