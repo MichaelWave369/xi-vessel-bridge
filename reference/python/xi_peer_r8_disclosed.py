@@ -26,9 +26,11 @@ KEY_FIELDS = {"offer_aesgcm_key_b64", "receipt_aesgcm_key_b64"}
 MAX_BYTES = 100_000
 
 
-def build_kit() -> dict:
-    """Only built-in, synthetic R7 fixture data; no external sources accepted."""
-    original, keys = build_r7(disclose_synthetic_content_keys=True)
+def build_kit(*, challenge_commitment: str | None = None):
+    """Only built-in, synthetic R7 fixture data; no real content accepted."""
+    created = build_r7(disclose_synthetic_content_keys=True,
+                       challenge_commitment=challenge_commitment)
+    original, keys = created[:2]
     result = {
         "format": VERSION,
         "synthetic_only": True,
@@ -38,6 +40,8 @@ def build_kit() -> dict:
         "one_message_content_keys": keys,
     }
     verify_kit(result)
+    if challenge_commitment is not None:
+        return result, created[2]
     return result
 
 
