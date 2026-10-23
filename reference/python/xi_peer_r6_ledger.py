@@ -109,14 +109,21 @@ class MonotonicGrantGate(OperatorGrantGate):
         # An explicitly revoked grant MUST become a durable tombstone before
         # denial, including when no operator CLI call was used.
         if grant["revoked"]:
-            self.ledger.observe(grant, self.clock(), force_revoke=True)
+            try:
+                self.ledger.observe(grant, self.clock(), force_revoke=True)
+            except sqlite3.DatabaseError as exc:
+                raise CrossingError("grant_ledger_unavailable") from exc
             raise CrossingError("grant_revoked")
         if (grant["sender"] != sender or grant["recipient"] != recipient
                 or grant["stage"] != stage or operation not in grant["capabilities"]):
             raise CrossingError("grant_scope_denied")
         if not grant["not_before"] <= now < grant["expires_at"]:
             raise CrossingError("grant_expired_or_not_yet_valid")
-        if self.ledger.observe(grant, self.clock()) == "revoked":
+        try:
+            state = self.ledger.observe(grant, self.clock())
+        except sqlite3.DatabaseError as exc:
+            raise CrossingError("grant_ledger_unavailable") from exc
+        if state == "revoked":
             raise CrossingError("grant_revoked")
 
     def close(self):
