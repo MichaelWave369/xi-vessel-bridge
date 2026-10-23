@@ -80,6 +80,21 @@ jobs:
           path: r10-output/*.json
           if-no-files-found: error
           retention-days: 7
+      - name: R11 two separate review signatures bind exact R10 contract
+        run: |
+          python reference/python/xi_partner_r11.py fixture --dir r11-output/demo
+          python reference/python/xi_partner_r11.py verify --contract r11-output/demo/contract.json --request r11-output/demo/request.json --xi-attestation r11-output/demo/xi-attestation.json --phi-attestation r11-output/demo/phi-attestation.json --pins r11-output/demo/self-issued-demo-pins.json --ledger .xi-peer-state/r11-ci-review.sqlite3
+          if python reference/python/xi_partner_r11.py verify --contract r11-output/demo/contract.json --request r11-output/demo/request.json --xi-attestation r11-output/demo/xi-attestation.json --phi-attestation r11-output/demo/phi-attestation.json --pins r11-output/demo/self-issued-demo-pins.json --ledger .xi-peer-state/r11-ci-review.sqlite3; then
+            echo "FAIL: R11 allowed review replay"
+            exit 1
+          fi
+      - name: Upload public R11 self-issued REVIEW-ONLY evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r11-dual-review-synthetic-only
+          path: r11-output/demo/*.json
+          if-no-files-found: error
+          retention-days: 7
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
