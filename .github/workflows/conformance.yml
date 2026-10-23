@@ -25,6 +25,8 @@ jobs:
         run: python reference/python/demo_peer_r4.py
       - name: Run R5 peer-grant and revocation lifecycle
         run: python reference/python/demo_peer_r5.py
+      - name: Run R6 durable revocation and rollback demo
+        run: python reference/python/demo_peer_r6.py
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests

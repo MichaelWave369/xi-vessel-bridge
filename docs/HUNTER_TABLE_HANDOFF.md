@@ -96,3 +96,7 @@ The [R3-A sealed reciprocal fixture](XI_PEER_R3.md) now tests the transport-inde
 ## R5: explicit operator consent proof
 
 [R5 grant and revocation fixture](XI_PEER_R5.md) now demonstrates the additional condition that a cryptographically known Xi/Phi test peer must ALSO have a matching short-lived permission for the specific synthetic room and operation. The policy is local and human-owned, not a TESSERA credential; the two-process fixture still does not connect to a live Xi endpoint. After Hunter provides the agreed event-and-reply contract, joint live acceptance must independently verify authorization and revocation.
+
+## R6 grant rollback proof (offline)
+
+The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's identity, scope and expiry, and preserves revocation tombstones across process restarts and rollback of the editable JSON policy. This does **not** grant access to the live Xi Room or implement Hunter's native revocation mechanism. Remote staging still needs an explicitly documented transport and a real joint authenticated test.

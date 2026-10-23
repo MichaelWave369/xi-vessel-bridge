@@ -54,12 +54,15 @@ def fixture_profiles(directory: Path) -> tuple[Path, Path]:
 
 
 def start_fixture_server(profile: Path, directory: Path, *, stage: str,
-                         grant_file: Path | None = None):
+                         grant_file: Path | None = None,
+                         grant_ledger: Path | None = None):
     command = [sys.executable, "-u", str(HERE / "xi_peer_r4_http.py"), "server",
                "--profile", str(profile), "--stage", stage, "--port", "0",
                "--state-dir", str(directory / "server-state")]
     if grant_file is not None:
         command.extend(["--grant-file", str(grant_file)])
+    if grant_ledger is not None:
+        command.extend(["--grant-ledger", str(grant_ledger)])
     proc = subprocess.Popen(
         command,
         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
