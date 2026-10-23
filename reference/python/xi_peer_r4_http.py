@@ -203,7 +203,7 @@ def make_handler(receiver: FixtureReceiver, profile: Profile):
             except (CrossingError, UnicodeError, ValueError, TypeError) as exc:
                 reason = str(exc) if isinstance(exc, CrossingError) else "invalid_json"
                 status = 409 if reason in {"replay_rejected", "request_id_conflict"} else (
-                    503 if reason.startswith("pause_") or reason in {"bridge_paused", "grant_missing", "grant_invalid"} else 403)
+                    503 if reason.startswith("pause_") or reason in {"bridge_paused", "grant_missing", "grant_invalid", "grant_ledger_unavailable"} else 403)
                 return self.reply(status, {"status": "denied", "reason": reason})
 
     return Handler
