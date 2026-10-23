@@ -175,6 +175,22 @@ R7 exports **public-only** synthetic Xi/Phi signed ciphertext frames, matching s
 
 See [R7 witness usage and limitations](docs/XI_PEER_R7.md) and [machine-readable Hunter contract questions](docs/XI_R7_CONTRACT_REQUEST.json). These are **self-signed test identities**, not authenticated Xi peers. There is no native Xi parser or deployed remote integration. **LIVE_XI_CONNECTED=false.**
 
+## R8: public plaintext-to-ciphertext verification
+
+R7's public verifier checks signatures and declared hashes but cannot prove
+that the disclosed sample payload is exactly what was encrypted. R8 adds
+a second **synthetic-only, intentionally nonconfidential** witness with
+disclosed per-message AES-GCM content keys. An independent verifier decrypts
+both signed frames and checks their exact plaintext bytes and bound receipt.
+No long-term identity private key or real Xi credential is exported.
+
+    python -m pip install -r requirements-r3.txt
+    python reference/python/xi_peer_r8_disclosed.py export --out r8-witness.json
+    python reference/python/xi_peer_r8_disclosed.py verify --file r8-witness.json
+
+See [R8 test-only disclosure and verification limits](docs/XI_PEER_R8.md).
+**Never disclose content keys for real or private traffic. LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
