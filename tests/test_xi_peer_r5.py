@@ -118,8 +118,10 @@ class R5GrantTests(unittest.TestCase):
         rejected["capabilities"] = ["shell.exec"]
         with self.assertRaisesRegex(CrossingError, "grant_invalid"):
             validate_grant(rejected)
-        # The operator's same key never grants arbitrary tools.
-        self.assert_denied(self.frame(), "grant_scope_denied") if False else None
+        # An invalid expansion cannot replace the existing allowed capability.
+        with self.assertRaisesRegex(CrossingError, "grant_invalid"):
+            atomic_write_fixture_grant(self.policy, rejected)
+        self.assertEqual(read_operator_grant(self.policy)["capabilities"], ["capsule.offer"])
         self.assertEqual(self.count(), 0)
 
     def test_broken_and_missing_policy_fail_closed(self):
