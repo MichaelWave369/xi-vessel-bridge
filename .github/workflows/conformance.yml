@@ -112,6 +112,8 @@ jobs:
           path: r12-output/interop/*.json
           if-no-files-found: error
           retention-days: 14
+      - name: R13 reject untrusted partner bundle tampering and live claims
+        run: python -m unittest discover -s tests -p "test_xi_partner_r13_intake.py" -v
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
