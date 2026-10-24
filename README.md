@@ -239,6 +239,23 @@ See [R11 dual-review trust model and manual handoff](docs/XI_PARTNER_R11.md).
 **A signature is not identity proof; a review receipt is not authorization.
 LIVE_XI_CONNECTED=false.**
 
+## R12: portable partner conformance exercises, no Xi endpoint needed
+
+R12 adds a **public, deterministic eight-case interop questionnaire** for
+Hunter's Xi agents. It tests proposed exact UTF-8 capsule bytes and provenance,
+tamper rejection, wrong-room and revoked-grant denial, unknown-operation
+refusal and request-ID idempotency. Xi may report **not_run** or **unsupported**;
+neither counts as passing. The code only assesses **self-reported outcomes**,
+not their authenticity or actual runtime execution.
+
+    python reference/python/xi_partner_r12.py generate --dir r12-output/interop
+    python reference/python/xi_partner_r12.py assess --suite r12-output/interop/suite.json --response r12-output/interop/response-template.json
+
+See [R12 partner-ready conformance handoff](docs/XI_PARTNER_R12.md).
+CI publishes a response template and labeled synthetic positive control.
+No real Xi contract, credential, network traffic or Table posting is involved.
+**LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
