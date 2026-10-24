@@ -114,6 +114,8 @@ jobs:
           retention-days: 14
       - name: R13 reject untrusted partner bundle tampering and live claims
         run: python -m unittest discover -s tests -p "test_xi_partner_r13_intake.py" -v
+      - name: R14 independently verify public-byte evidence and block false peer authority
+        run: python -m unittest discover -s tests -p "test_xi_partner_r14_evidence.py" -v
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests

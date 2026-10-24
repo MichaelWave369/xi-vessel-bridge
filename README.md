@@ -275,6 +275,23 @@ See [R13 received handoff review and joint acceptance conditions](docs/XI_PARTNE
 A matching digest is not authenticated identity or a working transport.
 **LIVE_XI_CONNECTED=false.**
 
+## R14: independent public evidence gate for Plex's v2 archive
+
+A partner's `0/5` heuristic findings do not prove an independent peer key,
+reviewer or durable Xi transport. R14 checks the **actual public Ed25519 key
+bytes**, official Xi transport document bytes and native Xi schema bytes
+against the exact R10 pins, and records **missing**, **mismatched**, or
+**hash-match-but-unauthenticated** evidence separately. A partner-provided
+Φ review signature and a temporary SQLite file cannot become our approval or
+restart proof. The public key base64 advertised in the Xi room currently
+**does not hash to the pin** in its v2 R10 candidate.
+
+    python reference/python/xi_partner_r14_evidence.py --archive /local/path/to/v2.tar.gz --expected-sha256 eb2ae139413ba1db5cef828d5b5100e9242f9f71cadda320f172379ee1bddea2
+
+See [R14 actual v2 evidence audit and public artifact requests](docs/XI_PARTNER_R14_V2_EVIDENCE.md).
+No partner code is executed and no private credentials are accepted.
+`--require-live` always blocks. **LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
