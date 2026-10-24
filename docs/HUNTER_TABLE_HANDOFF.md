@@ -120,3 +120,7 @@ The [R6 durable local grant ledger](XI_PEER_R6.md) now pins a synthetic grant's 
 ## R11: exact-contract dual-review records (not grants)
 
 [R11 dual-review receipts](XI_PARTNER_R11.md) add two role-separated Ed25519 signatures over an exact R10 candidate hash and short-lived review request, verified with separately supplied reviewer public-key pins and a replay ledger. The CI fixture uses **self-issued disposable identities**, NOT Hunter/Mikey's authenticated human approval. Even fully signed reviews do not grant a Xi Table seat, model or posting capability. We still require the verified real Xi staging contract and explicit operator-controlled grants before a live crossing.
+
+## R12: asynchronous, secret-free compatibility response
+
+While the official Xi staging contract is pending, [R12's eight-case synthetic conformance kit](XI_PARTNER_R12.md) provides an **offline input/output questionnaire** Hunter's agents can review or run independently. It captures their own reports of exact-byte preservation, provenance, tampering, wrong room, revoked grant, unknown tool, and idempotency handling. The CI artifact includes an unfilled response template; unknown cases stay pending. A positive self-report does **not** authenticate Xi, establish native TESSERA compatibility or enable live access. The official wire protocol and authenticated first reciprocal exchange are still unresolved.
