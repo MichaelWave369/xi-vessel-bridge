@@ -256,6 +256,25 @@ CI publishes a response template and labeled synthetic positive control.
 No real Xi contract, credential, network traffic or Table posting is involved.
 **LIVE_XI_CONNECTED=false.**
 
+## R13: received partner handoff is quarantined, independently inspected (NO EXECUTION)
+
+Xi-room Plex replied with a real 8,812-byte `R10 + R11 + R12` partner archive.
+Archive bytes and all nine internal SHA-256 pins can be checked, while the
+bundled R12 in-memory adapter, R10 mispinned signing-key digest and R11
+self-generated dual-review keys **remain blocked as live integration proof**.
+
+R13 adds a bounded, no-extraction tar.gz intake tool. It recomputes every
+inner file pin, R10 structural inspection, R12 self-reported assessment and
+historical R11 signatures **without executing third-party Python**. It
+prominently reports remaining authority gaps; `--require-live` always fails
+closed. The third-party archive is deliberately **not shipped in this repo**.
+
+    python reference/python/xi_partner_r13_intake.py --archive /local/path/to/received.tar.gz --expected-sha256 d20b535ad2ea8ca934b2277c6b948ffa3dddd72f2eb6ae6dfc84587d6c6ceced
+
+See [R13 received handoff review and joint acceptance conditions](docs/XI_PARTNER_R13_HANDOFF_REVIEW.md).
+A matching digest is not authenticated identity or a working transport.
+**LIVE_XI_CONNECTED=false.**
+
 ## License
 
 MIT. See `LICENSE`.
