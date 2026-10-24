@@ -95,6 +95,23 @@ jobs:
           path: r11-output/demo/*.json
           if-no-files-found: error
           retention-days: 7
+      - name: R12 unverified partner answer remains pending
+        run: |
+          python reference/python/xi_partner_r12.py generate --dir r12-output/interop
+          python reference/python/xi_partner_r12.py assess --suite r12-output/interop/suite.json --response r12-output/interop/response-template.json
+          if python reference/python/xi_partner_r12.py assess --suite r12-output/interop/suite.json --response r12-output/interop/response-template.json --require-all-matches; then
+            echo "FAIL: an unfilled partner questionnaire was marked conformant"
+            exit 1
+          fi
+      - name: R12 synthetic example matches immutable test vectors, still untrusted
+        run: python reference/python/xi_partner_r12.py assess --suite r12-output/interop/suite.json --response r12-output/interop/synthetic-example-response.json --require-all-matches
+      - name: Upload R12 neutral partner conformance questionnaire
+        uses: actions/upload-artifact@v4
+        with:
+          name: xi-r12-neutral-partner-conformance
+          path: r12-output/interop/*.json
+          if-no-files-found: error
+          retention-days: 14
       - name: Run reference handshake
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
