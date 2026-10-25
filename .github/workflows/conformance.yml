@@ -165,3 +165,9 @@ jobs:
           node --check roadmap/intake-core.js
           node --check roadmap/intake.js
           node --test tests/test_intake_core.cjs
+
+      - name: Prove Python and browser canonical registry SHA-256 parity
+        run: |
+          PY_HASH=$(python reference/python/xi_capability_r171.py inspect | python -c "import json,sys; print(json.load(sys.stdin)['registry_sha256'])")
+          JS_HASH=$(node -e 'const fs=require("node:fs"); const c=require("./roadmap/intake-core.js"); const crypto=require("node:crypto"); const o=JSON.parse(fs.readFileSync("roadmap/capability-registry.json","utf8")); console.log(crypto.createHash("sha256").update(c.canonical(o),"utf8").digest("hex"));')
+          test "$PY_HASH" = "$JS_HASH"
