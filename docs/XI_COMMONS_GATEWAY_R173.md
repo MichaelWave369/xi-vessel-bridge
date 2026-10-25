@@ -30,18 +30,13 @@ python -m http.server 8000 --directory dist --bind 127.0.0.1
 
 The site uses relative paths everywhere so the exact same bundle works at a root domain, repository subpath and localhost. Every build validates the R17 status, the 13 unnamed public Xi slots, and the four generated files against the existing R17.1/R18 validators before emitting `dist/`.
 
-### GitHub Pages: explicit activation required
+### GitHub Pages: operator activation, then automated verification
 
-The workflow `.github/workflows/pages.yml` **builds on changes merged to `main`** and supports manual `workflow_dispatch`. It **does not publish the site until the operator explicitly opts in**:
+R17.5 replaces the older two-step flag arrangement. The owner selects **Settings → Pages → Build and deployment → Source: GitHub Actions**, then runs **Actions → Xi-Phi Commons GitHub Pages → Run workflow** on `main` (or merges a relevant change). No `PHI_XI_ENABLE_PAGES` repository variable or PAT is required.
 
-1. In the GitHub repository: **Settings → Pages → Build and deployment → Source → GitHub Actions**.
-2. In **Settings → Secrets and variables → Actions → Variables**, create `PHI_XI_ENABLE_PAGES` set to `true`. This is a nonsecret feature flag, not a credential.
-3. In **Actions → Xi-Phi Commons GitHub Pages**, run **Run workflow** on `main` (or push a permitted source change after activating).
-4. Confirm the **deploy** job reports a GitHub Pages URL. Only that successful deployment proves the website is publicly reachable.
+The workflow has four gates: **detect-pages → build → deploy → verify**. If Pages is not configured, `build` still produces and checks the static preview, while `deploy` is explicitly skipped. If Pages is configured for Actions, the public-only artifact deploys with scoped GitHub Actions OIDC credentials. `verify` reads the **actual** HTTPS site and compares the remote handoff manifest, its four packet hashes, the public registry and the static UI with the tested source. Only a successful verify job justifies marking the central public website reachable.
 
-The workflow's **build** job can succeed while **deploy** is skipped. Green conformance or a successful Pages build is NOT a live website claim. The URL may follow GitHub's conventional `<user>.github.io/<repo>/` pattern, but it should only be shared as *live* after the deploy step supplies and verifies its actual URL.
-
-The existing Xi Bridge Conformance workflow also builds a preview artifact named `phi-xi-r17-3-public-gateway-preview` with seven-day retention for review, independent of Pages activation. The deployed site contains no GitHub Actions secrets or externally supplied files.
+The canonical URL to probe is `https://michaelwave369.github.io/xi-vessel-bridge/`; treat it as an **unverified candidate URL** until deploy and verify succeed. See [R17.5 public-site verification and four-integration activation policy](XI_PAGES_LIVE_READINESS_R175.md). The existing Xi Bridge Conformance workflow continues to supply a short-lived static preview artifact.
 
 ### Offline behavior
 
