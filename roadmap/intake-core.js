@@ -53,7 +53,8 @@
     insist(url.protocol === "https:" && !url.username && !url.password &&
       ["www.xi-field.com", "xi-field.com", "github.com", "room.xi-field.com"].includes(url.hostname),
       "Evidence URL outside known public-source hosts");
-    insist(!url.search && !url.hash, "Evidence URLs cannot carry query tokens or fragments");
+    insist(!url.search && (!url.hash || url.hash === "#community"),
+      "Evidence URLs cannot carry query tokens or unrecognized fragments");
   }
   function canonical(obj) {
     if (Array.isArray(obj)) return "[" + obj.map(canonical).join(",") + "]";
