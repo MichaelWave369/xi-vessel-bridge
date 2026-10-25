@@ -1,0 +1,11 @@
+{
+  "name": "Xi ⇄ PHI369 Sovereign Commons",
+  "short_name": "Xi Φ Commons",
+  "description": "Read-only, offline-capable Xi-Phi public roadmap and handoff gateway.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08111d",
+  "theme_color": "#091321",
+  "lang": "en"
+}

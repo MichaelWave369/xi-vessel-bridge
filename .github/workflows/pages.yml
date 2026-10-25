@@ -1,0 +1,58 @@
+name: Xi-Phi Commons GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "roadmap/**"
+      - "reference/python/xi_capability_r171.py"
+      - "reference/python/xi_pilot_r18.py"
+      - "reference/python/xi_shared_roadmap_r17.py"
+      - "scripts/build_commons_gateway.py"
+      - "tests/test_commons_gateway_r173.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phi-xi-commons-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout public source
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify offline gateway and public synthetic packet
+        run: |
+          python -m unittest discover -s tests -p 'test_commons_gateway_r173.py' -v
+          python scripts/build_commons_gateway.py --out dist
+      - name: Prepare static Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    # Intentional opt-in: a GitHub Pages source setting and repo variable are
+    # needed before any public hosting is activated.
+    if: ${{ vars.PHI_XI_ENABLE_PAGES == 'true' }}
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+      contents: read
+    steps:
+      - name: Deploy public-only Commons site
+        id: deployment
+        uses: actions/deploy-pages@v4

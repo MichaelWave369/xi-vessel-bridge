@@ -371,3 +371,22 @@ python reference/python/xi_partner_r172_workbench.py --require-live # REQUIRED r
 ```
 
 The browser validator has Node negative controls and the Python CLI has strict offline input/redaction tests. [Read R17.2 security boundaries, UI guide, and review semantics](docs/XI_PARTNER_INTAKE_R172.md). **LIVE_XI_CONNECTED=false**.
+
+## R17.3: Sovereign Commons Gateway (read-only static Pages bundle)
+
+**Merged R17/R17.1/R17.2 views get a single landing page.** The new [Commons Gateway source](roadmap/commons.html) links to the evidence roadmap, Xi preview registry, and browser-only partner intake. It also publishes four **synthetic-only** handoff JSON files with a SHA-256 manifest and a public-only offline cache.
+
+Build and preview the exact public site locally, without external credentials:
+
+```bash
+python scripts/build_commons_gateway.py --out dist
+python -m http.server 8000 --directory dist --bind 127.0.0.1
+# Open http://127.0.0.1:8000/
+```
+
+A `main` branch [GitHub Pages workflow](.github/workflows/pages.yml) builds the site but intentionally **does not deploy by default**. To authorize public hosting: configure **Settings → Pages → Source: GitHub Actions**, and add repository Actions variable `PHI_XI_ENABLE_PAGES=true`. Run that Pages workflow on `main` or merge a relevant source change. A deployment URL exists only after its deploy job succeeds. The Conformance workflow independently publishes a short-lived review artifact `phi-xi-r17-3-public-gateway-preview`.
+
+Offline support works after successful first load on HTTPS or localhost, caching **only** the public pages and test packet assets. No partner-uploaded files, private memories, credentials, Xi model calls or external URLs enter the service-worker cache. R17 external pilot remains BLOCKED; R18 real two-host testing remains NOT RUN.
+
+[Read R17.3 architecture, safe publishing instructions, source integrity and offline limits](docs/XI_COMMONS_GATEWAY_R173.md).
+**LIVE_XI_CONNECTED=false. Capability ≠ Authority.**

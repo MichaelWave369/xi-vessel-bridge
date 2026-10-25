@@ -21,3 +21,6 @@ r11-output/
 
 # Generated R12 public conformance fixtures, never credentials
 r12-output/
+
+# Generated R17.3 public static gateway preview; rebuilt by CI/Pages
+dist/
