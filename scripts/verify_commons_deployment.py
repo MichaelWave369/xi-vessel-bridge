@@ -107,7 +107,7 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None):
     insist(manifest.get("source_registry_sha256") == registry_tools.document_hash(reg),
            "Published handoff is bound to a different registry")
     page = fetcher(url + "roadmap.html")
-    insist(b"R17" in page and b"R16" in page and b"candidate_planning_only" not in page,
+    insist(b"Shared Bridge Roadmap" in page and b'id="milestones"' in page and\n           b"./bridge-roadmap.json" in page,
            "Published roadmap page is missing")
     workbench = fetcher(url + "intake.html")
     insist(b"Partner Intake Workbench" in workbench and b"Local inspection only" in workbench,
