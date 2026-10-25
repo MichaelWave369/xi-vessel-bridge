@@ -133,7 +133,7 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None):
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 5 + len(PACKETS),
+        "checked_public_resources": 6 + len(PACKETS),
         "verified_synthetic_packets": verified,
         "live_xi_connected": False,
         "r17_external_pilot": "BLOCKED",
