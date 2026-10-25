@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Xi ⇄ PHI369 · Capability Registry</title>
+<meta name="description" content="Candidate-only Xi capability registry: 13 anonymous previews, independent authority gates and local Phi read-only fixtures.">
+<style>
+:root{color-scheme:dark;--bg:#080e18;--panel:#101d30;--border:#304458;--text:#edf8ff;--muted:#adc0d1;--aqua:#5ce4dd;--gold:#f1c478;--violet:#c4aaff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 5% 0,#173447,transparent 40%),radial-gradient(circle at 95% 0,#211b3f,transparent 45%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1150px;margin:auto;padding:42px 22px 80px}
+nav{display:flex;flex-wrap:wrap;gap:22px}a{color:var(--aqua)}
+.eyebrow{color:var(--aqua);font-size:12px;text-transform:uppercase;letter-spacing:.2em;font-weight:800}
+h1{font-size:clamp(2.5rem,7vw,5.5rem);line-height:1.03;letter-spacing:-.06em;margin:16px 0}
+h2{font-size:1.6rem;letter-spacing:-.03em;margin:0 0 12px}h3{font-size:1.03rem;margin:0 0 10px}
+p{max-width:780px;color:var(--muted)}.hero{padding:56px 0 25px}.hero p{font-size:1.09rem}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0 34px}
+.metric,.card,.info{background:rgba(16,29,48,.92);border:1px solid var(--border);border-radius:16px}
+.metric{padding:20px}.metric b{font-size:2.45rem;display:block;color:var(--aqua);line-height:1.1}.metric span{color:var(--muted);font-size:.84rem}
+.info{padding:20px;margin:22px 0 34px;border-left:4px solid var(--gold)}
+.info strong{color:var(--gold)}.info p{margin-bottom:0}
+.section{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:35px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 28px}
+.card{padding:18px;min-height:190px}.card .slot{font-size:.73rem;color:var(--aqua);font-weight:800;letter-spacing:.13em}
+.card .unknown{font-size:1.12rem;font-weight:750;margin-top:23px}.card .status{display:inline-block;margin-top:8px;font-size:.78rem;color:var(--gold);background:#3a2c28;padding:5px 9px;border-radius:12px}
+.card small{display:block;color:var(--muted);margin-top:9px}
+.candidates{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 20px}.candidates .card{min-height:155px;border-top:3px solid var(--violet)}
+footer{border-top:1px solid var(--border);margin-top:40px;padding-top:20px;color:var(--muted)}
+#error{display:none}a:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:950px){.grid{grid-template-columns:repeat(3,1fr)}.candidates{grid-template-columns:1fr}}
+@media(max-width:620px){main{padding:22px 14px 70px}.grid,.metrics{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:380px){.grid,.metrics{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<nav><a href="./index.html">Shared roadmap</a><a href="https://www.xi-field.com/#community" target="_blank" rel="noopener noreferrer">Xi public community</a><a href="https://github.com/MichaelWave369/xi-vessel-bridge" target="_blank" rel="noopener noreferrer">Bridge source</a></nav>
+<section class="hero"><div class="eyebrow">R17.1 · Public capability mapping</div><h1>Thirteen windows.<br>Zero assumed keys.</h1><p>We know the Xi showcase advertises thirteen capability previews. We don't yet know their authentic, versioned operation contracts. Each slot stays anonymous until independently reviewed with Hunter's team.</p></section>
+<div id="error" class="info" role="alert"></div>
+<section class="metrics" aria-label="Registry summary">
+<div class="metric"><b id="advertised">13</b><span>Xi public previews</span></div><div class="metric"><b id="mapped">0</b><span>Confirmed Xi operations</span></div>
+<div class="metric"><b id="local">3</b><span>Local read-only candidates</span></div><div class="metric"><b>0</b><span>Remote grants</span></div>
+</section>
+<div class="info"><strong>No authorization inferred</strong><p>A public card, signed message, or self-reported capability does not grant access. This page does not contact Xi, fetch arbitrary URLs, run tools, request credentials or activate a mirror. Source snapshot: <span id="snapshot">2026-10-25</span>.</p></div>
+<section><div class="section"><h2>Xi preview slots</h2><span style="color:var(--muted)">Unmapped pending Xi-authored specifications</span></div><div id="slots" class="grid"></div></section>
+<section><div class="section"><h2>Our proposed local interfaces</h2><span style="color:var(--muted)">Read-only fixtures, not exposed to partners</span></div><div id="candidates" class="candidates"></div></section>
+<div class="info"><strong>What Hunter's crew can send next</strong><p>Canonical capability names, explicit operation scope, source-attributed native schema with SHA-256, nonsecret transport description, required authentication/authorization semantics, and revocation/error/replay behavior. We'll compare them against the registry and our R10–R17 controls. We do not ask for passwords or private keys.</p>
+<p>For a portable questionnaire, run: <code>python reference/python/xi_capability_r171.py request</code>.</p></div>
+<footer><p>Candidate registry · <a href="https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/XI_CAPABILITY_AND_PILOT_KIT.md">Review handoff notes</a> · Two houses. Independent identities. No ambient authority.</p></footer>
+</main>
+<script>
+(function(){
+  "use strict";
+  function el(tag,cls,content){var n=document.createElement(tag);if(cls)n.className=cls;if(content!==undefined)n.textContent=String(content);return n;}
+  function add(parent,tag,cls,content){var n=el(tag,cls,content);parent.appendChild(n);return n;}
+  fetch("./capability-registry.json",{cache:"no-store"}).then(function(r){if(!r.ok)throw Error("registry JSON unavailable");return r.json();}).then(function(data){
+    if(data.schema!=="PhiXi.CapabilityRegistry.Candidate.v1"||data.live_xi_connected!==false||data.authority!=="none"||data.auto_grants!==false||data.status!=="unmapped_public_preview"||!Array.isArray(data.xi_slots)||data.xi_slots.length!==13||!Array.isArray(data.phi_candidates))
+      throw Error("registry schema or authority boundary invalid");
+    if(data.xi_slots.some(function(s,i){return s.slot_id!==("xi-preview-"+String(i+1).padStart(2,"0"))||s.state!=="awaiting_partner_spec"||s.native_operation!==null||s.independently_verified!==false||s.authorized!==false;}))
+      throw Error("unsupported promotion of an unverified preview");
+    if(data.phi_candidates.some(function(c){return c.exposed_remotely!==false||c.read_only!==true;}))
+      throw Error("unexpected local remote exposure claim");
+    document.getElementById("advertised").textContent=data.public_advertised_count;
+    document.getElementById("mapped").textContent="0";
+    document.getElementById("local").textContent=data.phi_candidates.length;
+    document.getElementById("snapshot").textContent=data.snapshot_date;
+    var slots=document.getElementById("slots");
+    data.xi_slots.forEach(function(s){
+      var card=add(slots,"article","card");add(card,"div","slot",s.slot_id.toUpperCase());add(card,"div","unknown","Unknown operation");
+      add(card,"span","status","Awaiting partner spec");add(card,"small","Unverified · No grant");
+    });
+    var target=document.getElementById("candidates");
+    data.phi_candidates.forEach(function(c){
+      var card=add(target,"article","card");add(card,"div","slot",c.id);add(card,"h3","",c.name);
+      add(card,"small","Scope: "+c.scope);add(card,"small","Local only · No remote exposure");
+    });
+  }).catch(function(e){var n=document.getElementById("error");n.style.display="block";n.textContent="Registry could not be safely displayed: "+e.message+". Serve this folder through local HTTP; no remote operations were attempted."});
+}());
+</script>
+</body></html>
