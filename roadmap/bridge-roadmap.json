@@ -1,0 +1,230 @@
+{
+  "schema": "PhiXi.SharedRoadmap.v1",
+  "title": "Xi ⇄ PHI369 · Sovereign Bridge Roadmap",
+  "snapshot_date": "2026-10-25",
+  "status": "candidate_planning_only",
+  "live_xi_connected": false,
+  "authority": "none",
+  "principles": [
+    "Capability does not grant authority",
+    "Source attribution survives crossing",
+    "Independent operators retain their own keys",
+    "No live claim without independent receipts"
+  ],
+  "xi_public_preview": {
+    "source": "https://www.xi-field.com/#community",
+    "capabilities_count": 13,
+    "sovereign_doors_count": 12,
+    "verified_capability_ids": [],
+    "verified_door_ids": [],
+    "disclosure": "The counts are public in-browser previews, not an agreed executable contract or a roster of verified endpoints."
+  },
+  "milestones": [
+    {
+      "id": "R15",
+      "title": "Offline Porch Evidence Adapter",
+      "state": "local_fixture_verified",
+      "depends_on": [],
+      "gate_ids": [],
+      "evidence_links": [
+        "https://github.com/MichaelWave369/xi-vessel-bridge/pull/19"
+      ],
+      "note": "Read-only inventory, tar manifest audit, independently pinned offline relay signature inspection."
+    },
+    {
+      "id": "R16",
+      "title": "Two-Process Signed Handshake",
+      "state": "local_fixture_verified",
+      "depends_on": [
+        "R15"
+      ],
+      "gate_ids": [],
+      "evidence_links": [
+        "https://github.com/MichaelWave369/xi-vessel-bridge/pull/20"
+      ],
+      "note": "Two isolated local processes, signed challenge/proof/receipt, SQLite replay denial across restarts, pause/revoke."
+    },
+    {
+      "id": "R17",
+      "title": "Partner Contract and External Pilot Readiness",
+      "state": "blocked",
+      "depends_on": [
+        "R16"
+      ],
+      "gate_ids": [
+        "identity",
+        "native_contract",
+        "two_operator_approval",
+        "transport_profile",
+        "least_privilege",
+        "consent",
+        "provenance",
+        "kill_switch"
+      ],
+      "evidence_links": [],
+      "note": "Contract and evidence intake only: NO remote connection or authorization is enabled."
+    },
+    {
+      "id": "R18",
+      "title": "Two-Host Synthetic Digest Crossing",
+      "state": "planned",
+      "depends_on": [
+        "R17"
+      ],
+      "gate_ids": [
+        "two_host_transcript",
+        "durable_receipts",
+        "negative_controls"
+      ],
+      "evidence_links": [],
+      "note": "Separate machines, opt-in, encrypted/authenticated, synthetic content only, no private corpus or model access."
+    },
+    {
+      "id": "R19",
+      "title": "Bounded Read-Only Capsule Exchange",
+      "state": "planned",
+      "depends_on": [
+        "R18"
+      ],
+      "gate_ids": [
+        "human_data_scope",
+        "capsule_byte_integrity",
+        "revocation_drill"
+      ],
+      "evidence_links": [],
+      "note": "Human-approved and scoped provenance-preserving artifacts with independent receipts; never ambient GitPorch access."
+    },
+    {
+      "id": "R20",
+      "title": "Independent Offline Recovery Trial",
+      "state": "planned",
+      "depends_on": [
+        "R19"
+      ],
+      "gate_ids": [
+        "both_houses_independent",
+        "disaster_recovery_drill"
+      ],
+      "evidence_links": [],
+      "note": "Opt-in failover drill, not an automatic takeover or assumption of shared infrastructure."
+    }
+  ],
+  "gates": [
+    {
+      "id": "identity",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Each operator independently verifies the other peer's public key out of band; do not use a self-reported field as proof."
+    },
+    {
+      "id": "native_contract",
+      "owner": "Xi and PHI",
+      "state": "missing",
+      "requirement": "Pin native Xi endpoint, packet schema bytes, explicit mapping to xi.exchange.v1, and supported status semantics."
+    },
+    {
+      "id": "two_operator_approval",
+      "owner": "both humans",
+      "state": "missing",
+      "requirement": "Two separate human decisions approve exact peer, route, time, scope and revocation path."
+    },
+    {
+      "id": "transport_profile",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Mutually authenticated encrypted transport with endpoint verification and key rotation/revocation policy."
+    },
+    {
+      "id": "least_privilege",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Only agreed read-only synthetic operation; remote shell, filesystem browsing, model/repo writes all denied."
+    },
+    {
+      "id": "consent",
+      "owner": "both humans",
+      "state": "missing",
+      "requirement": "Written scope limits data class, maximum bytes, retention and allowed destination; no ambient data sharing."
+    },
+    {
+      "id": "provenance",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Source author, exact bytes, digest, intended use and evidence class survive through both ends."
+    },
+    {
+      "id": "kill_switch",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Each independent house demonstrates local pause, revoke and disconnect with no damage to the other."
+    },
+    {
+      "id": "two_host_transcript",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Two physically distinct hosts exchange a single synthetic digest via approved transport and publish redacted evidence."
+    },
+    {
+      "id": "durable_receipts",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Each peer independently validates receipt binders and restart-persistent replay refusals."
+    },
+    {
+      "id": "negative_controls",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Reject wrong key, room, scope, route, expired timestamp, tamper, replay, and revoked operator."
+    },
+    {
+      "id": "human_data_scope",
+      "owner": "both humans",
+      "state": "missing",
+      "requirement": "Separate explicit review authorizes one small nonsecret example capsule. Never infer permission from discovery."
+    },
+    {
+      "id": "capsule_byte_integrity",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Exact byte identity and source provenance independently attested at both sides."
+    },
+    {
+      "id": "revocation_drill",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "A live field pilot demonstrates unilateral revocation before/after reconnect, including restart."
+    },
+    {
+      "id": "both_houses_independent",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "PhiOS and ForgeCore each remain available with the bridge offline, without shared root authority."
+    },
+    {
+      "id": "disaster_recovery_drill",
+      "owner": "both",
+      "state": "missing",
+      "requirement": "Separate recovery drill documents human-approved fallback, data integrity and no unintended replication."
+    }
+  ],
+  "capability_candidates": [
+    {
+      "label": "artifact.sha256",
+      "origin": "Xi-Vessel-Bridge protocol seed",
+      "state": "fixture_only",
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge"
+    },
+    {
+      "label": "ForgeCore capsule verification",
+      "origin": "ForgeCore handoff in local compatibility notes",
+      "state": "candidate_unconfirmed",
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/FORGECORE_COMPATIBILITY.md"
+    },
+    {
+      "label": "Tessera grammar discovery",
+      "origin": "ForgeCore handoff in local compatibility notes",
+      "state": "candidate_unconfirmed",
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/FORGECORE_COMPATIBILITY.md"
+    }
+  ]
+}
