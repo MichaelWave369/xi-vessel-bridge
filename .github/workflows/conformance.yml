@@ -120,3 +120,31 @@ jobs:
         run: python reference/python/bridge_demo.py
       - name: Run conformance tests
         run: python -m unittest discover -s tests -v
+
+      - name: R17.1 inspect non-authorizing Xi capability registry
+        run: |
+          python reference/python/xi_capability_r171.py inspect
+          if python reference/python/xi_capability_r171.py require-live; then
+            echo "FAIL: static registry was allowed to certify live Xi connection"
+            exit 1
+          fi
+      - name: R18 generate and independently check synthetic partner handoff
+        run: |
+          mkdir -p partner-handoff-output
+          python reference/python/xi_capability_r171.py request > partner-handoff-output/request.json
+          python reference/python/xi_pilot_r18.py fixture > partner-handoff-output/synthetic-fixture.json
+          python reference/python/xi_pilot_r18.py verify-fixture --file partner-handoff-output/synthetic-fixture.json
+          python reference/python/xi_pilot_r18.py draft > partner-handoff-output/pilot-preflight-draft.json
+          python reference/python/xi_pilot_r18.py preflight --file partner-handoff-output/pilot-preflight-draft.json
+          python reference/python/xi_pilot_r18.py transcript-template > partner-handoff-output/transcript-template.json
+          if python reference/python/xi_pilot_r18.py require-live; then
+            echo "FAIL: synthetic packet was allowed to certify remote connection"
+            exit 1
+          fi
+      - name: Publish public-only R17.1 + R18 PHI partner handoff
+        uses: actions/upload-artifact@v4
+        with:
+          name: phi-xi-r17-1-r18-public-handoff
+          path: partner-handoff-output/*.json
+          if-no-files-found: error
+          retention-days: 14

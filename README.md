@@ -333,3 +333,23 @@ cd roadmap && python -m http.server 8000 --bind 127.0.0.1
 ```
 
 Open the viewer at `http://127.0.0.1:8000/` when serving `roadmap/`. This is a **local preview**, not a claimed GitHub Pages deployment. [Read R17 roadmap, provenance, cross-system workstreams and safety gates](docs/XI_SHARED_ROADMAP_R17.md). **LIVE_XI_CONNECTED=false.**
+
+## R17.1 + R18 PHI-side preparation: candidate capabilities, safe pilot packet
+
+With R17's shared roadmap merged, the next PHI-only work prepares **13 anonymous Xi public preview slots** for a partner-authored mapping and **one synthetic digest-only capsule** for a possible R18 two-host crossing. We do **not** assign invented Xi operation names, imply remote permissions, or report any live external connection.
+
+- [Capability registry](roadmap/capability-registry.json): 13 unmapped Xi slots plus three documented local, read-only PHI fixture candidates.
+- [Capability viewer](roadmap/capabilities.html): standalone UI linked from the [roadmap viewer](roadmap/index.html).
+- [Offline partner intake](reference/python/xi_capability_r171.py): source-bound questionnaire and self-reported response inspection, no grant or remote access.
+- [R18 synthetic pilot preparation](reference/python/xi_pilot_r18.py): generates deterministic nonsecret bytes, verifies exact SHA-256 and checks a never-authorizing pilot draft/transcript.
+- [Partner handoff instructions](docs/XI_CAPABILITY_AND_PILOT_KIT.md): minimal fields needed from Hunter and independent operator/evidence gates.
+
+```bash
+python reference/python/xi_capability_r171.py request
+python reference/python/xi_pilot_r18.py fixture
+python -m unittest discover -s tests -p 'test_xi_capability_r171.py' -v
+python -m unittest discover -s tests -p 'test_xi_pilot_r18.py' -v
+cd roadmap && python -m http.server 8000 --bind 127.0.0.1
+```
+
+GitHub Actions now publishes a **public-only 14-day handoff artifact** with the candidate request, synthetic fixture, preflight draft and transcript template. Nothing in these files constitutes Xi identity verification, a real two-host connection, or partner approval. **LIVE_XI_CONNECTED=false.**
