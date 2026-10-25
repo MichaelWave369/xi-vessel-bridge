@@ -384,7 +384,9 @@ python -m http.server 8000 --directory dist --bind 127.0.0.1
 # Open http://127.0.0.1:8000/
 ```
 
-A `main` branch [GitHub Pages workflow](.github/workflows/pages.yml) builds the site but intentionally **does not deploy by default**. To authorize public hosting: configure **Settings → Pages → Source: GitHub Actions**, and add repository Actions variable `PHI_XI_ENABLE_PAGES=true`. Run that Pages workflow on `main` or merge a relevant source change. A deployment URL exists only after its deploy job succeeds. The Conformance workflow independently publishes a short-lived review artifact `phi-xi-r17-3-public-gateway-preview`.
+The R17.5 [GitHub Pages workflow](.github/workflows/pages.yml) publishes **only after the owner selects Settings → Pages → Source: GitHub Actions**. No repository variable, PAT, or pasted credential is needed. Until that setting is enabled the static build succeeds but deployment is visibly skipped. After enabling, run the Pages workflow on `main` or merge a relevant source change. A successful deploy is followed by a real HTTPS availability check of the homepage, registry, roadmap, intake and all SHA-256-pinned public test packets. Only a successful **verify** job counts as a public Gateway URL. The Conformance workflow still publishes the public preview artifact `phi-xi-r17-3-public-gateway-preview`.
+
+[Read R17.5 one-step activation and public-only verification proof](docs/XI_PAGES_LIVE_READINESS_R175.md).
 
 Offline support works after successful first load on HTTPS or localhost, caching **only** the public pages and test packet assets. No partner-uploaded files, private memories, credentials, Xi model calls or external URLs enter the service-worker cache. R17 external pilot remains BLOCKED; R18 real two-host testing remains NOT RUN.
 
