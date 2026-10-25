@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Offline-first Xi ↔ Phi369 partner handoff inspection and redacted evidence reports.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>Xi ⇄ PHI369 | Partner Intake Workbench</title>
+<style>
+:root{color-scheme:dark;--bg:#080f1b;--panel:#102035;--panel2:#152842;--line:#304a5e;--text:#eef8ff;--muted:#b8cad8;--aqua:#68eee0;--amber:#ffcf7a;--violet:#c5b6fd;--good:#96ebbe}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 5% 0,#15364c,transparent 42%),radial-gradient(ellipse at 95% 10%,#262040,transparent 40%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,sans-serif}
+main{max-width:1150px;margin:auto;padding:35px 24px 65px}nav{display:flex;flex-wrap:wrap;gap:22px;font-size:.92rem}
+a{color:var(--aqua)}a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:3px}
+.eyebrow{font-size:12px;font-weight:750;letter-spacing:.2em;text-transform:uppercase;color:var(--aqua)}
+.hero{padding:52px 0 20px}.hero h1{font-size:clamp(2.6rem,7vw,5.1rem);letter-spacing:-.065em;line-height:1.04;margin:12px 0 18px}
+p{color:var(--muted);max-width:800px}.hero p{font-size:1.08rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0}
+.card,.stat,.notice,.output,.source{border:1px solid var(--line);background:rgba(16,32,53,.94);border-radius:16px}
+.stat{padding:20px}.stat b{display:block;color:var(--aqua);font-size:2.25rem;line-height:1.15}.stat span{font-size:.83rem;color:var(--muted)}
+.notice{border-left:4px solid var(--amber);padding:18px 22px;color:#ffe4b1}.notice p{color:#e5ce9e;margin:4px 0 0}
+section h2{letter-spacing:-.04em;font-size:1.5rem;margin:34px 0 10px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{padding:19px}
+.card h3{margin:0 0 10px;font-size:1.03rem}.card p{min-height:58px;margin:0 0 12px;font-size:.9rem}
+label{font-size:.82rem;font-weight:650;display:block;margin:8px 0;color:var(--text)}
+input[type=file]{width:100%;border-radius:9px;border:1px dashed #628399;padding:12px;background:#071522;color:var(--muted);font-size:.84rem}
+.file-state{min-height:27px;margin-top:12px;color:var(--amber);font-size:.82rem}
+button{border:1px solid var(--line);border-radius:11px;padding:10px 16px;background:var(--panel2);color:var(--text);font:inherit;font-weight:650;cursor:pointer}
+button.primary{background:var(--aqua);color:#061724;border-color:var(--aqua)}button[disabled]{opacity:.45;cursor:not-allowed}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0}.source{padding:15px;margin-top:20px;font-size:.9rem;color:var(--muted)}
+.output{padding:22px}.output .verdict{color:var(--amber);font-size:1.12rem;font-weight:750;margin:0}
+.gate-list{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;list-style:none;margin:18px 0 0;padding:0}
+.gate-list li{padding:13px 15px;border-radius:10px;background:var(--panel2);color:var(--muted)}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+.slot{border:1px solid var(--line);padding:13px;border-radius:10px;background:#0e2035}
+.slot b{display:block;font-size:.87rem}.slot span{color:var(--muted);font-size:.77rem}
+.slot.candidate{border-color:#91743d}.slot.candidate span{color:var(--amber)}
+footer{color:var(--muted);border-top:1px solid var(--line);margin-top:50px;padding-top:20px;font-size:.86rem}
+#alert{display:none}#report-json{white-space:pre-wrap;word-break:break-word;color:#b4e2ed;font-size:.82rem;background:#081827;border-radius:12px;padding:16px;max-height:410px;overflow:auto}
+@media(max-width:900px){.cards{grid-template-columns:1fr}.slots{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:640px){main{padding:22px 14px 48px}.stats,.gate-list{grid-template-columns:repeat(2,1fr)}.slots{grid-template-columns:repeat(2,1fr)}.hero{padding-top:30px}}
+@media(max-width:430px){.stats,.gate-list{grid-template-columns:1fr}}
+</style>
+</head><body><main>
+<nav><a href="./index.html">Shared roadmap</a><a href="./capabilities.html">Capability registry</a><a href="https://github.com/MichaelWave369/xi-vessel-bridge">Bridge source</a></nav>
+<header class="hero"><div class="eyebrow">R17.2 / Phi-side offline receiving station</div>
+<h1>Welcome to the<br>partner intake workbench.</h1>
+<p>Load future Xi handoff JSON locally, inspect candidate capability claims and pilot evidence, then export a redacted review receipt. Your files stay in this browser. A review never grants authority.</p></header>
+<div id="alert" class="notice" role="alert" aria-live="assertive"></div>
+<div class="stats" aria-label="Evidence state">
+<div class="stat"><b id="stat-slots">13</b><span>Public preview slots</span></div>
+<div class="stat"><b id="stat-candidates">0</b><span>Candidate records loaded</span></div>
+<div class="stat"><b>0</b><span>Verified remote capabilities</span></div>
+<div class="stat"><b>0</b><span>Granted operations</span></div></div>
+<div class="notice"><strong>Local inspection only. External pilot is BLOCKED.</strong>
+<p>No file uploads, automatic endpoint requests, private-key processing, shared storage or remote tools. Xi identities, human approvals and receipts need independent verification beyond this UI.</p></div>
+<section aria-labelledby="intake-heading"><h2 id="intake-heading">Incoming handoff files</h2>
+<p>Select only the nonsecret candidate JSON from our R17.1/R18 handoff format. A loaded file replaces the previous file in that slot. Maximum 128 KiB each.</p>
+<div class="cards">
+<div class="card"><h3>01 · Capability response</h3><p>Partner-nominated operations and schema fingerprints. All records remain self-reported candidates.</p>
+<label for="response">Partner response JSON</label><input id="response" type="file" accept=".json,application/json">
+<div id="response-state" class="file-state" aria-live="polite">Not supplied</div></div>
+<div class="card"><h3>02 · Pilot preflight</h3><p>Proposed transport, pins and human approvals. These are unverified claims, never credentials or grants.</p>
+<label for="preflight">Preflight draft JSON</label><input id="preflight" type="file" accept=".json,application/json">
+<div id="preflight-state" class="file-state" aria-live="polite">Not supplied</div></div>
+<div class="card"><h3>03 · Test transcript</h3><p>Reported SHA-256 observations and receipt references. They cannot prove real two-host execution on their own.</p>
+<label for="transcript">Candidate transcript JSON</label><input id="transcript" type="file" accept=".json,application/json">
+<div id="transcript-state" class="file-state" aria-live="polite">Not supplied</div></div>
+</div>
+<div class="actions">
+<button class="primary" type="button" id="example">Load fictional example</button>
+<button type="button" id="clear">Clear review</button>
+<button type="button" id="export" disabled>Export redacted JSON report</button>
+</div>
+<div class="source" id="registry-state" aria-live="polite">Loading locally served capability registry …</div>
+</section>
+<section aria-labelledby="review-heading"><h2 id="review-heading">Candidate-only review</h2>
+<div class="output"><p class="verdict" id="verdict">BLOCKED: waiting for local registry validation</p>
+<p id="summary">A static preview does not constitute a peer-approved handshake.</p>
+<div id="slots" class="slots" aria-label="Thirteen preview slots"></div>
+<h3>Independent evidence still required</h3>
+<ul class="gate-list" id="gates"></ul>
+<h3>Redacted review data</h3>
+<pre id="report-json" aria-live="polite">Not evaluated yet.</pre>
+</div></section>
+<footer><p>Capability ≠ authority. This browser never executes supplied code, and file input isn't saved across refreshes. Never load real credentials into this demonstration. For deterministic CI equivalence, the Python inspector is <code>reference/python/xi_partner_r172_workbench.py</code>.</p><p>Ledger Above Ego · Two houses, independently governed.</p></footer>
+</main>
+<script src="./intake-core.js" defer></script>
+<script src="./intake.js" defer></script>
+</body></html>

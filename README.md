@@ -353,3 +353,21 @@ cd roadmap && python -m http.server 8000 --bind 127.0.0.1
 ```
 
 GitHub Actions now publishes a **public-only 14-day handoff artifact** with the candidate request, synthetic fixture, preflight draft and transcript template. Nothing in these files constitutes Xi identity verification, a real two-host connection, or partner approval. **LIVE_XI_CONNECTED=false.**
+
+## R17.2: Xi partner intake workbench (browser + offline CLI)
+
+**R17.2 is PHI-side preparation while Xi is offline, not proof of a live Xi crossing.** The [Partner Intake Workbench](roadmap/intake.html) reads user-selected local JSON files (capability response, R18 pilot preflight, optional synthetic transcript), checks them against the current R17.1 registry and R18 formats, and provides a **redacted, local-only review export**. Its fictional demo runs with no Hunter files. No endpoint requests, credentials, automation, grants or cross-machine transfers occur.
+
+```bash
+cd roadmap && python -m http.server 8000 --bind 127.0.0.1
+# Open http://127.0.0.1:8000/intake.html
+```
+
+For the equivalent CLI review:
+
+```bash
+python reference/python/xi_partner_r172_workbench.py
+python reference/python/xi_partner_r172_workbench.py --require-live # REQUIRED refusal, exit 2
+```
+
+The browser validator has Node negative controls and the Python CLI has strict offline input/redaction tests. [Read R17.2 security boundaries, UI guide, and review semantics](docs/XI_PARTNER_INTAKE_R172.md). **LIVE_XI_CONNECTED=false**.
