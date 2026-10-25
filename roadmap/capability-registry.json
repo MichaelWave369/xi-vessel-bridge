@@ -1,0 +1,196 @@
+{
+  "schema": "PhiXi.CapabilityRegistry.Candidate.v1",
+  "snapshot_date": "2026-10-25",
+  "status": "unmapped_public_preview",
+  "source_url": "https://www.xi-field.com/#community",
+  "public_advertised_count": 13,
+  "live_xi_connected": false,
+  "authority": "none",
+  "auto_grants": false,
+  "disclosure": "The 13 items are positional placeholders based on an external public count. They are NOT the names or IDs of Xi capabilities. No Xi-authored contract has been authenticated.",
+  "xi_slots": [
+    {
+      "slot_id": "xi-preview-01",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-02",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-03",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-04",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-05",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-06",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-07",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-08",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-09",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-10",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-11",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-12",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    },
+    {
+      "slot_id": "xi-preview-13",
+      "public_name": null,
+      "native_operation": null,
+      "schema_sha256": null,
+      "endpoint_id": null,
+      "independently_verified": false,
+      "authorized": false,
+      "state": "awaiting_partner_spec",
+      "source": "public_count_only"
+    }
+  ],
+  "phi_candidates": [
+    {
+      "id": "phi.artifact.sha256",
+      "name": "artifact.sha256",
+      "scope": "read_only_fixture",
+      "read_only": true,
+      "exposed_remotely": false,
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/README.md"
+    },
+    {
+      "id": "phi.porch.inventory",
+      "name": "Curated GitPorch inventory",
+      "scope": "offline_local_observation",
+      "read_only": true,
+      "exposed_remotely": false,
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/PHI_XI_PORCH_R15.md"
+    },
+    {
+      "id": "phi.handshake.observe",
+      "name": "R16 signed handshake",
+      "scope": "loopback_only_fixture",
+      "read_only": true,
+      "exposed_remotely": false,
+      "source": "https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/PHI_XI_HANDSHAKE_R16.md"
+    }
+  ],
+  "partner_request": {
+    "requested_information": [
+      "canonical Xi-authored capability ID and display name",
+      "exact allowed operation and data classification",
+      "native schema and version with independently verified SHA-256",
+      "endpoint transport description without access secrets",
+      "required auth and per-operation authorization scopes",
+      "failure/error/replay and revocation semantics",
+      "explicit mapping proposal to xi.exchange.v1",
+      "source link and human author attribution"
+    ],
+    "recipient": "Hunter / authorized Xi operators",
+    "note": "A response is a candidate declaration only. An unsigned answer, self-asserted approval or pasted credential is not an independently verified grant."
+  }
+}
