@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Xi ⇄ PHI369 shared roadmap: independently governed bridge milestones and evidence gates.">
+  <title>Xi ⇄ PHI369 | Shared Bridge Roadmap</title>
+  <style>
+    :root { color-scheme: dark; --bg: #080e18; --panel: #101b2b; --panel2: #152239;
+      --text: #ecf4fc; --muted: #a3b5c9; --outline: #2d4157; --aqua: #5be5e0;
+      --amber: #f2c576; --violet: #b7a0f5; --green: #92e4b2; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: radial-gradient(circle at 10% 5%, #122940 0, transparent 40%),
+      radial-gradient(circle at 90% 20%, #221b3c 0, transparent 42%), var(--bg);
+      color: var(--text); font: 15px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+    .page { max-width: 1120px; margin: 0 auto; padding: 30px 24px 88px; }
+    a { color: var(--aqua); }
+    a:hover { color: white; }
+    .eyebrow { color: var(--aqua); text-transform: uppercase; letter-spacing: .18em; font-size: .76rem; font-weight: 700; }
+    .hero { padding: 50px 0 28px; }
+    h1 { font-size: clamp(2.45rem, 6.5vw, 5.15rem); line-height: 1.02; letter-spacing: -.06em; margin: 14px 0 18px; }
+    .hero p { max-width: 720px; color: var(--muted); font-size: 1.1rem; }
+    .links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 22px; }
+    .links a { text-decoration: none; border-bottom: 1px solid currentColor; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 25px 0 36px; }
+    .metric, .card, .panel { border: 1px solid var(--outline); background: rgba(16,27,43,.86); border-radius: 17px; }
+    .metric { padding: 21px; min-height: 130px; }
+    .metric b { display: block; font-size: 2.6rem; line-height: 1.1; letter-spacing: -.055em; color: var(--aqua); }
+    .metric span { color: var(--muted); display: block; font-size: .85rem; margin-top: 8px; }
+    .section-title { display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 8px; margin: 38px 0 16px; }
+    h2 { font-size: 1.5rem; letter-spacing: -.04em; margin: 0; }
+    .small { font-size: .86rem; color: var(--muted); }
+    .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+    button { color: var(--text); cursor: pointer; border: 1px solid var(--outline);
+      border-radius: 999px; padding: 8px 14px; font: inherit; background: var(--panel); }
+    button[aria-pressed="true"], button:hover { color: var(--bg); background: var(--aqua); border-color: var(--aqua); }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+    .timeline { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; }
+    .card { padding: 22px; border-top: 3px solid var(--violet); }
+    .card.done { border-top-color: var(--green); }
+    .card.blocked { border-top-color: var(--amber); }
+    .card header { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .rung { font-weight: 800; color: var(--aqua); letter-spacing: .08em; }
+    .status { border-radius: 999px; background: #1e3447; color: var(--muted); font-size: .71rem;
+      padding: 5px 10px; text-transform: uppercase; font-weight: 700; letter-spacing: .03em; }
+    .done .status { color: var(--green); }
+    .blocked .status { color: var(--amber); }
+    h3 { font-size: 1.23rem; line-height: 1.25; margin: 19px 0 9px; }
+    .card p { color: var(--muted); min-height: 62px; margin: 0 0 17px; }
+    .meta { color: var(--muted); font-size: .78rem; }
+    .proof { display: block; margin-top: 12px; font-size: .85rem; }
+    .panel { padding: 24px; margin: 14px 0; }
+    .panel h3 { margin-top: 0; }
+    .gate-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+    .gate { border: 1px solid var(--outline); border-radius: 12px; padding: 15px; background: var(--panel2); }
+    .gate strong { display: block; font-size: .94rem; }
+    .gate .owner { font-size: .78rem; color: var(--amber); margin: 4px 0; }
+    .gate p { margin: 7px 0 0; color: var(--muted); font-size: .87rem; }
+    .note { border-left: 3px solid var(--amber); background: #211e1d; color: #f4d9a4;
+      padding: 14px 18px; border-radius: 0 12px 12px 0; }
+    .candidates { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+    .candidate { border: 1px solid var(--outline); background: var(--panel2); padding: 14px; border-radius: 12px; }
+    .candidate strong { display: block; margin-bottom: 6px; }
+    .candidate span { display: block; font-size: .8rem; color: var(--muted); }
+    footer { margin-top: 50px; padding-top: 22px; border-top: 1px solid var(--outline); color: var(--muted); font-size: .84rem; }
+    #error { display: none; }
+    @media (max-width: 760px) { .metrics { grid-template-columns: repeat(2,1fr); }
+      .timeline, .gate-grid { grid-template-columns: 1fr; } .candidates { grid-template-columns: 1fr; }
+      .page { padding: 20px 15px 60px; } .hero { padding-top: 28px; } }
+    @media (prefers-reduced-motion: no-preference) { .card { transition: transform .16s ease; }
+      .card:hover { transform: translateY(-2px); } }
+  </style>
+</head>
+<body>
+<main class="page">
+  <div class="hero">
+    <div class="eyebrow">Xi × PHI369 / Sovereign federation / Evidence first</div>
+    <h1>Two houses.<br>One shared roadmap.</h1>
+    <p>A public, read-only engineering map for the Xi ⇄ Super Φ.Vessel crossing.
+      Every future capability must earn its place through independently reviewable evidence.
+      A preview is not a permission grant.</p>
+    <div class="links">
+      <a href="https://www.xi-field.com/#community" rel="noopener noreferrer" target="_blank">Hunter's Xi community</a>
+      <a href="https://github.com/MichaelWave369/xi-vessel-bridge" rel="noopener noreferrer" target="_blank">Bridge source</a>
+      <a href="https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/PHI_XI_HANDSHAKE_R16.md" rel="noopener noreferrer" target="_blank">R16 receipts and limits</a>
+    </div>
+  </div>
+  <div id="error" class="note" role="alert"></div>
+  <section class="metrics" id="metrics" aria-label="Roadmap counters">
+    <div class="metric"><b>2</b><span>Local fixture milestones</span></div>
+    <div class="metric"><b>16</b><span>Unverified external gates</span></div>
+    <div class="metric"><b>13</b><span>Xi public capability previews</span></div>
+    <div class="metric"><b>12</b><span>Xi public sovereign-door previews</span></div>
+  </section>
+  <div class="section-title">
+    <div><div class="eyebrow">Milestone ladder</div><h2>From tested fixtures to field evidence</h2></div>
+    <div class="filters" id="filters" role="group" aria-label="Milestone filter">
+      <button type="button" data-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-filter="local_fixture_verified" aria-pressed="false">Local verified</button>
+      <button type="button" data-filter="blocked" aria-pressed="false">Blocked</button>
+      <button type="button" data-filter="planned" aria-pressed="false">Planned</button>
+    </div>
+  </div>
+  <section class="timeline" id="milestones" aria-live="polite"></section>
+  <div class="section-title">
+    <div><div class="eyebrow">R17 / operator-readiness</div><h2>Gates before a real crossing</h2></div>
+    <span class="small" id="gate-count">16 requirements, no external approval recorded</span>
+  </div>
+  <div class="note">R15 and R16 are local fixture evidence, not proof that Hunter's live Xi systems
+    have participated. External connection remains BLOCKED. Never paste credentials or private key material into a roadmap.</div>
+  <section class="panel">
+    <div class="gate-grid" id="gates"></div>
+  </section>
+  <div class="section-title"><div><div class="eyebrow">Candidate capabilities</div>
+    <h2>What we can discuss, not yet invoke</h2></div></div>
+  <section class="candidates" id="candidates"></section>
+  <footer>
+    <p>Source: <a href="https://www.xi-field.com/#community" rel="noopener noreferrer">Xi Living Door</a> and
+    <a href="https://github.com/MichaelWave369/xi-vessel-bridge" rel="noopener noreferrer">Xi-Vessel-Bridge</a>.
+    <span id="as-of">2026-10-25 snapshot</span>. Public showcase counts can change. Attribution is not endorsement.
+    Nothing on this page opens a network bridge, changes a grant, or contacts another machine.</p>
+    <p>Capability ≠ authority · Ledger above ego · Both houses keep their keys.</p>
+  </footer>
+</main>
+<script>
+(function () {
+  "use strict";
+  var allowedStates = { local_fixture_verified: true, blocked: true, planned: true };
+  var currentFilter = "all";
+  var milestones = [];
+  function node(tag, className, txt) {
+    var el = document.createElement(tag);
+    if (className) el.className = className;
+    if (txt !== undefined) el.textContent = String(txt);
+    return el;
+  }
+  function append(parent, tag, className, txt) {
+    var el = node(tag, className, txt); parent.appendChild(el); return el;
+  }
+  function draw() {
+    var target = document.getElementById("milestones");
+    target.replaceChildren();
+    milestones.filter(function (m) { return currentFilter === "all" || m.state === currentFilter; })
+      .forEach(function (m) {
+        var css = m.state === "local_fixture_verified" ? "done" : m.state;
+        var card = append(target, "article", "card " + css);
+        var heading = append(card, "header");
+        append(heading, "span", "rung", m.id);
+        append(heading, "span", "status", m.state === "local_fixture_verified" ? "Local fixture verified" : m.state);
+        append(card, "h3", "", m.title);
+        append(card, "p", "", m.note);
+        append(card, "div", "meta", m.depends_on.length ? "Requires " + m.depends_on.join(", ") : "First rung");
+        if (m.gate_ids.length) append(card, "div", "meta", m.gate_ids.length + " evidence gates attached");
+        if (m.evidence_links.length) {
+          var link = append(card, "a", "proof", "View repository evidence");
+          link.href = m.evidence_links[0]; link.rel = "noopener noreferrer"; link.target = "_blank";
+        }
+      });
+  }
+  document.querySelectorAll("#filters button").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      currentFilter = btn.getAttribute("data-filter");
+      document.querySelectorAll("#filters button").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b === btn));
+      });
+      draw();
+    });
+  });
+  fetch("./bridge-roadmap.json", { cache: "no-store" })
+    .then(function (response) { if (!response.ok) throw Error("Roadmap JSON unavailable"); return response.json(); })
+    .then(function (data) {
+      if (data.schema !== "PhiXi.SharedRoadmap.v1" || data.live_xi_connected !== false ||
+          data.authority !== "none" || data.status !== "candidate_planning_only" ||
+          !Array.isArray(data.milestones) || !Array.isArray(data.gates)) {
+        throw Error("Roadmap not recognized or unexpectedly claims live authority");
+      }
+      if (data.milestones.some(function(m) { return !allowedStates[m.state]; }) ||
+          data.gates.some(function(g) { return g.state !== "missing" && g.state !== "candidate_unverified"; })) {
+        throw Error("Unsupported evidence-state promotion");
+      }
+      milestones = data.milestones;
+      document.getElementById("metrics").replaceChildren();
+      var vals = [
+        [milestones.filter(function(m) { return m.state === "local_fixture_verified"; }).length, "Verified local fixture milestones"],
+        [data.gates.length, "External evidence gates not independently verified"],
+        [data.xi_public_preview.capabilities_count, "Xi public capability previews"],
+        [data.xi_public_preview.sovereign_doors_count, "Xi public sovereign-door previews"]
+      ];
+      vals.forEach(function (v) {
+        var metric = append(document.getElementById("metrics"), "div", "metric");
+        append(metric, "b", "", v[0]); append(metric, "span", "", v[1]);
+      });
+      draw();
+      var gateTarget = document.getElementById("gates");
+      data.gates.forEach(function (g) {
+        var el = append(gateTarget, "article", "gate");
+        append(el, "strong", "", g.id.replace(/_/g, " "));
+        append(el, "div", "owner", g.owner + " · " + g.state.replace(/_/g, " "));
+        append(el, "p", "", g.requirement);
+      });
+      document.getElementById("gate-count").textContent = data.gates.length + " gates · 0 independently attested by this roadmap";
+      data.capability_candidates.forEach(function(c) {
+        var el = append(document.getElementById("candidates"), "article", "candidate");
+        append(el, "strong", "", c.label);
+        append(el, "span", "", c.origin);
+        append(el, "span", "", c.state.replace(/_/g, " "));
+      });
+      document.getElementById("as-of").textContent = data.snapshot_date + " source snapshot";
+    })
+    .catch(function (error) {
+      var el = document.getElementById("error");
+      el.style.display = "block";
+      el.textContent = "Unable to verify the roadmap data: " + error.message +
+        ". Serve this directory over local HTTP, for example: python -m http.server 8000.";
+    });
+}());
+</script>
+</body>
+</html>
