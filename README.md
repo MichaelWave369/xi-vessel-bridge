@@ -295,3 +295,14 @@ No partner code is executed and no private credentials are accepted.
 ## License
 
 MIT. See `LICENSE`.
+
+
+## R15: PhiOS / GitPorch ↔ Xi offline porch adapter (READ-ONLY)
+
+R15 adds an offline-only evidence adapter for a user-selected GitPorch export, Hunter's Xi offline bundle manifests, and the separately supplied signed `PhiXi.Relay.v0.1` message grammar. It has **no networking, extraction, execution, private-key handling, remote requests, shared authorization, or live failover**. Peer public keys must be pinned independently. The existing R10–R14 authority gates remain unchanged.
+
+    python reference/python/phi_xi_porch_adapter.py inventory --root /path/to/small/nonsecret/export
+    python reference/python/phi_xi_porch_adapter.py audit-bundle --archive /path/to/xi-offline-bundle-v9.tar.gz
+    python reference/python/phi_xi_porch_adapter.py inspect-relay --pins /path/to/public-peer-pins.json --messages /path/to/relay.json
+
+Read [R15 scope, threat boundaries and next gates](docs/PHI_XI_PORCH_R15.md). **LIVE_XI_CONNECTED=false**.
