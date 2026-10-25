@@ -306,3 +306,15 @@ R15 adds an offline-only evidence adapter for a user-selected GitPorch export, H
     python reference/python/phi_xi_porch_adapter.py inspect-relay --pins /path/to/public-peer-pins.json --messages /path/to/relay.json
 
 Read [R15 scope, threat boundaries and next gates](docs/PHI_XI_PORCH_R15.md). **LIVE_XI_CONNECTED=false**.
+
+
+## R16: mutually pinned two-process handshake (LOCAL FIXTURE ONLY)
+
+R16 extends R15 with a loopback HTTP `challenge → proof → receipt` exchange between two separate local processes using pinned Ed25519 test keys and an exact `handshake.observe` room scope. The SQLite ledger refuses replay **after process restart**; local `PAUSED` and durable revocation refuse further admission. The client verifies the server's signature and its receipt binding to the exact signed proof.
+
+```bash
+python reference/python/phi_xi_r16_loopback.py demo
+python -m unittest discover -s tests -p 'test_phi_xi_r16_loopback.py' -v
+```
+
+[Read R16 architecture, security evidence, and R17 external pilot gates](docs/PHI_XI_HANDSHAKE_R16.md). This is **not a live Xi connection, not a two-host demonstration, and does not authorize any remote operation**. **LIVE_XI_CONNECTED=false**.
