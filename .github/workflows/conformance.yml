@@ -148,3 +148,20 @@ jobs:
           path: partner-handoff-output/*.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: R17.2 validate local Python partner intake (including negative controls)
+        run: |
+          python reference/python/xi_partner_r172_workbench.py
+          if python reference/python/xi_partner_r172_workbench.py --require-live; then
+            echo "FAIL: self-reported intake was promoted to live authority"
+            exit 1
+          fi
+      - name: Set up Node for browser validator parity
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Check R17.2 browser workbench syntax and adversarial test suite
+        run: |
+          node --check roadmap/intake-core.js
+          node --check roadmap/intake.js
+          node --test tests/test_intake_core.cjs
