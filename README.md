@@ -318,3 +318,18 @@ python -m unittest discover -s tests -p 'test_phi_xi_r16_loopback.py' -v
 ```
 
 [Read R16 architecture, security evidence, and R17 external pilot gates](docs/PHI_XI_HANDSHAKE_R16.md). This is **not a live Xi connection, not a two-host demonstration, and does not authorize any remote operation**. **LIVE_XI_CONNECTED=false**.
+
+## R17: Shared Xi ⇄ PHI369 Roadmap and External Pilot Gates
+
+The bridge now has a public-readable, static **shared engineering roadmap**: `roadmap/bridge-roadmap.json` is the source of truth, `roadmap/index.html` is a standalone visual milestone/gate viewer, and `reference/python/xi_shared_roadmap_r17.py` reports blockers without pretending that a planning document is live partner proof.
+
+The Xi public Living Door's **13 capability previews and 12 sovereign-door previews** are explicitly labeled as *unverified public previews*, not mapped, authenticated capability IDs or room access. R15/R16 remain **local verified fixtures**, while R17 is **blocked** pending independent Xi/Phi operator identity, native schema, scoped consent, and encrypted transport.
+
+```bash
+python reference/python/xi_shared_roadmap_r17.py
+python reference/python/xi_shared_roadmap_r17.py --require-live # EXPECTED REFUSAL, exit 2
+python -m unittest discover -s tests -p 'test_xi_shared_roadmap_r17.py' -v
+cd roadmap && python -m http.server 8000 --bind 127.0.0.1
+```
+
+Open the viewer at `http://127.0.0.1:8000/` when serving `roadmap/`. This is a **local preview**, not a claimed GitHub Pages deployment. [Read R17 roadmap, provenance, cross-system workstreams and safety gates](docs/XI_SHARED_ROADMAP_R17.md). **LIVE_XI_CONNECTED=false.**
