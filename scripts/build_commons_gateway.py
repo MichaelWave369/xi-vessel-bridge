@@ -42,6 +42,10 @@ STATIC_FILES = {
     "lab.css": "lab.css",
     "lab.js": "lab.js",
     "lab-core.js": "lab-core.js",
+    "fault.html": "fault.html",
+    "fault.css": "fault.css",
+    "fault.js": "fault.js",
+    "fault-core.js": "fault-core.js",
 }
 SCHEMA = "PhiXi.PublicHandoffManifest.R17_3.v1"
 
