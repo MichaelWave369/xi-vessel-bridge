@@ -425,3 +425,14 @@ python scripts/build_commons_gateway.py --out dist
 
 [Read R18.2 console operation, evidence model, export policy and limitations](docs/XI_TWO_HOUSE_OPERATOR_CONSOLE_R182.md).
 **LIVE_XI_CONNECTED=false · R17 external pilot BLOCKED · R18 real two-host pilot NOT RUN.**
+
+
+## R18.3 · Browser Failure-Injection Sandbox
+
+A fifth [Commons Gateway](roadmap/commons.html) doorway opens the new [failure simulator](roadmap/fault.html), also linked from the [R18.2 operator console](roadmap/lab.html). It provides 14 deterministic browser-only synthetic scenarios: wrong peer, altered signature flag, expired request, scope escalation, receiver policy refusal, pause, revoke, duplicate, replay across modeled restart, altered receipt and dropped response after a commit. Use one-case or run-all mode, inspect the trace, and download a redacted **illustrative-only** review. Its four public static assets are cached offline and checked by the Pages deploy verifier.
+
+This is a **JavaScript model**, not the R18.1 cryptographic worker execution. It neither sends packets nor verifies actual Ed25519 material or Xi identity. Simulated success never promotes an external evidence gate. R17 remains BLOCKED and R18 real two-host pilot remains NOT RUN.
+
+[Read the simulation model, all failure modes, security boundary and reproducible tests](docs/XI_FAILURE_INJECTION_SANDBOX_R183.md).
+
+Tests: node --test tests/test_fault_core_r183.cjs; python -m unittest discover -s tests -p test_fault_bundle_r183.py -v.
