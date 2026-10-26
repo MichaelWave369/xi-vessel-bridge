@@ -1,0 +1,23 @@
+{
+  "schema": "PhiXi.R18_9_GoldenDigests.v1",
+  "canonical_profile": "PhiXi.R18_9.ASCII_SORTED_JSON.v1",
+  "source_payload_sha256": "8370bdb1f706a2168accc1c225a37c98ec907cd3e954b67c1cdcc9d8ddd8feb5",
+  "cases": {
+    "digest": {
+      "bytes": 653,
+      "sha256": "83c985315e442ff41bd6d3fe15ff4d894a94cccfb0dcf8140dd333643728645c"
+    },
+    "policy": {
+      "bytes": 660,
+      "sha256": "016d5783e1417fd9fcab70c2283a2e3fd3e8b834ab76e5f61edfd9e3caaafa34"
+    },
+    "replay": {
+      "bytes": 660,
+      "sha256": "f58db92c866ee61e4be24edff79c960b9daf4b0372a35383997bf1cbb56f17ff"
+    },
+    "revoked": {
+      "bytes": 658,
+      "sha256": "69c9019a24a76ddb6bf5c5b7e1092694de8fe4e29d37a49a0c04769dd0f80fd4"
+    }
+  }
+}

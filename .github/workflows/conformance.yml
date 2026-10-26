@@ -266,3 +266,34 @@ jobs:
           node --test tests/test_charter_core_r187.cjs
           python -m unittest discover -s tests -p 'test_charter_bundle_r187.py' -v
           python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
+
+      - name: R18.9 independently emit and cross-verify Python/Node canonical public receipts
+        run: |
+          node --check reference/js/xi_receipt_r189.cjs
+          python -m py_compile reference/python/xi_receipt_r189.py
+          python -m unittest discover -s tests -p 'test_xi_receipt_r189.py' -v
+          node --test tests/test_xi_receipt_r189.cjs
+          mkdir -p r189-public-evidence
+          for case in digest policy replay revoked; do
+            python reference/python/xi_receipt_r189.py emit --case "$case" --out "r189-public-evidence/python-$case.json"
+            node reference/js/xi_receipt_r189.cjs emit --case "$case" --out "r189-public-evidence/node-$case.json"
+            cmp "r189-public-evidence/python-$case.json" "r189-public-evidence/node-$case.json"
+            python reference/python/xi_receipt_r189.py verify --file "r189-public-evidence/node-$case.json"
+            node reference/js/xi_receipt_r189.cjs verify --file "r189-public-evidence/python-$case.json"
+          done
+          (cd r189-public-evidence && sha256sum *.json > public-receipt-bytes.sha256)
+          if python reference/python/xi_receipt_r189.py require-live; then
+            echo "FAIL: Python illustrative receipt claimed live Xi authority"
+            exit 1
+          fi
+          if node reference/js/xi_receipt_r189.cjs require-live; then
+            echo "FAIL: Node illustrative receipt claimed live Xi authority"
+            exit 1
+          fi
+      - name: Upload R18.9 unsigned public cross-language byte fixtures
+        uses: actions/upload-artifact@v4
+        with:
+          name: phi-xi-r18-9-unsigned-public-canonical-receipt-parity
+          path: r189-public-evidence/
+          retention-days: 21
+          if-no-files-found: error
