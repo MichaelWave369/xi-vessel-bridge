@@ -65,7 +65,7 @@ test("browser UI imports only user-selected local bytes, reports untrusted statu
  const html=fs.readFileSync("roadmap/fault.html","utf8");
  const js=fs.readFileSync("roadmap/fault.js","utf8");
  assert.match(html,/id="r184-file"/);
- assert.match(html,/SHAPE VALID/);
+ assert.match(html,/id="r184-verdict"/);
  assert.match(html,/connect-src 'none'/);
  assert.match(js,/file\.arrayBuffer\(\)/);
  assert.match(js,/validateWorkerReport/);
