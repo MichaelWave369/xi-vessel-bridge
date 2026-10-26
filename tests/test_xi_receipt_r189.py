@@ -1,5 +1,6 @@
 """R18.9 Python candidate receipt: byte identity and refusal suite."""
 import copy
+import hashlib
 import json
 import pathlib
 import sys
@@ -36,6 +37,17 @@ class CanonicalReceiptTests(unittest.TestCase):
                 self.assertTrue(data["example_only"])
                 self.assertEqual(data["r17_external_pilot"],"BLOCKED")
                 self.assertEqual(data["r18_real_two_host_pilot"],"NOT_RUN")
+
+    def test_golden_byte_counts_and_hashes_are_locked(self):
+        pins=json.loads((ROOT/"fixtures"/"r189-golden-digests.json").read_text())
+        self.assertEqual(pins["schema"],"PhiXi.R18_9_GoldenDigests.v1")
+        self.assertEqual(set(pins["cases"]),set(receipt.CASES))
+        self.assertEqual(pins["source_payload_sha256"], pilot.sha(pilot.PAYLOAD))
+        for case,expected in pins["cases"].items():
+            with self.subTest(case=case):
+                data=receipt.emit(case)
+                self.assertEqual(len(data),expected["bytes"])
+                self.assertEqual(hashlib.sha256(data).hexdigest(),expected["sha256"])
 
     def test_reject_newlines_pretty_keys_wrong_order_or_trailing_bytes(self):
         original=receipt.emit("digest")
