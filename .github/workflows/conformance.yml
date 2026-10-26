@@ -185,3 +185,21 @@ jobs:
           path: dist/
           if-no-files-found: error
           retention-days: 7
+
+      - name: R18.1 two-house signed synthetic process simulation and fail-closed evidence
+        run: |
+          mkdir -p simulation-output
+          python reference/python/xi_two_house_r181.py demo > simulation-output/r181-public-simulation.json
+          python -c "import json; p=json.load(open('simulation-output/r181-public-simulation.json')); assert p['status']=='R18_1_TWO_HOUSE_LOCAL_SIMULATION_PASS' and p['process_count']==2 and p['physical_hosts']==1 and p['live_xi_connected'] is False and p['r18_real_two_host_pilot']=='NOT_RUN'"
+          python -m unittest discover -s tests -p "test_xi_two_house_r181.py" -v
+          if python reference/python/xi_two_house_r181.py require-live; then
+            echo "FAIL: local simulation was incorrectly promoted to Xi live authority"
+            exit 1
+          fi
+      - name: Upload redacted R18.1 local-only simulation witness
+        uses: actions/upload-artifact@v4
+        with:
+          name: phi-xi-r18-1-two-house-local-simulation
+          path: simulation-output/r181-public-simulation.json
+          if-no-files-found: error
+          retention-days: 14
