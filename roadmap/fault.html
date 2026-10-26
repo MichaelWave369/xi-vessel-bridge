@@ -38,6 +38,23 @@
 <section class="section"><div class="eyebrow">04 / FAILURE MATRIX</div><h2>Expected denials and safety outcomes</h2>
 <p>Run all scenarios to see whether the deterministic fixture reproduces its 14 defined outcomes. These do not replace R18.1's actual Python process tests.</p>
 <div id="matrix" class="matrix"><div class="empty">Select “Run all 14 cases” to populate the failure matrix.</div></div></section>
+<section class="section worker-evidence" id="r184">
+<div class="eyebrow">05 / ACTUAL LOCAL WORKER EVIDENCE</div>
+<h2>Compare the real Python fixture</h2>
+<p>R18.4 separately runs two local Ed25519/SQLite worker processes through all 14 failure cases. Download its redacted CI report, then inspect that JSON here. The browser checks its format, <strong>not</strong> its author or signer.</p>
+<div class="worker-panel">
+ <div>
+  <label for="r184-file">R18.4 redacted local-worker report (JSON, up to 32 KiB)</label>
+  <input id="r184-file" type="file" accept=".json,application/json">
+  <p id="r184-status" role="status" aria-live="polite">No report loaded. Zero real Xi participants authenticated.</p>
+  <div class="actions"><a href="https://github.com/MichaelWave369/xi-vessel-bridge/actions/workflows/conformance.yml" target="_blank" rel="noopener noreferrer">Find R18.4 conformance evidence ↗</a>
+   <button id="r184-clear" type="button">Clear local report</button></div>
+ </div>
+ <div class="r184-provenance"><strong>Evidence boundary</strong><span id="r184-verdict">NOT INSPECTED</span>
+ <p>Only reports claiming two local processes on one physical host are accepted. Imports cannot unlock permissions, promote pilot gates, or authenticate Hunter's Xi service.</p></div>
+</div>
+<div id="r184-results" class="matrix"><div class="empty">Import the redacted local-worker CI report to view its 14 reported outcomes.</div></div>
+</section>
 <section class="cta"><div><strong>From simulation toward real evidence</strong><p>R18.1 executes cryptographic worker processes locally. R18.2 reviews their output. R18.3 illustrates failure policies. R17 external gates remain blocked; R18's actual two-host test has not run.</p></div><a href="./lab.html">Back to Operator Console ↗</a></section>
 </main>
 <footer>LEDGER ABOVE EGO · Two houses, independent keys · Capability never equals authority · LIVE_XI_CONNECTED=false</footer>
