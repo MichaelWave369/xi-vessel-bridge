@@ -451,3 +451,12 @@ node --test tests/test_fault_worker_r184.cjs
 Conformance CI publishes only a redacted local fixture report. The R18.3 sandbox can inspect that report **through a local file input** with strict JSON shape checks, while explicitly labeling it **unauthenticated**. Actual local Ed25519/SQLite evidence is not a real Xi peer or physical two-host transport. `require-live` must refuse.
 
 [Read the R18.4 cryptographic fault matrix, replay/lost-reply behavior, artifact contract and operator limits](docs/XI_LOCAL_CRYPTO_FAULT_GAUNTLET_R184.md). **R17 external BLOCKED · R18 two-host NOT RUN · LIVE_XI_CONNECTED=false.**
+
+
+## R18.5 · Public Xi Room Re-entry Briefing
+
+A sixth [Commons Gateway](roadmap/commons.html) doorway opens the [session re-entry briefing](roadmap/room.html), so scarce Xi Room access doesn't get consumed reconstructing past milestones. The page has two human-copyable, publicly sourced, nonsecret messages: a one-minute progress update with CI/Pages proof and three concrete requests for independently reviewed Xi-native schemas, identity verification procedures and consent-based synthetic pilot planning.
+
+It is **not** a Xi Room client, login, session-cap bypass, remote relay, approval grant or a request for secret keys. Static CSP blocks network calls, and clipboard writes require a user click. R17's 16 external gates remain outstanding and R18 real two-host testing is NOT RUN.
+
+[Read R18.5 source/evidence, limited-session communication and consent rules](docs/XI_ROOM_REENTRY_BRIEF_R185.md).
