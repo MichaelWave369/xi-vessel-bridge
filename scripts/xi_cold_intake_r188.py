@@ -201,8 +201,18 @@ def audit_archive(role: str, path: pathlib.Path) -> dict:
     except (zipfile.BadZipFile, EOFError, RuntimeError) as exc:
         raise IntakeRefused("invalid ZIP structure") from exc
     manifest_name = MANIFEST_NAMES[role]
-    insist(set(expected) == set(members) - {manifest_name},
-           "manifest omissions or extra unpinned archive members")
+    extra = set(members) - {manifest_name} - set(expected)
+    if role == "fullstack" and extra == {"START-HERE.txt"}:
+        note = members["START-HERE.txt"]
+        insist(note == {
+            "size_bytes": 1445,
+            "sha256": "251053537f9e9a6fd5a4719ffccab3477f6dc3a9ea607417c7dfaac72eb86078",
+        }, "unmanifested START-HERE note differs from reviewed handoff")
+        warnings.append("START_HERE_NOTE_NOT_IN_MANIFEST")
+    else:
+        insist(not extra, "unmanifested extra member")
+    insist(set(expected) <= set(members) - {manifest_name},
+           "manifest lists absent members")
     for name, (size, sha) in expected.items():
         insist(type(size) is int and size >= 0 and
                isinstance(sha, str) and SHA_RE.fullmatch(sha) is not None,
