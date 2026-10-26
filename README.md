@@ -460,3 +460,10 @@ A sixth [Commons Gateway](roadmap/commons.html) doorway opens the [session re-en
 It is **not** a Xi Room client, login, session-cap bypass, remote relay, approval grant or a request for secret keys. Static CSP blocks network calls, and clipboard writes require a user click. R17's 16 external gates remain outstanding and R18 real two-host testing is NOT RUN.
 
 [Read R18.5 source/evidence, limited-session communication and consent rules](docs/XI_ROOM_REENTRY_BRIEF_R185.md).
+
+
+## R18.6 · Bilateral Pilot Readiness Board
+
+The Commons now includes an offline-capable [Readiness Board](roadmap/gates.html) as a seventh public doorway. It pulls **all 16 missing external gates** from the authoritative `bridge-roadmap.json`, presents them in four **PHI-proposed** discussion phases, and allows human-selected topics to be copied/downloaded as a **public unapproved agenda**. It never promotes a gate, creates an operator grant, persists an approval, talks to Xi, requests private keys, or bypasses the Xi Room session cap.
+
+The agenda pairs well with [R18.5's source-backed Xi Room re-entry briefing](roadmap/room.html) and the existing local partner intake. **All 16 external gates remain missing; R17 external pilot BLOCKED; R18 real two-host pilot NOT RUN.** [R18.6 test, trust and runbook](docs/XI_BILATERAL_READINESS_BOARD_R186.md).
