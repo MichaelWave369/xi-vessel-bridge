@@ -143,7 +143,7 @@ class ColdIntakeTests(unittest.TestCase):
         }, symlinks=("pointer",)))
         with self.assertRaisesRegex(cold.IntakeRefused, "symbolic"):
             cold.audit(self.paths)
-        self.assertEqual(list(self.root.iterdir()), list(self.paths.values()))
+        self.assertEqual(set(self.root.iterdir()), set(self.paths.values()))
 
     def test_changed_note_is_not_silently_manifest_pinned(self):
         full = fixture_bundle("fullstack", {"packages/Plex-v28-shared-bundle.zip": self.originals["v28"],
