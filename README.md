@@ -26,6 +26,22 @@ python -m unittest discover -s tests -p 'test_xi_cold_intake_r188.py' -v
 python scripts/xi_cold_intake_r188.py --help
 ```
 
+## R18.9 · Cross-Language Public Receipt Parity
+
+**Independent Python ⇄ Node receipt-byte conformance, not live Xi compatibility.** Two separately implemented tools emit and verify four immutable, **unsigned and illustrative** receipt examples based on the frozen 88-byte R18 synthetic fixture. The deliberately restricted ASCII-only canonical JSON profile uses recursive sorted keys, compact separators and one terminal LF; it is **not RFC 8785/JCS**. Every candidate is pinned by byte count and SHA-256 in `fixtures/r189-golden-digests.json`.
+
+In CI, Python and Node each generate the four receipts, `cmp` requires identical bytes, then each verifies the other's output. Adversarial tests reject duplicate keys, noncanonical encodings, altered payload bytes or hash, false signatures/approvals, privileged operations, unknown cases and claimed live Xi state. CI uploads only **public unsigned** fixture bytes and a checksum listing.
+
+[Read the byte profile, all four golden SHA-256 values, runbook and trust boundaries](docs/XI_R189_CROSS_LANGUAGE_RECEIPT_CONTRACT.md).
+
+```sh
+python -m unittest discover -s tests -p 'test_xi_receipt_r189.py' -v
+node --test tests/test_xi_receipt_r189.cjs
+python reference/python/xi_receipt_r189.py emit --case digest
+```
+
+**These receipts are PHI-authored proposals only.** They do not authenticate Hunter, reproduce a native Xi protocol, authorize a tool or count toward the 16 external gates. **R17 BLOCKED · R18 real two-host NOT RUN · authority=none.**
+
 ## v0.1 handshake
 
 The first conformance path is deliberately small:
