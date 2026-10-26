@@ -159,5 +159,71 @@
       qualification:"No real Ed25519 validation, process execution, network transfer, Xi endpoint or external operator authorization."
     };
   }
-  return Object.freeze({SCHEMA,REPORT_SCHEMA,CASES,RULES,runScenario,runAll,exportReview});
+
+  /* R18.4: strict SHAPE ONLY import for the actual local Python worker report.
+     Imported JSON isn't authenticated: fields can be forged, never promote Xi. */
+  const WORKER_SCHEMA="PhiXi.R18_4_LocalWorkerFaultReport.v1";
+  const ROOT_KEYS=[
+    "schema","classification","status","case_count","passed_count","cases",
+    "physical_hosts","distinct_worker_processes_per_case","real_ed25519_fixture",
+    "actual_xi_peer_authenticated","remote_transport","independent_xi_receipts",
+    "external_gates_promoted","r17_external_pilot","r18_real_two_host_pilot",
+    "live_xi_connected","authority","qualification"
+  ];
+  const CASE_KEYS=[
+    "scenario_id","expected","observed","pass","receiver_commits",
+    "requester_confirmed","replay_refused_after_restart","local_worker_processes",
+    "physical_hosts","real_ed25519_fixture","network_transport",
+    "live_xi_connected","authority"
+  ];
+  function exactlyKeys(doc,expected){
+    return doc && typeof doc==="object" && !Array.isArray(doc) &&
+      Object.keys(doc).length===expected.length &&
+      Object.keys(doc).every(x=>expected.includes(x));
+  }
+  function validateWorkerReport(doc){
+    if(!exactlyKeys(doc,ROOT_KEYS) ||
+      doc.schema!==WORKER_SCHEMA ||
+      doc.classification!=="LOCAL_TWO_PROCESS_CRYPTOGRAPHIC_FIXTURE_ONLY" ||
+      doc.status!=="LOCAL_R18_4_GAUNTLET_PASS" ||
+      doc.case_count!==CASES.length || doc.passed_count!==CASES.length ||
+      doc.physical_hosts!==1 || doc.distinct_worker_processes_per_case!==2 ||
+      doc.real_ed25519_fixture!==true || doc.actual_xi_peer_authenticated!==false ||
+      doc.remote_transport!==false || doc.independent_xi_receipts!==0 ||
+      doc.external_gates_promoted!==0 || doc.r17_external_pilot!=="BLOCKED" ||
+      doc.r18_real_two_host_pilot!=="NOT_RUN" || doc.live_xi_connected!==false ||
+      doc.authority!=="none" ||
+      doc.qualification!=="Executed signed local Python worker fixtures. Not a real Xi peer, network pilot, operator grant or independent security audit." ||
+      !Array.isArray(doc.cases) || doc.cases.length!==CASES.length){
+      throw Error("R18.4 local worker report format or external status refused");
+    }
+    const confirmed=new Set(["baseline","duplicate","receipt-tamper"]);
+    const committed=new Set(["baseline","duplicate","restart-replay","receipt-tamper","lost-reply"]);
+    for(let i=0;i<CASES.length;i++){
+      const row=doc.cases[i],spec=CASES[i];
+      if(!exactlyKeys(row,CASE_KEYS) || row.scenario_id!==spec.id ||
+        row.expected!==spec.expected || row.observed!==spec.expected ||
+        row.pass!==true || row.receiver_commits!==(committed.has(spec.id)?1:0) ||
+        row.requester_confirmed!==confirmed.has(spec.id) ||
+        row.replay_refused_after_restart!==(spec.id==="restart-replay") ||
+        row.local_worker_processes!==2 || row.physical_hosts!==1 ||
+        row.real_ed25519_fixture!==true || row.network_transport!==false ||
+        row.live_xi_connected!==false || row.authority!=="none"){
+        throw Error("Unrecognized or privileged local worker report case");
+      }
+    }
+    return {
+      shape:"R18_4_LOCAL_WORKER_REPORT_SHAPE_VALID_ONLY",
+      classification:"IMPORTED_UNAUTHENTICATED_LOCAL_WORKER_SUMMARY",
+      case_count:CASES.length,reported_passes:CASES.length,
+      cases:CASES.map((spec,i)=>({
+        scenario_id:spec.id,name:spec.name,group:spec.group,
+        observed:doc.cases[i].observed,
+        commits:doc.cases[i].receiver_commits
+      })),
+      physical_hosts:1,independent_xi_receipts:0,external_gates_promoted:0,
+      live_xi_connected:false,authority:"none"
+    };
+  }
+  return Object.freeze({SCHEMA,REPORT_SCHEMA,WORKER_SCHEMA,CASES,RULES,runScenario,runAll,exportReview,validateWorkerReport});
 });
