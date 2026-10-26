@@ -253,3 +253,10 @@ jobs:
           node --test tests/test_gate_board_r186.cjs
           python -m unittest discover -s tests -p 'test_gate_board_r186.py' -v
           python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
+      - name: R18.7 strict unapproved synthetic pilot charter and original R18 source parity
+        run: |
+          node --check roadmap/charter-core.js
+          node --check roadmap/charter.js
+          node --test tests/test_charter_core_r187.cjs
+          python -m unittest discover -s tests -p 'test_charter_bundle_r187.py' -v
+          python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
