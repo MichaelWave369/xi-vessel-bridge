@@ -10,6 +10,7 @@ const ASSETS = Object.freeze([
   "./fault.html", "./fault.css", "./fault.js", "./fault-core.js",
   "./room.html", "./room.css", "./room.js",
   "./gates.html", "./gates.css", "./gates.js", "./gates-core.js",
+  "./charter.html", "./charter.css", "./charter.js", "./charter-core.js",
   "./handoff/manifest.json", "./handoff/request.json",
   "./handoff/synthetic-fixture.json", "./handoff/pilot-preflight-draft.json",
   "./handoff/transcript-template.json"
