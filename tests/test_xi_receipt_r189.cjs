@@ -20,6 +20,19 @@ test("all four local-only candidates are strict canonical public bytes",()=>{
   assert.equal(doc.r18_real_two_host_pilot,"NOT_RUN");
  }
 });
+test("frozen golden vectors match independent Node emission",()=>{
+ const fs=require("node:fs");
+ const crypto=require("node:crypto");
+ const pins=JSON.parse(fs.readFileSync("fixtures/r189-golden-digests.json","utf8"));
+ assert.equal(pins.schema,"PhiXi.R18_9_GoldenDigests.v1");
+ assert.equal(pins.source_payload_sha256,r.FIXTURE_SHA);
+ assert.deepEqual(Object.keys(pins.cases),Object.keys(r.CASES));
+ for(const [caseId,pin] of Object.entries(pins.cases)){
+  const actual=r.emit(caseId);
+  assert.equal(actual.length,pin.bytes);
+  assert.equal(crypto.createHash("sha256").update(actual).digest("hex"),pin.sha256);
+ }
+});
 test("never confuse shape, pretty-printed JSON, duplicate keys or order for exact bytes",()=>{
  const original=r.emit("digest"),doc=r.make("digest");
  const variants=[
