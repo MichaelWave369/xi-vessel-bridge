@@ -225,6 +225,10 @@ jobs:
           python reference/python/xi_fault_gauntlet_r184.py demo > fault-evidence/r184-local-worker-report.json
           python -c "import json; r=json.load(open('fault-evidence/r184-local-worker-report.json')); assert r['status']=='LOCAL_R18_4_GAUNTLET_PASS' and r['case_count']==14 and r['passed_count']==14 and r['physical_hosts']==1 and r['independent_xi_receipts']==0 and r['live_xi_connected'] is False and r['authority']=='none'"
           python -m unittest discover -s tests -p 'test_xi_fault_gauntlet_r184.py' -v
+          node --check roadmap/fault-core.js
+          node --check roadmap/fault.js
+          node --test tests/test_fault_worker_r184.cjs
+          node -e 'const fs=require("fs");const c=require("./roadmap/fault-core.js");const x=JSON.parse(fs.readFileSync("fault-evidence/r184-local-worker-report.json","utf8"));const o=c.validateWorkerReport(x);if(o.case_count!==14 || o.external_gates_promoted!==0)process.exit(1);'
           if python reference/python/xi_fault_gauntlet_r184.py require-live; then
             echo "FAIL: R18.4 local worker fixtures promoted to live Xi authority"
             exit 1
