@@ -328,3 +328,58 @@ jobs:
           path: r1810-public-evidence/
           retention-days: 21
           if-no-files-found: error
+      - name: R18.11 simulated local pin, wrong-key rejection and rotation conformance
+        run: |
+          python -m py_compile reference/python/xi_pin_policy_r1811.py scripts/xi_r1811_make_self_derived_test_pin.py
+          node --check reference/js/xi_pin_policy_r1811.cjs
+          python -m unittest discover -s tests -p 'test_xi_pin_r1811.py' -v
+          node --test tests/test_xi_pin_r1811.cjs
+          mkdir -p r1811-public-evidence
+          for case in digest policy replay revoked; do
+            python reference/python/xi_signed_receipt_r1810.py emit --case "$case" --out "r1811-public-evidence/python-$case.json"
+            node reference/js/xi_signed_receipt_r1810.cjs emit --case "$case" --out "r1811-public-evidence/node-$case.json"
+            python scripts/xi_r1811_make_self_derived_test_pin.py --from-signed "r1811-public-evidence/python-$case.json" --out "r1811-public-evidence/test-pin-python-$case.json"
+            python scripts/xi_r1811_make_self_derived_test_pin.py --from-signed "r1811-public-evidence/node-$case.json" --out "r1811-public-evidence/test-pin-node-$case.json"
+            node reference/js/xi_pin_policy_r1811.cjs verify --file "r1811-public-evidence/python-$case.json" --policy "r1811-public-evidence/test-pin-python-$case.json" > "r1811-public-evidence/node-verified-python-$case.json"
+            python reference/python/xi_pin_policy_r1811.py verify --file "r1811-public-evidence/node-$case.json" --policy "r1811-public-evidence/test-pin-node-$case.json" > "r1811-public-evidence/python-verified-node-$case.json"
+            if node reference/js/xi_pin_policy_r1811.cjs verify --file "r1811-public-evidence/python-$case.json" --policy "r1811-public-evidence/test-pin-node-$case.json"; then
+              echo "FAIL: Node accepted mathematically valid signature from unpinned key"
+              exit 1
+            fi
+            if python reference/python/xi_pin_policy_r1811.py verify --file "r1811-public-evidence/node-$case.json" --policy "r1811-public-evidence/test-pin-python-$case.json"; then
+              echo "FAIL: Python accepted mathematically valid signature from unpinned key"
+              exit 1
+            fi
+          done
+          python scripts/xi_r1811_make_self_derived_test_pin.py --from-signed r1811-public-evidence/node-digest.json --revoked-from r1811-public-evidence/python-digest.json --epoch 2 --out r1811-public-evidence/test-rotated-policy.json
+          node reference/js/xi_pin_policy_r1811.cjs verify --file r1811-public-evidence/node-digest.json --policy r1811-public-evidence/test-rotated-policy.json
+          python reference/python/xi_pin_policy_r1811.py verify --file r1811-public-evidence/node-digest.json --policy r1811-public-evidence/test-rotated-policy.json
+          if node reference/js/xi_pin_policy_r1811.cjs verify --file r1811-public-evidence/python-digest.json --policy r1811-public-evidence/test-rotated-policy.json; then
+            echo "FAIL: retired test key accepted after simulated rotation"
+            exit 1
+          fi
+          if python reference/python/xi_pin_policy_r1811.py verify --file r1811-public-evidence/python-digest.json --policy r1811-public-evidence/test-rotated-policy.json; then
+            echo "FAIL: retired test key accepted after simulated rotation"
+            exit 1
+          fi
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          for p in Path("r1811-public-evidence").glob("*verified-*.json"):
+              data=json.loads(p.read_text())
+              assert data["status"]=="LOCAL_SIMULATED_PIN_MATCH_AND_SIGNATURE_VALID_ONLY"
+              assert data["independent_partner_identity_verified"] is False
+              assert data["out_of_band_key_authentication_verified"] is False
+              assert data["operator_approvals"]==0 and data["approved_operations"]==0
+              assert data["external_gates_promoted"]==0 and data["live_xi_connected"] is False
+              assert data["authority"]=="none"
+          PY
+          if python reference/python/xi_pin_policy_r1811.py require-live; then exit 1; fi
+          if node reference/js/xi_pin_policy_r1811.cjs require-live; then exit 1; fi
+      - name: Archive R18.11 public fixture-derived pin mismatch and rotation receipts
+        uses: actions/upload-artifact@v4
+        with:
+          name: phi-xi-r18-11-untrusted-test-pin-rotation-and-refusal
+          path: r1811-public-evidence/
+          retention-days: 21
+          if-no-files-found: error
