@@ -392,3 +392,19 @@ Offline support works after successful first load on HTTPS or localhost, caching
 
 [Read R17.3 architecture, safe publishing instructions, source integrity and offline limits](docs/XI_COMMONS_GATEWAY_R173.md).
 **LIVE_XI_CONNECTED=false. Capability ≠ Authority.**
+
+
+## R18.1 · Two-House Local Simulation Lab
+
+Build on the R16 mutually pinned Ed25519 challenge/proof/receipt fixture and the R18 immutable synthetic digest packet to exercise an **actual two-process local handshake and read-only digest exchange**. The two fixture peers use independent ephemeral keys, policy allowlists, SQLite replay journals, unilateral pause/revoke controls and re-handshake after a worker restart. They exchange `xi.exchange.v1`-shaped, signed `tool.request` and `tool.result` envelopes for **only** `artifact.sha256`, never arbitrary tools.
+
+```bash
+python -m pip install -r requirements-r3.txt
+python reference/python/xi_two_house_r181.py demo
+python -m unittest discover -s tests -p 'test_xi_two_house_r181.py' -v
+python reference/python/xi_two_house_r181.py require-live  # must refuse, exit 2
+```
+
+The demo emits only redacted outcomes and the public synthetic fixture fingerprint. GitHub CI publishes a read-only witness artifact, with comprehensive negative controls for payload tampering, replay across restart, forged peers, forged scopes, revoked peers and missing policy. It is **two local processes on one physical host**, not a real Hunter/Xi session or two-host field pilot. The fixture-only signing profile is **not** a jointly approved Xi-native transport/authentication suite. R17 external gates remain BLOCKED; R18 real two-host crossing remains NOT RUN.
+
+[Read R18.1 exact message flow, trust boundary, limitations and future pilot gates](docs/XI_TWO_HOUSE_LOCAL_LAB_R181.md).
