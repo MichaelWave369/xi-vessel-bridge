@@ -155,6 +155,18 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
            b"runAll()" in fault_ui and b"validateWorkerReport" in fault_core and
            b"file.arrayBuffer()" in fault_ui and len(fault_css) > 100,
            "Published R18.3 browser-only simulator assets are missing")
+    room_page = fetcher(url + "room.html")
+    room_css = fetcher(url + "room.css")
+    room_js = fetcher(url + "room.js")
+    insist(b"Xi Room Re-entry Briefing" in room_page and
+           b"EXTERNAL PILOT BLOCKED" in room_page and
+           b"REAL TWO-HOST TEST NOT RUN" in room_page and
+           b"connect-src 'none'" in room_page and
+           b'./room.js' in room_page and
+           b'40254943486' in room_page and
+           len(room_css) > 400 and b"navigator.clipboard.writeText" in room_js and
+           b"field.select()" in room_js,
+           "Public R18.5 nonsecret room briefing not deployed or unsafe")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
            "Generated offline worker is absent or unversioned")
@@ -176,7 +188,8 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 14 + len(PACKETS),
+        "checked_public_resources": 17 + len(PACKETS),
+        "r18_5_scope": "PUBLIC_NONSECRET_ROOM_BRIEFING_NO_EXTERNAL_AUTHORITY",
         "r18_3_scope": "BROWSER_ONLY_DETERMINISTIC_NO_CRYPTO",
         "lab_preview_sha256": preview_hash, "lab_scope": "ILLUSTRATIVE_AND_UNTRUSTED_IMPORTS_ONLY",
         "verified_synthetic_packets": verified,
