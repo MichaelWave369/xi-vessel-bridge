@@ -246,3 +246,10 @@ jobs:
           node --test tests/test_room_briefing_r185.cjs
           python -m unittest discover -s tests -p 'test_room_briefing_r185.py' -v
           python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
+      - name: R18.6 source-bound bilateral gate agenda and offline board guards
+        run: |
+          node --check roadmap/gates-core.js
+          node --check roadmap/gates.js
+          node --test tests/test_gate_board_r186.cjs
+          python -m unittest discover -s tests -p 'test_gate_board_r186.py' -v
+          python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
