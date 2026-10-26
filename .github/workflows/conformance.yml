@@ -203,3 +203,11 @@ jobs:
           path: simulation-output/r181-public-simulation.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: R18.2 local-only console shape, redaction and browser security negative controls
+        run: |
+          node --check roadmap/lab-core.js
+          node --check roadmap/lab.js
+          node --test tests/test_lab_core_r182.cjs
+          python -m unittest discover -s tests -p "test_lab_console_r182.py" -v
+          python -m unittest discover -s tests -p "test_commons_deployment_r175.py" -v
