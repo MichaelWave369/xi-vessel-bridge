@@ -19,6 +19,12 @@ jobs:
           python-version: "3.12"
       - name: Install R3 offline crypto test dependency
         run: python -m pip install -r requirements-r3.txt
+
+      - name: R18.8 cold third-party bundle intake invariants (synthetic tests only)
+        run: |
+          python -m py_compile scripts/xi_cold_intake_r188.py
+          python -m unittest discover -s tests -p 'test_xi_cold_intake_r188.py' -v
+          # Deliberately DO NOT check in or run received Xi source ZIPs.
       - name: Run reciprocal R3 sealed fixture
         run: python reference/python/demo_peer_r3.py
       - name: Run two-process R4 fixture

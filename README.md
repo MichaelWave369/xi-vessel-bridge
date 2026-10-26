@@ -13,6 +13,19 @@ The first target pairing is **Super Φ.Vessel** and **ForgeCore**, but the proto
 
 A peer may advertise that a capability exists. That advertisement never grants permission to invoke it. Every remote operation is separately permission-gated by the receiving system.
 
+## R18.8 · Xi → Φ Cold Partner Bundle Intake
+
+Hunter's team supplied four QuantumCompute ZIP packages for review. This milestone adds a **standard-library-only, non-extracting cold intake tool** (`scripts/xi_cold_intake_r188.py`) plus synthetic adversarial tests. The received archives are **not** copied into this public repository or executed in CI.
+
+The tool checks ZIP structural safety, CRC, manifest pins, unmanifested files, symlinks/path traversal, nested duplicate v28 and LivingCircuit archive identities, and strict decompression limits. It produces a **redacted, local-only** self-consistency report without any source content or local path. Three observed source-tree quirks stay visible: a separately pinned but unmanifested `START-HERE.txt`, a declared missing kernel research directory, and an invalid nine-byte `shizuku-cli.zip` placeholder.
+
+See [R18.8 cold intake runbook, provenance limitations, and five proposed compatibility stages](docs/XI_R188_COLD_INTAKE.md). The bundle manifest is NOT independently signed partner authorization or a license to publish. No Xi endpoint, remote execution, independently authenticated peer, human approval or external pilot readiness is inferred. **R17 BLOCKED · R18 two-host NOT RUN · LIVE_XI_CONNECTED=false.**
+
+```bash
+python -m unittest discover -s tests -p 'test_xi_cold_intake_r188.py' -v
+python scripts/xi_cold_intake_r188.py --help
+```
+
 ## v0.1 handshake
 
 The first conformance path is deliberately small:
