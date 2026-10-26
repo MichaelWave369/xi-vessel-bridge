@@ -53,6 +53,10 @@ STATIC_FILES = {
     "gates.css": "gates.css",
     "gates.js": "gates.js",
     "gates-core.js": "gates-core.js",
+    "charter.html": "charter.html",
+    "charter.css": "charter.css",
+    "charter.js": "charter.js",
+    "charter-core.js": "charter-core.js",
 }
 SCHEMA = "PhiXi.PublicHandoffManifest.R17_3.v1"
 
