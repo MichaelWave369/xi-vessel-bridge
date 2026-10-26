@@ -187,10 +187,12 @@ def _pins(doc: dict, role: str) -> dict:
 def audit_archive(role: str, path: pathlib.Path) -> dict:
     insist(role in ROLES, "unknown bundle role")
     try:
+        size = path.stat().st_size
+        insist(0 < size <= 48 * 1024 * 1024, "outer archive size outside limits")
         raw = path.read_bytes()
     except (OSError, ValueError) as exc:
         raise IntakeRefused("local bundle missing or unreadable") from exc
-    insist(0 < len(raw) <= 48 * 1024 * 1024, "outer archive size outside limits")
+    insist(len(raw) == size, "outer archive changed during local read")
     insist(zipfile.is_zipfile(io.BytesIO(raw)), "outer bundle is not a ZIP")
     try:
         with zipfile.ZipFile(io.BytesIO(raw)) as z:
