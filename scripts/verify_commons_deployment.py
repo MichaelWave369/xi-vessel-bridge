@@ -141,6 +141,18 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
            b"redactedReview" in lab_core and b"IMPORTED_UNTRUSTED_WITNESS" in lab_script and
            b"file.arrayBuffer()" in lab_script,
            "Published lab core/viewer missing or unexpected")
+    fault_page = fetcher(url + "fault.html")
+    insist(b"Failure-Injection Sandbox" in fault_page and
+           b"connect-src 'none'" in fault_page and
+           b"./fault-core.js" in fault_page and b"./fault.js" in fault_page,
+           "Published R18.3 browser-only sandbox absent or unsafe")
+    fault_core = fetcher(url + "fault-core.js")
+    fault_ui = fetcher(url + "fault.js")
+    fault_css = fetcher(url + "fault.css")
+    insist(b"PhiXi.R18_3_LocalFaultScenario.v1" in fault_core and
+           b"ILLUSTRATIVE_DETERMINISTIC_BROWSER_SIMULATION" in fault_core and
+           b"runAll()" in fault_ui and len(fault_css) > 100,
+           "Published R18.3 browser-only simulator assets are missing")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
            "Generated offline worker is absent or unversioned")
@@ -162,7 +174,8 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 10 + len(PACKETS),
+        "checked_public_resources": 14 + len(PACKETS),
+        "r18_3_scope": "BROWSER_ONLY_DETERMINISTIC_NO_CRYPTO",
         "lab_preview_sha256": preview_hash, "lab_scope": "ILLUSTRATIVE_AND_UNTRUSTED_IMPORTS_ONLY",
         "verified_synthetic_packets": verified,
         "live_xi_connected": False,
