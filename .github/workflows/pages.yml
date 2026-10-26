@@ -90,6 +90,10 @@ jobs:
           node --check roadmap/gates-core.js
           node --check roadmap/gates.js
           node --test tests/test_gate_board_r186.cjs
+          node --check roadmap/charter-core.js
+          node --check roadmap/charter.js
+          node --test tests/test_charter_core_r187.cjs
+          python -m unittest discover -s tests -p 'test_charter_bundle_r187.py' -v
           python -m unittest discover -s tests -p 'test_gate_board_r186.py' -v
           python -m unittest discover -s tests -p 'test_room_briefing_r185.py' -v
           python -m unittest discover -s tests -p 'test_fault_bundle_r183.py' -v
