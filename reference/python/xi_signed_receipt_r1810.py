@@ -143,7 +143,7 @@ def verify(data):
             "self-issued fixture attempted privilege promotion")
     receipt = _strict_b64_decode(value["receipt_b64"])
     base.verify(receipt)
-    require(value["case_id"] in base.CASES and
+    require(type(value["case_id"]) is str and value["case_id"] in base.CASES and
             value["case_id"] == json.loads(receipt)["case_id"], "case mismatch")
     require(value["receipt_sha256"] == sha(receipt), "receipt digest mismatch")
     message = domain_message(receipt)
