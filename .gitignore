@@ -24,3 +24,10 @@ r12-output/
 
 # Generated R17.3 public static gateway preview; rebuilt by CI/Pages
 dist/
+
+# R18.8 private partner handoff: never accidentally commit received archives
+/partner-inbox/
+/xi-partner-bundles/
+xi-r188-local-cold-intake.json
+xi_phi_r188_local_handoff_receipt.json
+*.zip
