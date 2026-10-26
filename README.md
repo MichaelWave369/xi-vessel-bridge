@@ -52,6 +52,21 @@ A valid Ed25519 signature from an **unpinned, self-issued key does not authentic
 
 [Read R18.10's domain-separated byte contract, test instructions and trust limitations](docs/XI_R1810_EPHEMERAL_ED25519_INTEROP.md).
 
+## R18.11 · Simulated Local Key Pin, Rotation and Revocation
+
+R18.10 established that **Python and Node independently verify ephemeral Ed25519 signatures**. **R18.11 adds a second, separately supplied local test policy:** a mathematically valid signature from the *wrong* public key must be refused, and a locally revoked key must remain refused under the current policy.
+
+Both runtimes verify the existing R18.10 signed synthetic receipts and a strict `PhiXi.R18_11_SimulatedLocalPinPolicy.v1` JSON file. CI tests four cases in both directions, cross-swaps deliberately mismatched test pins, then rotates one simulated public key to another and rejects the retired key. Key files are **explicitly self-derived and unauthenticated test fixtures**, not verified Hunter/Xi fingerprints. No private keys are exported or persisted.
+
+The results never claim real peer identity, an out-of-band key ceremony, durable anti-rollback, partner authorization, a live Xi connection or a successful physical two-host crossing. All 16 external gates remain outstanding, R17 `BLOCKED`, R18 real two-host `NOT_RUN`, `authority=none`.
+
+[Read R18.11 policy format, rotation procedure, adversarial tests and limits](docs/XI_R1811_TEST_PIN_ROTATION_AND_REVOCATION.md).
+
+```sh
+python -m unittest discover -s tests -p 'test_xi_pin_r1811.py' -v
+node --test tests/test_xi_pin_r1811.cjs
+```
+
 ## v0.1 handshake
 
 The first conformance path is deliberately small:
