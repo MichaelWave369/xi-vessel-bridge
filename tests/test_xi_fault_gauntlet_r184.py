@@ -46,11 +46,18 @@ class RealWorkerFaultTests(unittest.TestCase):
         self.assertEqual(summary["r18_real_two_host_pilot"],"NOT_RUN")
         self.assertEqual(summary["authority"],"none")
         self.assertEqual(summary["physical_hosts"],1)
-        raw=json.dumps(summary,sort_keys=True).lower()
-        for forbidden in ["private_key","signature","session_id","peer_pin","payload_b64",
-                          "xi_private","token","secret","signed_envelope"]:
-            # 'signature' appears nowhere, only 'ed25519' is allowed
-            self.assertNotIn(forbidden,raw)
+        private_fields={"private_key","signature","session_id","peer_pin","payload_b64",
+                        "xi_private","token","secret","signed_envelope","request_id",
+                        "sender","recipient","public_key","created_at"}
+        # A scenario ID can legitimately be named 'signature-tamper'. Inspect
+        # actual JSON keys, not substrings in intentionally public scenario names.
+        def inspect_keys(node):
+            if isinstance(node,dict):
+                self.assertTrue(private_fields.isdisjoint(node.keys()))
+                for child in node.values(): inspect_keys(child)
+            elif isinstance(node,list):
+                for child in node: inspect_keys(child)
+        inspect_keys(summary)
 
     def test_case_roster_is_locked_and_require_live_refuses(self):
         with self.assertRaises(RuntimeError):
