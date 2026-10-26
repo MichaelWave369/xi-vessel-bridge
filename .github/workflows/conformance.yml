@@ -253,3 +253,9 @@ jobs:
           node --test tests/test_gate_board_r186.cjs
           python -m unittest discover -s tests -p 'test_gate_board_r186.py' -v
           python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
+
+      - name: R18.8 cold third-party bundle intake invariants (synthetic tests only)
+        run: |
+          python -m py_compile scripts/xi_cold_intake_r188.py
+          python -m unittest discover -s tests -p 'test_xi_cold_intake_r188.py' -v
+          # Deliberately DO NOT check in or run received Xi source ZIPs.
