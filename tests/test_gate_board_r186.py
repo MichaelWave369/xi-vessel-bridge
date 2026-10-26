@@ -22,7 +22,7 @@ class ReadinessBoardTests(unittest.TestCase):
             self.assertTrue((self.root/name).is_file(),name)
             self.assertIn('"./'+name+'"',(self.root/"sw.js").read_text())
         homepage=(self.root/"index.html").read_text()
-        self.assertIn("Seven views. One source of truth.",homepage)
+        self.assertIn("Eight views. One source of truth.",homepage)
         self.assertIn('href="./gates.html"',homepage)
         board=(self.root/"gates.html").read_text()
         self.assertIn("16 / 16 EXTERNAL GATES OUTSTANDING",board)

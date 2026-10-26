@@ -23,7 +23,7 @@ class FaultBundleTests(unittest.TestCase):
             self.assertTrue((self.site/asset).is_file(),asset)
         self.assertIn('href="./fault.html"',(self.site/"index.html").read_text())
         self.assertIn('href="./fault.html"',(self.site/"lab.html").read_text())
-        self.assertIn("Seven views. One source of truth.",(self.site/"index.html").read_text())
+        self.assertIn("Eight views. One source of truth.",(self.site/"index.html").read_text())
 
     def test_self_contained_page_cannot_issue_network_calls(self):
         html=(self.site/"fault.html").read_text()

@@ -22,7 +22,7 @@ class RoomReentryTests(unittest.TestCase):
             self.assertTrue((self.site/name).is_file())
         index=(self.site/"index.html").read_text()
         self.assertIn('href="./room.html"',index)
-        self.assertIn("Seven views. One source of truth.",index)
+        self.assertIn("Eight views. One source of truth.",index)
         page=(self.site/"room.html").read_text()
         self.assertIn("connect-src 'none'",page)
         self.assertIn("REAL TWO-HOST TEST NOT RUN",page)
