@@ -15,3 +15,15 @@ dl{margin:15px 0}dl>div{display:flex;justify-content:space-between;align-items:b
 .cta{margin-top:55px;padding:25px;border:1px solid #477389;border-radius:18px;background:#12344a;display:flex;justify-content:space-between;align-items:center;gap:22px}.cta p{margin-bottom:0}.cta a{white-space:nowrap}
 footer{padding:25px;max-width:1160px;margin:auto;border-top:1px solid var(--line);font-size:.8rem;color:var(--muted)}
 @media(max-width:940px){.workbench{grid-template-columns:1fr}.matrix{grid-template-columns:repeat(2,1fr)}}@media(max-width:630px){main{padding:25px 16px 60px}.top{padding:15px 16px}.metrics{grid-template-columns:repeat(2,1fr)}.trace li{grid-template-columns:1fr;gap:2px}.matrix{grid-template-columns:1fr}.cta{display:block}.cta a{display:inline-block;white-space:normal;margin-top:12px}.control,.result{padding:20px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+
+/* R18.4 independent local-worker evidence remains untrusted until externally authenticated. */
+.worker-evidence{border-top:1px solid var(--line);padding-top:32px}
+.worker-panel{display:grid;grid-template-columns:1.35fr .85fr;gap:15px;margin:20px 0 18px}
+.worker-panel>div{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px}
+.worker-panel input[type=file]{display:block;width:100%;padding:12px;border:1px dashed #628399;border-radius:9px;background:#091c2e;color:var(--ink);font:inherit;font-size:.85rem}
+.worker-panel .actions{align-items:center}
+.worker-panel .actions a{font-size:.85rem}
+.r184-provenance{display:flex;flex-direction:column;gap:12px}
+.r184-provenance>span{font-size:.83rem;font-weight:850;color:var(--amber)}
+.r184-provenance p{font-size:.85rem;margin:0}
+@media(max-width:850px){.worker-panel{grid-template-columns:1fr}}
