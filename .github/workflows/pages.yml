@@ -85,6 +85,9 @@ jobs:
           node --check roadmap/fault-core.js
           node --check roadmap/fault.js
           node --test tests/test_fault_core_r183.cjs
+          node --check roadmap/room.js
+          node --test tests/test_room_briefing_r185.cjs
+          python -m unittest discover -s tests -p 'test_room_briefing_r185.py' -v
           python -m unittest discover -s tests -p 'test_fault_bundle_r183.py' -v
       - name: Prepare static Pages artifact
         uses: actions/upload-pages-artifact@v3

@@ -1,0 +1,28 @@
+:root{color-scheme:dark;--bg:#091320;--card:#152a3b;--border:#3f6073;--text:#edf9ff;--muted:#abc7d2;--mint:#81f4da;--gold:#ffd18a}
+*{box-sizing:border-box}body{font:15px/1.65 system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(ellipse at 0 0,#18384b,transparent 42%),radial-gradient(ellipse at 100% 3%,#282344,transparent 40%),var(--bg);color:var(--text);margin:0}
+a{color:var(--mint)}a:hover{color:white}a:focus-visible,button:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:4px}.skip{position:absolute;left:10px;top:-80px;padding:10px;background:white;color:black;z-index:4}.skip:focus{top:10px}
+header{border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;align-items:center;padding:18px max(20px,calc((100vw - 1160px)/2))}.brand{text-decoration:none;color:var(--text);font-size:1.3rem;font-weight:850}.brand small{font-size:.54rem;letter-spacing:.16em;color:var(--muted)}
+nav{display:flex;gap:20px;flex-wrap:wrap}nav a{font-size:.85rem;text-decoration:none;color:var(--muted)}
+main{max-width:1160px;margin:0 auto;padding:45px 22px 85px}.eyebrow{color:var(--mint);font-size:.73rem;letter-spacing:.19em;font-weight:850;text-transform:uppercase}
+h1{font-size:clamp(2.9rem,6.6vw,5.3rem);letter-spacing:-.072em;line-height:1.07;margin:17px 0}h1 em{font-style:normal;color:var(--mint)}
+h2{font-size:1.65rem;line-height:1.2;letter-spacing:-.038em;margin:11px 0 19px}
+p{color:var(--muted);max-width:830px}.hero{padding:18px 0 22px}.hero p{font-size:1.06rem}
+.flags{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}.flags span{padding:7px 12px;border:1px solid #719687;border-radius:30px;color:#e6f7d5;font-weight:800;font-size:.73rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:30px 0 38px}
+.stats>div{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:19px}
+.stats strong{color:var(--mint);font-size:2.3rem;line-height:1;display:block}
+.stats span{font-size:.79rem;color:var(--muted);display:block;margin-top:12px}
+.column-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.panel{background:var(--card);padding:25px;border-radius:17px;border:1px solid var(--border)}
+.panel.warning{border-color:#9b7450}.panel li{padding-bottom:9px;color:#d5e7ee}.panel ul{padding-left:21px}.panel .sub{font-size:.8rem;color:var(--gold)}
+.section{margin-top:55px}.section label{display:block;margin:18px 0 9px;font-weight:750;color:var(--mint);font-size:.88rem}
+textarea{display:block;width:100%;min-height:190px;padding:20px;color:var(--text);background:#0c2031;border:1px solid #6d8c96;border-radius:13px;font:14px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}
+.actions{display:flex;gap:15px;flex-wrap:wrap;align-items:center;margin-top:15px}.actions span{color:var(--gold);font-size:.83rem}
+button{font:inherit;font-size:.9rem;font-weight:850;background:var(--mint);color:#092127;border:none;border-radius:11px;padding:12px 19px;cursor:pointer}
+.links{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.links a{background:var(--card);padding:17px;border:1px solid var(--border);border-radius:13px;text-decoration:none}
+.links a strong{color:var(--mint);font-size:.94rem;display:block}.links small{display:block;margin-top:8px;color:var(--muted);font-size:.78rem}
+.bottom{margin-top:60px;padding:23px;background:#174152;border:1px solid #4f948e;border-radius:17px}.bottom strong{font-size:1.2rem}.bottom p{font-size:.85rem}
+footer{max-width:1160px;margin:auto;border-top:1px solid var(--border);padding:20px 22px 45px;color:var(--muted);font-size:.79rem}
+@media(max-width:870px){.column-grid{grid-template-columns:1fr}.links{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){main{padding:27px 15px 65px}header{padding:16px 15px}.stats{grid-template-columns:repeat(2,1fr)}.links{grid-template-columns:1fr}h1{font-size:clamp(2.3rem,11vw,3.8rem)}.panel{padding:19px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
