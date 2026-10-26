@@ -92,7 +92,7 @@ function main(args){
   return 0;
  }
  if(cmd==="verify"&&flag==="--file"&&typeof value==="string"&&remaining.length===0){
-  const info=fs.statSync(value);
+  const info=fs.lstatSync(value);
   requireThat(info.isFile()&&info.size<=MAX_BYTES&&!info.isSymbolicLink(),"invalid file");
   process.stdout.write(JSON.stringify(verify(fs.readFileSync(value)))+"\n");
   return 0;
