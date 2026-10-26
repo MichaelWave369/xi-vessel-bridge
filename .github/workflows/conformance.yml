@@ -297,3 +297,34 @@ jobs:
           path: r189-public-evidence/
           retention-days: 21
           if-no-files-found: error
+
+      - name: R18.10 cross-runtime Ed25519 ephemeral self-issued signature gauntlet
+        run: |
+          python -m py_compile reference/python/xi_signed_receipt_r1810.py
+          node --check reference/js/xi_signed_receipt_r1810.cjs
+          python -m unittest discover -s tests -p 'test_xi_signed_receipt_r1810.py' -v
+          node --test tests/test_xi_signed_receipt_r1810.cjs
+          mkdir -p r1810-public-evidence
+          for case in digest policy replay revoked; do
+            python reference/python/xi_signed_receipt_r1810.py emit --case "$case" --out "r1810-public-evidence/python-$case.json"
+            node reference/js/xi_signed_receipt_r1810.cjs emit --case "$case" --out "r1810-public-evidence/node-$case.json"
+            python reference/python/xi_signed_receipt_r1810.py verify --file "r1810-public-evidence/node-$case.json" > "r1810-public-evidence/python-verified-node-$case.json"
+            node reference/js/xi_signed_receipt_r1810.cjs verify --file "r1810-public-evidence/python-$case.json" > "r1810-public-evidence/node-verified-python-$case.json"
+            python -c 'import json,sys;p=json.load(open(sys.argv[1]));assert p["status"]=="SELF_ISSUED_EPHEMERAL_SIGNATURE_MATH_VALID" and p["independent_partner_identity_verified"] is False and p["operator_approvals"]==0 and p["approved_operations"]==0 and p["external_gates_promoted"]==0 and p["live_xi_connected"] is False and p["authority"]=="none"' "r1810-public-evidence/python-verified-node-$case.json"
+            python -c 'import json,sys;p=json.load(open(sys.argv[1]));assert p["status"]=="SELF_ISSUED_EPHEMERAL_SIGNATURE_MATH_VALID" and p["independent_partner_identity_verified"] is False and p["operator_approvals"]==0 and p["approved_operations"]==0 and p["external_gates_promoted"]==0 and p["live_xi_connected"] is False and p["authority"]=="none"' "r1810-public-evidence/node-verified-python-$case.json"
+          done
+          if python reference/python/xi_signed_receipt_r1810.py require-live; then
+            echo "FAIL: Python ephemeral signer presented as live Xi authority"
+            exit 1
+          fi
+          if node reference/js/xi_signed_receipt_r1810.cjs require-live; then
+            echo "FAIL: Node ephemeral signer presented as live Xi authority"
+            exit 1
+          fi
+      - name: Archive R18.10 public self-issued signatures and cross-runtime math checks
+        uses: actions/upload-artifact@v4
+        with:
+          name: phi-xi-r18-10-unpinned-ephemeral-signature-cross-verification
+          path: r1810-public-evidence/
+          retention-days: 21
+          if-no-files-found: error
