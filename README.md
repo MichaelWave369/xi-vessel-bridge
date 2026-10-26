@@ -436,3 +436,18 @@ This is a **JavaScript model**, not the R18.1 cryptographic worker execution. It
 [Read the simulation model, all failure modes, security boundary and reproducible tests](docs/XI_FAILURE_INJECTION_SANDBOX_R183.md).
 
 Tests: node --test tests/test_fault_core_r183.cjs; python -m unittest discover -s tests -p test_fault_bundle_r183.py -v.
+
+
+## R18.4 · Real-Local-Worker Cryptographic Fault Gauntlet
+
+R18.3 illustrates 14 safe failure cases in-browser. **R18.4 now executes those same 14 scenarios** against the real **local R18.1 Python workers** with independently keyed Ed25519 fixture processes, per-house R16 handshakes, separately governed operation allowlists, and SQLite replay ledgers. The gauntlet verifies signed-byte tamper rejection, wrong identities/session/recipient, local refusal, pause/revoke, restart-persistent request replay refusal, tampered signed result receipt and lost reply after a one-time commit.
+
+```sh
+python reference/python/xi_fault_gauntlet_r184.py demo
+python -m unittest discover -s tests -p 'test_xi_fault_gauntlet_r184.py' -v
+node --test tests/test_fault_worker_r184.cjs
+```
+
+Conformance CI publishes only a redacted local fixture report. The R18.3 sandbox can inspect that report **through a local file input** with strict JSON shape checks, while explicitly labeling it **unauthenticated**. Actual local Ed25519/SQLite evidence is not a real Xi peer or physical two-host transport. `require-live` must refuse.
+
+[Read the R18.4 cryptographic fault matrix, replay/lost-reply behavior, artifact contract and operator limits](docs/XI_LOCAL_CRYPTO_FAULT_GAUNTLET_R184.md). **R17 external BLOCKED · R18 two-host NOT RUN · LIVE_XI_CONNECTED=false.**

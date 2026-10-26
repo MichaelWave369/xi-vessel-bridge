@@ -144,14 +144,16 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
     fault_page = fetcher(url + "fault.html")
     insist(b"Failure-Injection Sandbox" in fault_page and
            b"connect-src 'none'" in fault_page and
-           b"./fault-core.js" in fault_page and b"./fault.js" in fault_page,
+           b"./fault-core.js" in fault_page and b"./fault.js" in fault_page and
+           b'id="r184-file"' in fault_page,
            "Published R18.3 browser-only sandbox absent or unsafe")
     fault_core = fetcher(url + "fault-core.js")
     fault_ui = fetcher(url + "fault.js")
     fault_css = fetcher(url + "fault.css")
     insist(b"PhiXi.R18_3_LocalFaultScenario.v1" in fault_core and
            b"ILLUSTRATIVE_DETERMINISTIC_BROWSER_SIMULATION" in fault_core and
-           b"runAll()" in fault_ui and len(fault_css) > 100,
+           b"runAll()" in fault_ui and b"validateWorkerReport" in fault_core and
+           b"file.arrayBuffer()" in fault_ui and len(fault_css) > 100,
            "Published R18.3 browser-only simulator assets are missing")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
