@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="R18.3 purely local Xi–Phi failure-injection teaching sandbox; no real cryptography, connections or Xi authority.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'none'; worker-src 'none'; img-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="./fault.css"><title>Ξ ⇄ Φ | R18.3 Failure-Injection Sandbox</title></head>
+<body><a class="skip" href="#main">Skip to sandbox</a>
+<header class="top"><a class="brand" href="./">Ξ ⋈ Φ <small>COMMONS</small></a><nav aria-label="Navigation">
+<a href="./">Gateway</a><a href="./lab.html">Operator console</a><a href="./roadmap.html">Roadmap</a>
+<a href="https://github.com/MichaelWave369/xi-vessel-bridge" target="_blank" rel="noopener noreferrer">Source ↗</a></nav></header>
+<main id="main">
+<section class="hero"><div class="eyebrow">R18.3 / LOCAL DETERMINISTIC SANDBOX</div>
+<h1>Break the handshake.<br><em>Not the houses.</em></h1>
+<p>Explore how independent local policies should react when synthetic messages are tampered with, replayed, delayed, misdirected or revoked. These are deterministic <strong>illustrations</strong>, not actual Ed25519 signature checks or a live Xi connection.</p>
+<div class="truth"><strong>SIMULATION ONLY</strong><span>One illustrative host · No network operations · No grants · No Xi credentials</span></div></section>
+<section class="metrics" aria-label="Fixed sandbox limitations">
+<div><strong id="scenario-count">14</strong><span>Fixed failure scenarios</span></div>
+<div><strong>0</strong><span>Real Xi receipts</span></div><div><strong>0</strong><span>External gates promoted</span></div><div><strong>1</strong><span>Illustrative physical host</span></div>
+</section>
+<section class="workbench"><article class="control">
+<div class="eyebrow">01 / CHOOSE AN INJECTION</div><h2>Failure controls</h2>
+<label for="scenario">Synthetic failure mode</label><select id="scenario" aria-describedby="scenario-desc"></select>
+<p id="scenario-desc">Choose a local failure scenario to inspect.</p>
+<div class="actions"><button class="primary" id="run" type="button">Run this simulation</button><button id="run-all" type="button">Run all 14 cases</button><button id="reset" type="button">Clear results</button></div>
+<p id="status" role="status" aria-live="polite">No simulation run. All external pilot permissions remain blocked.</p>
+<div class="safety"><strong>What these buttons do not do</strong><p>No Python processes, no signatures, no live Xi peer, no outbound traffic, no permission modifications, no private file access. This page uses a fixed JS state machine to demonstrate expected refusal paths.</p></div>
+</article>
+<article class="result">
+<div class="eyebrow">02 / LOCAL OUTCOME</div><h2>Receiver's decision</h2>
+<div id="decision" class="decision">NOT RUN</div>
+<dl><div><dt>Expected</dt><dd id="expected">Not selected</dd></div><div><dt>Observed</dt><dd id="observed">Not run</dd></div><div><dt>Denial / outcome reason</dt><dd id="reason">None</dd></div>
+<div><dt>Receiver commits</dt><dd id="commits">0</dd></div><div><dt>Externally authorized actions</dt><dd>0</dd></div></dl>
+<button id="download" type="button" disabled>Download redacted scenario review</button>
+<p class="small">PASS means the illustrative state machine matched its expected result. It does <strong>not</strong> verify a real implementation or Xi operator.</p>
+</article></section>
+<section class="section"><div class="eyebrow">03 / PROCESS TRACE</div><h2>What each simulated house decided</h2>
+<p>Follow the abstract event sequence. Names, message IDs, times, and policies are fixed test fixtures, never actual credentials or remote packets.</p>
+<ol id="trace" class="trace"><li>No simulation selected.</li></ol></section>
+<section class="section"><div class="eyebrow">04 / FAILURE MATRIX</div><h2>Expected denials and safety outcomes</h2>
+<p>Run all scenarios to see whether the deterministic fixture reproduces its 14 defined outcomes. These do not replace R18.1's actual Python process tests.</p>
+<div id="matrix" class="matrix"><div class="empty">Select “Run all 14 cases” to populate the failure matrix.</div></div></section>
+<section class="cta"><div><strong>From simulation toward real evidence</strong><p>R18.1 executes cryptographic worker processes locally. R18.2 reviews their output. R18.3 illustrates failure policies. R17 external gates remain blocked; R18's actual two-host test has not run.</p></div><a href="./lab.html">Back to Operator Console ↗</a></section>
+</main>
+<footer>LEDGER ABOVE EGO · Two houses, independent keys · Capability never equals authority · LIVE_XI_CONNECTED=false</footer>
+<script src="./fault-core.js" defer></script><script src="./fault.js" defer></script>
+</body></html>

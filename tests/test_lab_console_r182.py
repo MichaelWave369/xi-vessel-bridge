@@ -28,7 +28,7 @@ class LabConsoleTests(unittest.TestCase):
             self.assertTrue((self.root/file).is_file(),file)
         html=(self.root/'index.html').read_text()
         self.assertIn('href="./lab.html"',html)
-        self.assertIn('Four views. One source of truth.',html)
+        self.assertIn('Five views. One source of truth.',html)
         console=(self.root/'lab.html').read_text()
         self.assertIn('live Xi connection'.upper(),console.upper())
         self.assertIn("connect-src 'self'",console)
