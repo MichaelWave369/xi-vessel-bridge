@@ -40,7 +40,8 @@ class PublicSiteVerificationTests(unittest.TestCase):
         self.assertEqual(result["authority"], "none")
         self.assertEqual(result["live_xi_connected"], False)
         self.assertEqual(result["r18_real_two_host_pilot"], "NOT_RUN")
-        self.assertEqual(result["checked_public_resources"], 10)
+        self.assertEqual(result["checked_public_resources"], 14)
+        self.assertEqual(result["lab_scope"], "ILLUSTRATIVE_AND_UNTRUSTED_IMPORTS_ONLY")
         self.assertEqual(len(result["verified_synthetic_packets"]), 4)
 
     def test_expected_manifest_matches_tested_build_bytes(self):
@@ -89,6 +90,21 @@ class PublicSiteVerificationTests(unittest.TestCase):
             return self.fake_get(url)
         with self.assertRaisesRegex(verify.NotVerified, "landing"):
             verify.verify_site(self.base, bad)
+
+    def test_wrong_expected_lab_preview_refused(self):
+        with self.assertRaisesRegex(verify.NotVerified, "lab preview differs"):
+            verify.verify_site(self.base, self.fake_get, expected_lab_preview="0" * 64)
+
+    def test_tampered_deployed_lab_preview_refused(self):
+        def tamper(url):
+            data = self.fake_get(url)
+            if url.endswith("/lab-preview.json"):
+                obj = json.loads(data)
+                obj["witness"]["live_xi_connected"] = True
+                return json.dumps(obj).encode()
+            return data
+        with self.assertRaisesRegex(verify.NotVerified, "lab preview"):
+            verify.verify_site(self.base, tamper)
 
     def test_unexpected_redirect_or_origin_rejected_before_request(self):
         with self.assertRaises(verify.NotVerified):

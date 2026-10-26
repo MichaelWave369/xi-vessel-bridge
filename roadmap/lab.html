@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="R18.2 Two-House Operator Console: local-only synthetic simulation evidence and externally blocked pilot gates.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none'">
+<link rel="stylesheet" href="./lab.css"><title>Ξ ⇄ Φ | Two-House Operator Console</title></head>
+<body>
+<a href="#main" class="skip">Skip to console</a>
+<header class="top"><a href="./">Ξ ⋈ Φ <small>COMMONS</small></a><nav aria-label="Navigation">
+<a href="./">Gateway</a><a href="./roadmap.html">Evidence roadmap</a><a href="./intake.html">Partner intake</a>
+<a href="https://github.com/MichaelWave369/xi-vessel-bridge" target="_blank" rel="noopener noreferrer">Source ↗</a></nav></header>
+<main id="main">
+<section class="hero">
+  <div><div class="eyebrow">R18.2 / OFFLINE INSPECTION DECK</div>
+  <h1>Two houses.<br><em>One evidence ledger.</em></h1>
+  <p>Inspect the R18.1 two-process simulation summary, test receipt claims and external readiness blockers. This is a <strong>local-only report viewer</strong>, not a simulator engine, remote Xi console or credential manager.</p>
+  <div class="hero-ctas"><button id="show-preview" class="primary" type="button">Load illustrative lab preview</button>
+  <button id="clear" type="button">Clear imported evidence</button></div></div>
+  <div class="badge-panel">
+    <div class="big-symbol" aria-hidden="true">Ξ ⇄ Φ</div>
+    <strong>Capability ≠ Authority</strong><span>Two local processes · One physical host</span>
+    <span class="alert">LIVE XI CONNECTION: NOT ESTABLISHED</span>
+  </div>
+</section>
+<section class="stats" aria-label="Current evidentiary scope">
+ <div><strong>2</strong><span>Simulated local peers</span></div>
+ <div><strong>1</strong><span>Physical host in R18.1</span></div>
+ <div><strong>7</strong><span>Summary control flags</span></div>
+ <div><strong id="gate-total">16</strong><span>External gates outstanding</span></div>
+</section>
+<section class="panels">
+ <article class="card">
+  <div class="eyebrow">01 / SELECT EVIDENCE</div><h2>Import a local witness</h2>
+  <p>Use the redacted JSON produced by <code>python reference/python/xi_two_house_r181.py demo</code> or the GitHub CI artifact. File bytes remain in this browser, never uploaded.</p>
+  <label for="local-file">R18.1 report JSON (maximum 16 KiB)</label>
+  <input id="local-file" type="file" accept=".json,application/json">
+  <p class="small">The preview button shows illustrative source-defined values, not a freshly executed simulation. Imported reports are self-reported until independently authenticated.</p>
+  <div class="button-row"><button id="export" disabled type="button">Download redacted review</button>
+  <a href="https://github.com/MichaelWave369/xi-vessel-bridge/actions/runs/40248847400" target="_blank" rel="noopener noreferrer">Original R18.1 CI proof ↗</a></div>
+  <p id="input-status" role="status" aria-live="polite">No evidence loaded. External pilot remains blocked.</p>
+ </article>
+ <article class="card">
+  <div class="eyebrow">02 / PROVENANCE</div><h2>What this report means</h2>
+  <dl class="details">
+   <div><dt>Review state</dt><dd id="mode">Nothing selected</dd></div>
+   <div><dt>Local control flags</dt><dd id="reported">Not inspected</dd></div>
+   <div><dt>Raw source SHA-256</dt><dd id="fingerprint" class="hash">Not loaded</dd></div>
+   <div><dt>Independent Xi receipts</dt><dd><strong>0</strong> · none established</dd></div>
+   <div><dt>Remote authority</dt><dd>None · no permissions granted</dd></div>
+  </dl>
+  <p class="warning">A valid JSON shape or a matching hash does not authenticate who created it. Neither button signs in to Xi or executes the R18.1 Python process.</p>
+ </article>
+</section>
+<section class="section">
+  <div class="section-head"><div class="eyebrow">03 / RECIPROCAL EXCHANGE</div><h2>Independent houses, separate ledgers</h2><p>The arrows illustrate the locally tested flow. There is no active transport on this site.</p></div>
+  <div class="flow-diagram" aria-label="Two simulated local processes exchange a signed read-only digest">
+    <div class="house"><span>HOUSE Φ</span><strong>phi-sim</strong><small>Own ephemeral key</small><small>Own request & R16 ledgers</small><small>Own digest allowlist</small></div>
+    <div class="arrows" aria-hidden="true"><span>Signed challenge →</span><span>← Signed proof</span><span>Signed request ⇄</span><span>← Signed receipt</span></div>
+    <div class="house violet"><span>HOUSE Ξ</span><strong>xi-sim</strong><small>Own ephemeral key</small><small>Own request & R16 ledgers</small><small>Own digest allowlist</small></div>
+  </div>
+  <div id="check-grid" class="check-grid" aria-label="Controls reported in an imported witness">
+    <div class="empty">Load the illustrative preview or a local report to inspect its seven control claims.</div>
+  </div>
+</section>
+<section class="section gates">
+ <div class="section-head"><div class="eyebrow">04 / REAL-WORLD PILOT GATES</div><h2>The evidence we still owe</h2>
+ <p>These requirements come from the source roadmap. Local simulations never unlock an external gate.</p></div>
+ <div id="gate-status" class="source-note" role="status">Loading public source roadmap…</div>
+ <div id="gate-list" class="gate-list"></div>
+</section>
+<section class="footer-actions"><div><strong>Want to run the actual R18.1 lab?</strong>
+<p>Its Python CLI executes the cryptographic simulation locally or in GitHub CI. This static website only reviews redacted results.</p></div>
+<a href="https://github.com/MichaelWave369/xi-vessel-bridge/blob/main/docs/XI_TWO_HOUSE_LOCAL_LAB_R181.md"
+  target="_blank" rel="noopener noreferrer" class="docs-link">Open reproducible lab instructions ↗</a></section>
+</main>
+<footer>Ledger Above Ego · Two independent houses · No Xi authentication, login, deployment or automatic grants</footer>
+<script src="./lab-core.js" defer></script><script src="./lab.js" defer></script>
+</body></html>

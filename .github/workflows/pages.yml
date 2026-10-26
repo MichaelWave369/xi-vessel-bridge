@@ -77,6 +77,11 @@ jobs:
           python -m unittest discover -s tests -p 'test_commons_gateway_r173.py' -v
           python -m unittest discover -s tests -p 'test_commons_deployment_r175.py' -v
           python scripts/build_commons_gateway.py --out dist
+      - name: Check R18.2 static offline lab browser validators
+        run: |
+          node --check roadmap/lab-core.js
+          node --check roadmap/lab.js
+          node --test tests/test_lab_core_r182.cjs
       - name: Prepare static Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
@@ -121,7 +126,9 @@ jobs:
         run: |
           set -euo pipefail
           manifest_sha=$(sha256sum dist/handoff/manifest.json | awk '{print $1}')
+          lab_sha=$(sha256sum dist/lab-preview.json | awk '{print $1}')
           python scripts/verify_commons_deployment.py \
+            --expected-lab-preview "$lab_sha" \
             --expected-manifest "$manifest_sha" \
             --attempts 12 --delay 10 > pages-availability-evidence.json
           cat pages-availability-evidence.json

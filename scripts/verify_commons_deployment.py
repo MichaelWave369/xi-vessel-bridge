@@ -80,7 +80,7 @@ def parse_json(raw, name):
     return obj
 
 
-def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None):
+def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expected_lab_preview=None):
     validate_base(url)
     home = fetcher(url)
     insist(b"Two houses." in home and b"NOT ESTABLISHED" in home and
@@ -113,6 +113,34 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None):
     workbench = fetcher(url + "intake.html")
     insist(b"Partner Intake Workbench" in workbench and b"Local inspection only" in workbench,
            "Published partner intake UI missing or unexpected")
+    lab_html = fetcher(url + "lab.html")
+    insist(b"Two-House Operator Console" in lab_html and b"LIVE XI CONNECTION: NOT ESTABLISHED" in lab_html and
+           b"./lab-core.js" in lab_html and b"./lab.js" in lab_html,
+           "Published R18.2 local-only operator console is missing")
+    preview_raw = fetcher(url + "lab-preview.json")
+    lab_preview = parse_json(preview_raw, "lab-preview")
+    witness = lab_preview.get("witness")
+    insist(lab_preview.get("schema") == "PhiXi.R18_2_LocalLabPreview.v1" and
+           lab_preview.get("preview_only") is True and
+           lab_preview.get("classification") == "illustrative_fixture_not_fresh_run" and
+           isinstance(witness, dict) and
+           witness.get("status") == "R18_1_TWO_HOUSE_LOCAL_SIMULATION_PASS" and
+           witness.get("physical_hosts") == 1 and witness.get("process_count") == 2 and
+           witness.get("live_xi_connected") is False and
+           witness.get("authority") == "none" and
+           witness.get("real_xi_peer_verified") is False and
+           witness.get("r18_real_two_host_pilot") == "NOT_RUN",
+           "Published lab preview asserts unexpected external evidence")
+    preview_hash = sha256(preview_raw)
+    if expected_lab_preview is not None:
+        insist(expected_lab_preview == preview_hash,
+               "Deployed lab preview differs from tested build")
+    lab_core = fetcher(url + "lab-core.js")
+    lab_script = fetcher(url + "lab.js")
+    insist(b"R18_1_WITNESS_SHAPE_VALID_ONLY" in lab_core and
+           b"redactedReview" in lab_core and b"IMPORTED_UNTRUSTED_WITNESS" in lab_script and
+           b"file.arrayBuffer()" in lab_script,
+           "Published lab core/viewer missing or unexpected")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
            "Generated offline worker is absent or unversioned")
@@ -134,7 +162,8 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None):
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 6 + len(PACKETS),
+        "checked_public_resources": 10 + len(PACKETS),
+        "lab_preview_sha256": preview_hash, "lab_scope": "ILLUSTRATIVE_AND_UNTRUSTED_IMPORTS_ONLY",
         "verified_synthetic_packets": verified,
         "live_xi_connected": False,
         "r17_external_pilot": "BLOCKED",
@@ -148,6 +177,7 @@ def main(argv=None):
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--url", default=BASE)
     p.add_argument("--expected-manifest", help="SHA-256 of tested local dist/handoff/manifest.json")
+    p.add_argument("--expected-lab-preview", help="SHA-256 of tested local dist/lab-preview.json")
     p.add_argument("--attempts", type=int, default=1)
     p.add_argument("--delay", type=float, default=0)
     args = p.parse_args(argv)
@@ -156,7 +186,8 @@ def main(argv=None):
         return 2
     for attempt in range(args.attempts):
         try:
-            report = verify_site(args.url, expected_manifest=args.expected_manifest)
+            report = verify_site(args.url, expected_manifest=args.expected_manifest,
+                                 expected_lab_preview=args.expected_lab_preview)
             print(json.dumps(report, indent=2, sort_keys=True))
             return 0
         except (NotVerified, OSError, TimeoutError, ValueError) as exc:

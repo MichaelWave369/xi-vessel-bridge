@@ -38,6 +38,10 @@ STATIC_FILES = {
     "bridge-roadmap.json": "bridge-roadmap.json",
     "capability-registry.json": "capability-registry.json",
     "manifest.webmanifest": "manifest.webmanifest",
+    "lab.html": "lab.html",
+    "lab.css": "lab.css",
+    "lab.js": "lab.js",
+    "lab-core.js": "lab-core.js",
 }
 SCHEMA = "PhiXi.PublicHandoffManifest.R17_3.v1"
 
@@ -80,6 +84,34 @@ def build(destination):
         if path.is_symlink():
             raise BuildRefused("refusing to overwrite symlinked output")
         path.write_bytes(data)
+
+    # Public UI preview is generated from the R18.1 fixed *summary contract*,
+    # not a fresh execution or a cross-host witness. Never include keys or raw transcripts.
+    witness = {
+        "status": "R18_1_TWO_HOUSE_LOCAL_SIMULATION_PASS",
+        "process_count": 2, "distinct_ephemeral_identity_keys": True,
+        "bilateral_r16_handshake": True,
+        "signed_xi_exchange_v1_shaped_digest_roundtrip": True,
+        "bidirectional_local_digest": True,
+        "durable_request_replay_refused_after_restart": True,
+        "receiver_pause_refused": True,
+        "receiver_revocation_survived_restart": True,
+        "source_fixture_sha256": pilot.sha(pilot.PAYLOAD),
+        "permitted_operation": "artifact.sha256", "cross_host_network": False,
+        "physical_hosts": 1, "real_xi_peer_verified": False,
+        "two_physical_hosts_confirmed": False, "live_xi_connected": False,
+        "r17_external_pilot": "BLOCKED", "r18_real_two_host_pilot": "NOT_RUN",
+        "authority": "none",
+        "qualification": "Two local synthetic processes, fixture-only cryptography and permissions."
+    }
+    preview = {
+        "schema": "PhiXi.R18_2_LocalLabPreview.v1",
+        "preview_only": True, "classification": "illustrative_fixture_not_fresh_run",
+        "witness": witness
+    }
+    preview_bytes = canonical(preview)
+    (destination / "lab-preview.json").write_bytes(preview_bytes)
+    public_files["lab-preview.json"] = preview_bytes
 
     packet_dir = destination / "handoff"
     if packet_dir.is_symlink():
