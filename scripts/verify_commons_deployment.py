@@ -167,6 +167,20 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
            len(room_css) > 400 and b"navigator.clipboard.writeText" in room_js and
            b"field.select()" in room_js,
            "Public R18.5 nonsecret room briefing not deployed or unsafe")
+    gate_page = fetcher(url + "gates.html")
+    gate_core = fetcher(url + "gates-core.js")
+    gate_ui = fetcher(url + "gates.js")
+    gate_css = fetcher(url + "gates.css")
+    insist(b"Bilateral Pilot Gate Board" in gate_page and
+           b"16 / 16 EXTERNAL GATES OUTSTANDING" in gate_page and
+           b"connect-src 'self'" in gate_page and
+           b"./gates-core.js" in gate_page and
+           b"./gates.js" in gate_page and
+           b"PUBLIC_UNAPPROVED_DISCUSSION_AGENDA" in gate_core and
+           b"OUTSTANDING_SOURCE_GATE" in gate_core and
+           b'fetch("./bridge-roadmap.json"' in gate_ui and
+           len(gate_css) > 500,
+           "Published R18.6 discussion-only gate board absent or unsafe")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
            "Generated offline worker is absent or unversioned")
@@ -188,7 +202,8 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 17 + len(PACKETS),
+        "checked_public_resources": 21 + len(PACKETS),
+        "r18_6_scope": "SIXTEEN_OUTSTANDING_DISCUSSION_ONLY_NO_AUTHORITY",
         "r18_5_scope": "PUBLIC_NONSECRET_ROOM_BRIEFING_NO_EXTERNAL_AUTHORITY",
         "r18_3_scope": "BROWSER_ONLY_DETERMINISTIC_NO_CRYPTO",
         "lab_preview_sha256": preview_hash, "lab_scope": "ILLUSTRATIVE_AND_UNTRUSTED_IMPORTS_ONLY",
