@@ -408,3 +408,20 @@ python reference/python/xi_two_house_r181.py require-live  # must refuse, exit 2
 The demo emits only redacted outcomes and the public synthetic fixture fingerprint. GitHub CI publishes a read-only witness artifact, with comprehensive negative controls for payload tampering, replay across restart, forged peers, forged scopes, revoked peers and missing policy. It is **two local processes on one physical host**, not a real Hunter/Xi session or two-host field pilot. The fixture-only signing profile is **not** a jointly approved Xi-native transport/authentication suite. R17 external gates remain BLOCKED; R18 real two-host crossing remains NOT RUN.
 
 [Read R18.1 exact message flow, trust boundary, limitations and future pilot gates](docs/XI_TWO_HOUSE_LOCAL_LAB_R181.md).
+
+
+## R18.2 · Two-House Operator Console (public static offline viewer)
+
+The Commons Gateway now has a fourth **Two-House Lab** entry at `/lab.html`. It can load an expressly illustrative source preview or inspect a redacted R18.1 simulation summary JSON **locally in browser memory**, display seven reported controls and all 16 unresolved external pilot requirements, and download a second **redacted SHA-256-bound review**.
+
+The browser **does not run the cryptographic Python simulation**, independently verify Hunter/Xi identity, authenticate imported JSON, upload files, grant permissions, or mark a two-host pilot complete. Every imported file is labeled untrusted; a source preview is labeled illustrative. Only the public static page and synthetic preview are offline-cached. The deployed URL must pass the Pages `verify` workflow before announcing the new page as live.
+
+```sh
+python -m pip install -r requirements-r3.txt
+python -m unittest discover -s tests -p 'test_lab_console_r182.py' -v
+node --test tests/test_lab_core_r182.cjs
+python scripts/build_commons_gateway.py --out dist
+```
+
+[Read R18.2 console operation, evidence model, export policy and limitations](docs/XI_TWO_HOUSE_OPERATOR_CONSOLE_R182.md).
+**LIVE_XI_CONNECTED=false · R17 external pilot BLOCKED · R18 real two-host pilot NOT RUN.**
