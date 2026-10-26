@@ -181,6 +181,20 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
            b'fetch("./bridge-roadmap.json"' in gate_ui and
            len(gate_css) > 500,
            "Published R18.6 discussion-only gate board absent or unsafe")
+    charter_page = fetcher(url + "charter.html")
+    charter_css = fetcher(url + "charter.css")
+    charter_core = fetcher(url + "charter-core.js")
+    charter_script = fetcher(url + "charter.js")
+    insist(b"Synthetic Pilot Charter Studio" in charter_page and
+           b"connect-src 'self'" in charter_page and
+           b"Human approval from either house" in charter_page and
+           b"./charter-core.js" in charter_page and b"./charter.js" in charter_page and
+           b"PhiXi.R18_7_ProposedSyntheticPilotCharter.v1" in charter_core and
+           b"UNAPPROVED_PUBLIC_PROPOSAL" in charter_core and
+           b"approved_operations:0" in charter_core and
+           b'checkedJson("./handoff/pilot-preflight-draft.json")' in charter_script and
+           len(charter_css) > 500,
+           "Published R18.7 non-authorizing charter is missing or unreviewed")
     worker = fetcher(url + "sw.js")
     insist(b"phi-xi-commons-public-" in worker and b"__VERSION__" not in worker,
            "Generated offline worker is absent or unversioned")
@@ -202,7 +216,8 @@ def verify_site(url=BASE, fetcher=fetch_public, *, expected_manifest=None, expec
         "public_url": url,
         "manifest_sha256": manifest_hash,
         "registry_sha256": registry_tools.document_hash(reg),
-        "checked_public_resources": 21 + len(PACKETS),
+        "checked_public_resources": 25 + len(PACKETS),
+        "r18_7_scope": "UNAPPROVED_SYNTHETIC_PUBLIC_CHARTER_NO_REMOTE_AUTHORITY",
         "r18_6_scope": "SIXTEEN_OUTSTANDING_DISCUSSION_ONLY_NO_AUTHORITY",
         "r18_5_scope": "PUBLIC_NONSECRET_ROOM_BRIEFING_NO_EXTERNAL_AUTHORITY",
         "r18_3_scope": "BROWSER_ONLY_DETERMINISTIC_NO_CRYPTO",
