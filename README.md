@@ -42,6 +42,16 @@ python reference/python/xi_receipt_r189.py emit --case digest
 
 **These receipts are PHI-authored proposals only.** They do not authenticate Hunter, reproduce a native Xi protocol, authorize a tool or count toward the 16 external gates. **R17 BLOCKED · R18 real two-host NOT RUN · authority=none.**
 
+## R18.10 · Ephemeral Ed25519 Python ⇄ Node Mathematical Verification
+
+R18.9 proved exact public receipt bytes across two runtimes. **R18.10 now adds a fresh, self-issued Ed25519 keypair in each language**, signs each of four existing synthetic canonical receipts with a domain-separated test prefix, and has the *other language* verify it. The private key is never exported, saved or published.
+
+The CI gauntlet executes eight cross-language checks (Python signs → Node verifies; Node signs → Python verifies, across four cases), plus strict tampering controls for false Xi identity/approval, swapped keys and signatures, changed digest, added fields and altered JSON encoding. GitHub artifacts contain only **public self-issued** signatures, keys and nonsecret math reports.
+
+A valid Ed25519 signature from an **unpinned, self-issued key does not authenticate Hunter or Xi**, confer permission, or prove any real network crossing. The reports explicitly preserve `independent_partner_identity_verified=false`, zero external gate promotions, `authority=none`, R17 `BLOCKED` and real R18 two-host `NOT_RUN`.
+
+[Read R18.10's domain-separated byte contract, test instructions and trust limitations](docs/XI_R1810_EPHEMERAL_ED25519_INTEROP.md).
+
 ## v0.1 handshake
 
 The first conformance path is deliberately small:
